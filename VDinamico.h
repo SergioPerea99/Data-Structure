@@ -25,6 +25,7 @@ class VDinamico{
         T* vector;
         
         void aumentarVector();
+        void disminuye();
         
     public:
         VDinamico();
@@ -34,7 +35,11 @@ class VDinamico{
         VDinamico<T>& operator =(const VDinamico<T>& orig);
         T& operator[](unsigned int pos);
         void insertar(const T& dato, unsigned int pos = UINT_MAX);
+        T borrar(unsigned int pos = UINT_MAX);
         virtual ~VDinamico();
+        
+        
+        
         int getTamL() const{return tamL;};
         int getTamF() const{return tamF;};
         
@@ -141,7 +146,7 @@ T& VDinamico<T>::operator [](unsigned int pos){
  * se insertará al final del vector. En caso de dar una posición mayor elegida, entonces saltará una excepción.
  * @param dato. Tipo T que se insertará en el vector.
  * @param pos. Posición en la que debe de insertarse el dato en el vector.
- * @throw out_of_range. Valor fuera de rango para la posición pasada por parametro.
+ * @throw out_of_range. Valor de la posición dada está fuera de rango.
  */
 template <class T>
 void VDinamico<T>::insertar(const T& dato, unsigned int pos){
@@ -172,6 +177,29 @@ void VDinamico<T>::insertar(const T& dato, unsigned int pos){
     }
     ++tamL;
 };
+
+
+template <class T>
+T VDinamico<T>::borrar(unsigned int pos){
+    if(pos >= tamL && pos != UINT_MAX)
+        throw std::out_of_range("[VDinamico<T>::borrar] Intenta eliminar un elemento en una posición fuera del rango de elementos.");
+    if(vector){
+            //Compruebo si al eliminar el elemento provoca que se tenga que disminuir el tamF reservado para el vector.
+        if((tamL-1)*3 < tamF)
+            disminuye();
+        
+            //Ahora compruebo en que posición se quiere eliminar el elemento.
+        if(pos == UINT_MAX)
+            return vector[--tamL];
+        else{
+            for(int i=pos; i<tamL; i++)
+                vector[i] = vector[i+1];
+            --tamL;
+        }
+    }else
+        throw std::invalid_argument("[VDinamico<T>::borrar] No existen elementos en el vector para borrar.");
+};
+
 
 
 /**
@@ -208,6 +236,20 @@ void VDinamico<T>::aumentarVector(){
     auxiliar = nullptr;
 };
 
-
+/**
+ * @bief Disminuir tamaño físico.
+ * @post Disminuye en caso de que haya menos de 1/3 de capacidad ocupada en el vector. En ese casp,
+ * disminuye su tamaño a la mitad.
+ */
+template <class T>
+void VDinamico<T>::disminuye(){
+    tamF = tamF/2;
+    T* auxiliar = new T [tamF];
+    for (int i = 0; i < tamL; i++)
+        auxiliar[i] = vector[i];
+    
+    delete []vector;
+    vector = auxiliar;
+};
 #endif /* VDINAMICO_H */
 

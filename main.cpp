@@ -12,6 +12,7 @@
  */
 
 #include <cstdlib>
+#include <exception>
 #include "VDinamico.h"
 using namespace std;
 
@@ -22,6 +23,8 @@ int main(int argc, char** argv) {
     
     int tamV = 5;
     VDinamico<int> vDinamico;
+    
+    //---------- INSERTAR ELEMENTOS EN UN VECTOR -----------//
 
     vDinamico.insertar(2);
     int i = 0;
@@ -38,7 +41,18 @@ int main(int argc, char** argv) {
     cout<<"TAMAÑO LÓGICO DEL VECTOR : "<<vDinamico.getTamL()<<endl;
     cout<<"TAMAÑO FÍSICO DEL VECTOR : "<<vDinamico.getTamF()<<endl;
     
+    //---------- BORRAR ELEMENTOS EN UN VECTOR -----------//
+    for (int i = 0; i < 4; i++)
+        vDinamico.borrar(i);
 
+    
+    for (int i = 0; i < vDinamico.getTamL(); i++) 
+        cout<<vDinamico[i];
+    cout<<endl;
+    
+    
+    cout<<"TAMAÑO LÓGICO DEL VECTOR : "<<vDinamico.getTamL()<<endl;
+    cout<<"TAMAÑO FÍSICO DEL VECTOR : "<<vDinamico.getTamF()<<endl;
     
     return 0;
 }
