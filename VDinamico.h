@@ -48,7 +48,7 @@ class VDinamico{
         
         
         
-        int getTamL() const{return tamL;};
+        unsigned int tam() const{return tamL;};
         int getTamF() const{return tamF;};
         
         
@@ -242,7 +242,12 @@ void VDinamico<T>::ordenarRev(){
     }
 };
 
-
+/**
+ * @bief Búsqueda binaria (tamaños pares).
+ * @post Búsqueda binaria válida para un vector previamente ordenado y cuyo tamaño lógico de elementos sea de número par.
+ * @param dato. Elemento a buscar en el vector.
+ * @return Posición del elemento encontrado. En caso de no encontrarlo, devuelve -1.
+ */
 template <class T>
 int VDinamico<T>::busquedaBin(T& dato){
     if(vector){

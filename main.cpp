@@ -28,17 +28,17 @@ int main(int argc, char** argv) {
 
     vDinamico.insertar(2);
     int i = 0;
-    int tam = vDinamico.getTamL()*8;
+    int tam = vDinamico.tam()*8;
     while(i < tam){
         vDinamico.insertar(i,i);
         i++;
     }
     
-    for (int i = 0; i < vDinamico.getTamL(); i++) 
+    for (int i = 0; i < vDinamico.tam(); i++) 
         cout<<vDinamico[i];
     cout<<endl;
     
-    cout<<"TAMAÑO LÓGICO DEL VECTOR : "<<vDinamico.getTamL()<<endl;
+    cout<<"TAMAÑO LÓGICO DEL VECTOR : "<<vDinamico.tam()<<endl;
     cout<<"TAMAÑO FÍSICO DEL VECTOR : "<<vDinamico.getTamF()<<endl<<endl<<endl;
     
     //---------- BORRAR ELEMENTOS EN UN VECTOR -----------//
@@ -46,10 +46,10 @@ int main(int argc, char** argv) {
         vDinamico.borrar(i);
 
     vDinamico.ordenar();
-    for (int i = 0; i < vDinamico.getTamL(); i++) 
+    for (int i = 0; i < vDinamico.tam(); i++) 
         cout<<vDinamico[i];
     cout<<endl;
-    cout<<"TAMAÑO LÓGICO DEL VECTOR : "<<vDinamico.getTamL()<<endl;
+    cout<<"TAMAÑO LÓGICO DEL VECTOR : "<<vDinamico.tam()<<endl;
     cout<<"TAMAÑO FÍSICO DEL VECTOR : "<<vDinamico.getTamF()<<endl;
     
     int buscar = 5;
