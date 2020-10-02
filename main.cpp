@@ -39,20 +39,23 @@ int main(int argc, char** argv) {
     cout<<endl;
     
     cout<<"TAMAÑO LÓGICO DEL VECTOR : "<<vDinamico.getTamL()<<endl;
-    cout<<"TAMAÑO FÍSICO DEL VECTOR : "<<vDinamico.getTamF()<<endl;
+    cout<<"TAMAÑO FÍSICO DEL VECTOR : "<<vDinamico.getTamF()<<endl<<endl<<endl;
     
     //---------- BORRAR ELEMENTOS EN UN VECTOR -----------//
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 3; i++)
         vDinamico.borrar(i);
 
-    
+    vDinamico.ordenar();
     for (int i = 0; i < vDinamico.getTamL(); i++) 
         cout<<vDinamico[i];
     cout<<endl;
-    
-    
     cout<<"TAMAÑO LÓGICO DEL VECTOR : "<<vDinamico.getTamL()<<endl;
     cout<<"TAMAÑO FÍSICO DEL VECTOR : "<<vDinamico.getTamF()<<endl;
+    
+    int buscar = 5;
+    int encontrado = vDinamico.busquedaBin(buscar);
+    if(encontrado)
+        cout<<"ENCONTRADO el elemento "<<buscar<<", en la posición "<<encontrado+1<<"."<<endl;
     
     return 0;
 }

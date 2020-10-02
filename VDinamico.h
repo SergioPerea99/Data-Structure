@@ -16,7 +16,7 @@
 
 #include <iostream>
 #include <climits> //Necesario para el UINT_MAX.
-
+#include <algorithm>
 
 template <class T>
 class VDinamico{
@@ -26,16 +26,24 @@ class VDinamico{
         
         void aumentarVector();
         void disminuye();
-        
+          
     public:
         VDinamico();
         VDinamico(unsigned int tam);
         VDinamico(const VDinamico<T>& orig);
         VDinamico(const VDinamico<T>& origen, unsigned int inicio, unsigned int num);
+        
         VDinamico<T>& operator =(const VDinamico<T>& orig);
         T& operator[](unsigned int pos);
+        
         void insertar(const T& dato, unsigned int pos = UINT_MAX);
         T borrar(unsigned int pos = UINT_MAX);
+        
+        void ordenar();
+        void ordenarRev();
+        
+        int busquedaBin(T& dato);
+        
         virtual ~VDinamico();
         
         
@@ -200,6 +208,63 @@ T VDinamico<T>::borrar(unsigned int pos){
         throw std::invalid_argument("[VDinamico<T>::borrar] No existen elementos en el vector para borrar.");
 };
 
+/**
+ * @brief Función ordenar.
+ * @post Ordena alfabéticamente o alfanuméricamente un vector, mediante la función de la librería
+ * de algorithm: sort.
+ */
+template <class T>
+void VDinamico<T>::ordenar(){
+    if(vector)
+            //La función sort espera iteradores que apunten al inicio y el final de donde se quiere ordenar.
+        std::sort(&vector[0],&vector[tamL]);
+};
+
+
+/**
+ * @brief Ordenar inversamente.
+ * @post A partir de un vector, ordenar de forma inversa alfabéticamente los elementos que contenga.
+ * La forma implementada es aprovechar el ordenar() ya implementado y su posterior intercambio para colocarlo
+ * de forma inversa.
+ */
+template <class T>
+void VDinamico<T>::ordenarRev(){
+    if(vector){
+            //Primero ordeno de menor a mayor alfabeticamente.
+        ordenar();
+            //Después, realizo el cambio recorriendo el vector n/2.
+        int j = tamL-1; //Me quedo con la unidad en caso de tener decimales.
+        for (int i = 0; i < (int)tamL/2; i++) {
+            T aux = vector[i];
+            vector[i] = vector[j];
+            vector[j--] = aux;
+        }
+    }
+};
+
+
+template <class T>
+int VDinamico<T>::busquedaBin(T& dato){
+    if(vector){
+        int inf=0;
+        int sup=tamL-1;
+        int curIn;
+        
+        while(inf <= sup){
+            curIn = (inf+sup)/2;
+            //Suponiendo que el tipo T tiene el correspondiente operador de == y del operador <.
+            if (vector[curIn] == dato)
+                return curIn;
+            else if (vector[curIn] < dato)
+                inf = curIn + 1;
+            else
+                sup = curIn-1;
+        }
+    
+    }
+    //El vector está vacío, por lo que no se ha podido encontrar el elemento.
+    return -1;
+};
 
 
 /**
@@ -214,7 +279,6 @@ VDinamico<T>::~VDinamico(){
         vector = nullptr;
     }
 }
-
 
 
 //--------------- METODOS PRIVADOS ----------//
@@ -251,5 +315,8 @@ void VDinamico<T>::disminuye(){
     delete []vector;
     vector = auxiliar;
 };
+
+
+
 #endif /* VDINAMICO_H */
 
