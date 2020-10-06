@@ -41,8 +41,9 @@ class VDinamico{
         
         void ordenar();
         void ordenarRev();
+        bool estaOrdenado();
         
-        int busquedaBin(T& dato);
+        int busquedaBin(const T& dato);
         
         virtual ~VDinamico();
         
@@ -51,8 +52,7 @@ class VDinamico{
         unsigned int tam() const{return tamL;};
         int getTamF() const{return tamF;};
         
-        
-        
+
 
 };
 
@@ -173,9 +173,12 @@ void VDinamico<T>::insertar(const T& dato, unsigned int pos){
             }
         }else{
             aumentarVector();
-            for (int i = tamL; i > pos; i--)
-                vector[i] = vector[i-1];
-            vector[pos] = dato;       
+            if(pos != UINT_MAX){
+                for (int i = tamL; i > pos; i--)
+                    vector[i] = vector[i-1];
+                vector[pos] = dato;
+            }else
+                vector[tamL] = dato;
         }
     }else{
             //En este caso, aunque me digan una posición, sabemos que es un vector construido por defecto.
@@ -187,6 +190,14 @@ void VDinamico<T>::insertar(const T& dato, unsigned int pos){
 };
 
 
+/**
+ * @brief Borrar un elemento del vector.
+ * @post Eliminar un elemento del vector de forma que si no se indica la posición se elimina el último dato del vector. En caso de 
+ * que al eliminar el elemento el tamaño lógico del vector sea 1/3 del tamaño real, entonces debemos de reducir el vector dinámico.
+ * @param pos Posicion del elemento que se quiere borrar.
+ * @throw out_of_range Excepción saltada por salir del rango lógico permitido del vector para eliminar un dato.
+ * @return Elemento borrado.
+ */
 template <class T>
 T VDinamico<T>::borrar(unsigned int pos){
     if(pos >= tamL && pos != UINT_MAX)
@@ -200,9 +211,11 @@ T VDinamico<T>::borrar(unsigned int pos){
         if(pos == UINT_MAX)
             return vector[--tamL];
         else{
+            T aux = vector[pos];
             for(int i=pos; i<tamL; i++)
                 vector[i] = vector[i+1];
             --tamL;
+            return aux;
         }
     }else
         throw std::invalid_argument("[VDinamico<T>::borrar] No existen elementos en el vector para borrar.");
@@ -216,8 +229,7 @@ T VDinamico<T>::borrar(unsigned int pos){
 template <class T>
 void VDinamico<T>::ordenar(){
     if(vector)
-            //La función sort espera iteradores que apunten al inicio y el final de donde se quiere ordenar.
-        std::sort(&vector[0],&vector[tamL]);
+        std::sort(&vector[0],&vector[tamL]); //La función sort espera iteradores que apunten al inicio y el final de donde se quiere ordenar.
 };
 
 
@@ -242,6 +254,15 @@ void VDinamico<T>::ordenarRev(){
     }
 };
 
+template <class T>
+bool VDinamico<T>::estaOrdenado(){
+    for(int i = 1; i < tamL; i++){
+        if(vector[i-1] > vector[i])
+            return false;
+    }
+    return true;
+};
+
 /**
  * @bief Búsqueda binaria (tamaños pares).
  * @post Búsqueda binaria válida para un vector previamente ordenado y cuyo tamaño lógico de elementos sea de número par.
@@ -249,7 +270,7 @@ void VDinamico<T>::ordenarRev(){
  * @return Posición del elemento encontrado. En caso de no encontrarlo, devuelve -1.
  */
 template <class T>
-int VDinamico<T>::busquedaBin(T& dato){
+int VDinamico<T>::busquedaBin(const T& dato){
     if(vector){
         int inf=0;
         int sup=tamL-1;
@@ -296,7 +317,8 @@ void VDinamico<T>::aumentarVector(){
         //Creo vector auxiliar que apunte al anterior vector.
     T* auxiliar = vector;
         //Incremento el tamF en una potencia de 2 mayor y creo ese espacio en memoria para el vector.
-    vector = new T[tamF *= 2];
+    tamF = tamF*2;
+    vector = new T[tamF];
     
     for(int i = 0;i < tamL;i++)
         vector[i] = auxiliar[i];
