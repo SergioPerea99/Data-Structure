@@ -243,13 +243,16 @@ template <class T>
 void VDinamico<T>::ordenarRev(){
     if(vector){
             //Primero ordeno de menor a mayor alfabeticamente.
-        ordenar();
+        if(!estaOrdenado())
+            ordenar();
             //Después, realizo el cambio recorriendo el vector n/2.
         int j = tamL-1; //Me quedo con la unidad en caso de tener decimales.
-        for (int i = 0; i < (int)tamL/2; i++) {
+        int i = 0;
+        while (i < j){
             T aux = vector[i];
             vector[i] = vector[j];
             vector[j--] = aux;
+            ++i;
         }
     }
 };

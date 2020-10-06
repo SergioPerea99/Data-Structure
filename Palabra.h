@@ -39,6 +39,8 @@ public:
     bool operator==(const Palabra& dato);
     bool operator<(const Palabra& dato);
     bool operator>(const Palabra& dato);
+    bool operator <=(const Palabra& dato);
+    bool operator >=(const Palabra& dato);
     
 
 };

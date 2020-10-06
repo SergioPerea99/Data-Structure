@@ -14,7 +14,7 @@
 #include "Palabra.h"
 
 Palabra::Palabra() {
-    palabra = "null";
+    palabra = "";
 }
 
 Palabra::Palabra(string _palabra){
@@ -22,6 +22,7 @@ Palabra::Palabra(string _palabra){
 }
 
 Palabra::Palabra(const Palabra& orig) {
+    palabra = orig.GetPalabra();
 }
 
 Palabra::~Palabra() {
@@ -54,9 +55,18 @@ bool Palabra::operator >(const Palabra& dato){
 }
 
 Palabra& Palabra::operator =(const Palabra& dato){
-    if(this != &dato){
-        palabra = dato.palabra;
-    }
+    palabra = dato.palabra;
     return *this;
 }
 
+bool Palabra::operator <=(const Palabra& dato){
+    if (palabra <= dato.GetPalabra())
+        return true;
+    return false;
+}
+
+bool Palabra::operator >=(const Palabra& dato){
+    if(palabra >= dato.GetPalabra())
+        return true;
+    return false;
+}

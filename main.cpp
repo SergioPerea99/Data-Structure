@@ -99,22 +99,29 @@ int main(int argc, char** argv) {
     
     cout<<"TAMAÑO LOGICO DEL VECTOR: "<<vPalabras.tam()<<". TAMAÑO FISICO DEL VECTOR: "<<vPalabras.getTamF()<<endl<<endl; 
     
-    VDinamico<Palabra> copiaPalabras(vPalabras);
     
-    cout<<"[ ";
-    for(int i = 0; i < vPalabras.tam(); i++)
-        cout<<vPalabras[i].GetPalabra()<<"  ";
-    cout<<"]."<<endl<<endl;
+    
     //Comprobar si está ordenado, sino lo está se ordena.
-    if(copiaPalabras.estaOrdenado())
+    if(vPalabras.estaOrdenado())
         cout<<"El vector se encuentra ordenado."<<endl;
     else{
         cout<<"Vector no ordenado. Comenzando a ordenar..."<<endl;
-        copiaPalabras.ordenar();
-        if(copiaPalabras.estaOrdenado())
+        vPalabras.ordenar();
+        
+        if(vPalabras.estaOrdenado())
             cout<<"VECTOR ORDENADO CORRECTAMENTE."<<endl;
     }
     
+    cout<<endl<<endl;
+    
+    for (int i = 0; i < 10; i++)
+        cout<<vPalabras[i].GetPalabra()<<"      "<<vPalabras[vPalabras.tam()-i-1].GetPalabra()<<endl;
+    cout<<"Comenzando a ordenar de forma inversa..."<<endl;
+    vPalabras.ordenarRev();
+    for (int i = 0; i < 10; i++)
+        cout<<vPalabras[i].GetPalabra()<<"      "<<vPalabras[vPalabras.tam()-i-1].GetPalabra()<<endl;
+    
+
     
     return 0;
     
