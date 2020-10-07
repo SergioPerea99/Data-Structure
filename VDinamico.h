@@ -21,7 +21,7 @@
 template <class T>
 class VDinamico{
     private:
-        int tamF, tamL;
+        long tamF, tamL;
         T* vector;
         
         void aumentarVector();
@@ -49,11 +49,12 @@ class VDinamico{
         
         
         
-        unsigned int tam() const{return tamL;};
+        unsigned long tam() const{return tamL;};
         int getTamF() const{return tamF;};
         
 
-
+        //Metodo buscar burbuja. Para no añadir el doble de cantidad en el vector de parPalabras.
+        bool buscar(const T& dato);
 };
 
 /**
@@ -295,6 +296,16 @@ int VDinamico<T>::busquedaBin(const T& dato){
     return -1;
 };
 
+
+
+template <class T>
+bool VDinamico<T>::buscar(const T& dato){
+    for(int i = 0; i < tamL; i++){
+        if(vector[i] == dato)
+            return true;
+    }
+    return false;
+};
 
 /**
  * @brief Destructor.

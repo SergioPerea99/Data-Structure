@@ -11,6 +11,8 @@
  * Created on 5 de octubre de 2020, 19:20
  */
 
+#include <string.h>
+
 #include "Palabra.h"
 
 Palabra::Palabra() {
@@ -22,7 +24,7 @@ Palabra::Palabra(string _palabra){
 }
 
 Palabra::Palabra(const Palabra& orig) {
-    palabra = orig.GetPalabra();
+    palabra = orig.palabra;
 }
 
 Palabra::~Palabra() {
@@ -69,4 +71,26 @@ bool Palabra::operator >=(const Palabra& dato){
     if(palabra >= dato.GetPalabra())
         return true;
     return false;
+}
+
+
+
+bool Palabra::palindromo(Palabra& pal){
+    Palabra aux(pal.reves());
+    if(aux.GetPalabra() == palabra)
+        return true;
+    return false;
+}
+
+
+Palabra Palabra::reves(){
+    char aux;
+    int i = 0, j = palabra.length()-1;
+    while(i <= j){
+        aux = palabra[i];
+        palabra[i++] = palabra[j];
+        palabra[j--] = aux;
+        
+    }
+    return *this;
 }

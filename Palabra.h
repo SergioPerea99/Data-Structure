@@ -15,32 +15,32 @@
 #define PALABRA_H
 
 #include <iostream>
+#include <string>
 using namespace std;
 
 class Palabra {
 private:
      string palabra;
+     
+     Palabra reves();
+     
 public:
     Palabra();
     Palabra(string _palabra);
     Palabra(const Palabra& orig);
     virtual ~Palabra();
     
-    
     string GetPalabra() const;
     void SetPalabra(string palabra);
-    
-    
-    //Operadores necesarios para usar la búsqueda binaria con este tipo Palabra.
-    
-    Palabra& operator=(const Palabra& dato);
 
-    
+    Palabra& operator=(const Palabra& dato);
     bool operator==(const Palabra& dato);
     bool operator<(const Palabra& dato);
     bool operator>(const Palabra& dato);
     bool operator <=(const Palabra& dato);
     bool operator >=(const Palabra& dato);
+    
+    bool palindromo(Palabra& pal);
     
 
 };
