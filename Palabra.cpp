@@ -14,6 +14,7 @@
 #include <string.h>
 
 #include "Palabra.h"
+#include "VDinamico.h"
 
 Palabra::Palabra() {
     palabra = "";
@@ -94,3 +95,16 @@ Palabra Palabra::reves(){
     }
     return *this;
 }
+
+
+bool Palabra::anagrama(Palabra& pal){
+    string palabra2 = pal.GetPalabra();
+    string palabra1 = palabra;
+    std::sort(palabra2.begin(),palabra2.end());
+    std::sort(palabra1.begin(),palabra1.end());
+    if (palabra1 == palabra2)
+        return true;
+    return false;
+}
+
+

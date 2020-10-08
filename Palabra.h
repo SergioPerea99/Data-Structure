@@ -16,13 +16,14 @@
 
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include "VDinamico.h"
 using namespace std;
 
 class Palabra {
 private:
-     string palabra;
-     
-     Palabra reves();
+     string palabra;    
+     Palabra reves();     
      
 public:
     Palabra();
@@ -41,7 +42,7 @@ public:
     bool operator >=(const Palabra& dato);
     
     bool palindromo(Palabra& pal);
-    
+    bool anagrama(Palabra& pal);
 
 };
 

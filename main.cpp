@@ -94,7 +94,7 @@ void cargarPalabras(VDinamico<Palabra> &vPalabras) {
  * @param vPalabras Palabras almacenadas.
  * @return Cantidad de palabras con palíndromo.
  */
-long buscarPalindromos(VDinamico<ParPalabras> &parPalabras, VDinamico<Palabra> &vPalabras){
+long buscarPalindromos(VDinamico<ParPalabras> &parPalabras, VDinamico<Palabra> &vPalabras, long cantidad){
     ParPalabras aux;
     long cont = 0;
     clock_t t_ini = clock();
@@ -105,7 +105,8 @@ long buscarPalindromos(VDinamico<ParPalabras> &parPalabras, VDinamico<Palabra> &
            aux.SetPal2(vPalabras[j].GetPalabra());
             if(vPalabras[i].palindromo(vPalabras[j])){
                 parPalabras.insertar(aux);
-                cout<<parPalabras[cont].GetPal1()<<"   "<<parPalabras[cont].GetPal2()<<endl;
+                if(cont < cantidad)
+                    cout<<parPalabras[cont].GetPal1()<<"   "<<parPalabras[cont].GetPal2()<<endl;
                 ++cont;
             }
         }
@@ -115,6 +116,21 @@ long buscarPalindromos(VDinamico<ParPalabras> &parPalabras, VDinamico<Palabra> &
     return cont;
 }
 
+
+
+void buscarAnagramas(VDinamico<Palabra>& vPalabras, long cantidad){
+    clock_t t_ini = clock();
+    int contador = 0;
+    for(int i = 0; i < vPalabras.tam() && contador < cantidad; i++){
+        for(int j = i+1; j < vPalabras.tam() && contador < cantidad; j++){
+            if(vPalabras[i].anagrama(vPalabras[j])){
+                cout<<"ANAGRAMA ENCONTRADO: "<<vPalabras[i].GetPalabra()<<" ---- "<<vPalabras[j].GetPalabra()<<endl;
+                ++contador;
+            }
+        }
+    }
+    cout << "Tiempo de encontrar 5 anagramas: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
+}
 
 int main(int argc, char** argv) {
     
@@ -151,29 +167,38 @@ int main(int argc, char** argv) {
     for (int i = 0; i < 10; i++)
         cout<<vPalabras[i].GetPalabra()<<"      "<<vPalabras[vPalabras.tam()-i-1].GetPalabra()<<endl;
 
-    
-    
-    
+    cout<<endl<<endl;
     int opcion;
     cout<<"ELIGE LA OPCION QUE QUIERA REALIZAR"<<endl;
     cout<<"1: Vector de palíndromos."<<endl;
-    cout<<"2: Encontrar anagramas."<<endl;cin>>opcion;
+    cout<<"2: Encontrar anagramas."<<endl;
+    cout<<"Tecla != {1,2}: EXIT."<<endl;
+    cin>>opcion;
 
-    long cont;
+    long cont, cantidad;
     VDinamico<ParPalabras> parPalabras;
     switch(opcion){
         /*-----BUSQUEDA DE PALINDROMOS-----*/
         case 1:
             
-            cont = buscarPalindromos(parPalabras,vPalabras);
+            cout<<"¿Cuántos palíndromos quiere mostrar por pantalla? ";
+            cin>>cantidad;
+            cont = buscarPalindromos(parPalabras,vPalabras,cantidad);
             cout<<"Cantidad de palindromos encontrados: "<<cont<<endl;
             break;
             
-        /*-----CREACION DE ANAGRAMAS-----*/    
+        /*-----BUSQUEDA DE ANAGRAMAS-----*/    
         case 2:
-            
+
+            cout<<"INTRODUCE LA CANTIDAD DE ANAGRAMAS QUE QUIERE ENCONTRAR: ";
+            cin>>cantidad;
+            buscarAnagramas(vPalabras,cantidad);
+            break;
+        default:
             break;
     }
+    
+    
     
     return 0;
     

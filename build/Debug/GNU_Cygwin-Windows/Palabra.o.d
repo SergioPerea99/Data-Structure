@@ -1,3 +1,6 @@
-build/Debug/GNU_Cygwin-Windows/Palabra.o: Palabra.cpp Palabra.h
+build/Debug/GNU_Cygwin-Windows/Palabra.o: Palabra.cpp Palabra.h \
+ VDinamico.h
 
 Palabra.h:
+
+VDinamico.h:
