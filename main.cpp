@@ -21,6 +21,7 @@
 #include "VDinamico.h"
 #include "Palabra.h"
 #include "ParPalabras.h"
+#include "Exception.h"
 
 using namespace std;
 
@@ -135,67 +136,77 @@ void buscarAnagramas(VDinamico<Palabra>& vPalabras, long cantidad){
 int main(int argc, char** argv) {
     
     comprobar();
-    
-    /*-----CARGA DE DATOS EN EL VECTOR DINAMICO-----*/
-    VDinamico<Palabra> vPalabras;
-    cargarPalabras(vPalabras);
-    
-    cout<<"TAMAÑO LOGICO DEL VECTOR: "<<vPalabras.tam()<<". TAMAÑO FISICO DEL VECTOR: "<<vPalabras.getTamF()<<endl<<endl; 
-    
-    
-    
-    /*-----ORDENAR VECTOR EN CASO DE NO ESTAR ORDENADO-----*/
-    if(vPalabras.estaOrdenado())
-        cout<<"El vector se encuentra ordenado."<<endl;
-    else{
-        cout<<"Vector no ordenado. Comenzando a ordenar..."<<endl;
-        vPalabras.ordenar();
-        
+    try{
+        /*-----INSTANCIA DE DATOS EN EL VECTOR DINAMICO-----*/
+        VDinamico<Palabra> vPalabras;
+        cargarPalabras(vPalabras);
+
+        cout<<"TAMAÑO LOGICO DEL VECTOR: "<<vPalabras.tam()<<". TAMAÑO FISICO DEL VECTOR: "<<vPalabras.getTamF()<<endl<<endl; 
+
+
+
+        /*-----ORDENAR VECTOR EN CASO DE NO ESTAR ORDENADO-----*/
         if(vPalabras.estaOrdenado())
-            cout<<"VECTOR ORDENADO CORRECTAMENTE."<<endl;
-    }
-    
-    cout<<endl<<endl;
-    
-    
-    /*-----ORDENAR EL VECTOR AL REVÉS.-----*/
-    //He mostrado los 10 primeros elementos del inicio y final del vector, antes (previo vector ordenado) y después de hacer el orden inverso.
-    for (int i = 0; i < 10; i++)
-        cout<<vPalabras[i].GetPalabra()<<"      "<<vPalabras[vPalabras.tam()-i-1].GetPalabra()<<endl;
-    cout<<"Comenzando a ordenar de forma inversa..."<<endl;
-    vPalabras.ordenarRev();
-    for (int i = 0; i < 10; i++)
-        cout<<vPalabras[i].GetPalabra()<<"      "<<vPalabras[vPalabras.tam()-i-1].GetPalabra()<<endl;
+            cout<<"El vector se encuentra ordenado."<<endl;
+        else{
+            cout<<"Vector no ordenado. Comenzando a ordenar..."<<endl;
+            vPalabras.ordenar();
 
-    cout<<endl<<endl;
-    int opcion;
-    cout<<"ELIGE LA OPCION QUE QUIERA REALIZAR"<<endl;
-    cout<<"1: Vector de palíndromos."<<endl;
-    cout<<"2: Encontrar anagramas."<<endl;
-    cout<<"Tecla != {1,2}: EXIT."<<endl;
-    cin>>opcion;
+            if(vPalabras.estaOrdenado())
+                cout<<"VECTOR ORDENADO CORRECTAMENTE."<<endl;
+        }
 
-    long cont, cantidad;
-    VDinamico<ParPalabras> parPalabras;
-    switch(opcion){
-        /*-----BUSQUEDA DE PALINDROMOS-----*/
-        case 1:
-            
-            cout<<"¿Cuántos palíndromos quiere mostrar por pantalla? ";
-            cin>>cantidad;
-            cont = buscarPalindromos(parPalabras,vPalabras,cantidad);
-            cout<<"Cantidad de palindromos encontrados: "<<cont<<endl;
-            break;
-            
-        /*-----BUSQUEDA DE ANAGRAMAS-----*/    
-        case 2:
+        cout<<endl<<endl;
 
-            cout<<"INTRODUCE LA CANTIDAD DE ANAGRAMAS QUE QUIERE ENCONTRAR: ";
-            cin>>cantidad;
-            buscarAnagramas(vPalabras,cantidad);
-            break;
-        default:
-            break;
+
+        /*-----ORDENAR EL VECTOR AL REVÉS.-----*/
+        //He mostrado los 10 primeros elementos del inicio y final del vector, antes (previo vector ordenado) y después de hacer el orden inverso.
+        for (int i = 0; i < 10; i++)
+            cout<<vPalabras[i].GetPalabra()<<"      "<<vPalabras[vPalabras.tam()-i-1].GetPalabra()<<endl;
+        cout<<"Comenzando a ordenar de forma inversa..."<<endl;
+        vPalabras.ordenarRev();
+        for (int i = 0; i < 10; i++)
+            cout<<vPalabras[i].GetPalabra()<<"      "<<vPalabras[vPalabras.tam()-i-1].GetPalabra()<<endl;
+
+        cout<<endl<<endl;
+        int opcion;
+        cout<<"ELIGE LA OPCION QUE QUIERA REALIZAR"<<endl;
+        cout<<"1: Vector de palíndromos."<<endl;
+        cout<<"2: Encontrar anagramas."<<endl;
+        cout<<"Tecla != {1,2}: EXIT."<<endl;
+        cin>>opcion;
+
+        long cont, cantidad;
+        VDinamico<ParPalabras> parPalabras;
+        switch(opcion){
+            /*-----BUSQUEDA DE PALINDROMOS-----*/
+            case 1:
+                cout<<"Le aviso que la instancia de todos los palíndromos tarda alrededor de 20 minutos en debug (16 minutos en release)."<<endl;
+                do{
+                    cout<<"¿Cuántos palíndromos quiere mostrar por pantalla (max 87)? ";
+                    cin>>cantidad;
+                }while(cantidad < 0 || cantidad > 87);
+                cout<<endl<<"Comenzando la instancia de TODOS los palíndromos y muestra de "<<cantidad<<" palíndromos..."<<endl;
+                cont = buscarPalindromos(parPalabras,vPalabras,cantidad);
+                cout<<"Cantidad de palindromos encontrados: "<<cont<<endl;
+                break;
+
+            /*-----BUSQUEDA DE ANAGRAMAS-----*/    
+            case 2:
+                do{
+                    cout<<"INTRODUCE LA CANTIDAD DE ANAGRAMAS QUE QUIERE ENCONTRAR: ";
+                    cin>>cantidad;
+                }while(cantidad < 0);
+                cout<<endl<<"Comenzando la busqueda de "<<cantidad<<" anagramas..."<<endl;
+                buscarAnagramas(vPalabras,cantidad);
+
+                break;
+            default:
+                break;
+        }
+
+    }catch(Exception& e){
+        cout<<"SALTO DE EXCEPCION EN: "<<e.GetExcepcion()<<endl;
     }
     
     

@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>Exception.h</itemPath>
       <itemPath>Palabra.h</itemPath>
       <itemPath>ParPalabras.h</itemPath>
       <itemPath>VDinamico.h</itemPath>
@@ -15,6 +16,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Exception.cpp</itemPath>
       <itemPath>Palabra.cpp</itemPath>
       <itemPath>ParPalabras.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
@@ -41,6 +43,10 @@
       </toolsSet>
       <compileType>
       </compileType>
+      <item path="Exception.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Exception.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Palabra.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Palabra.h" ex="false" tool="3" flavor2="0">
@@ -74,6 +80,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="Exception.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Exception.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Palabra.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Palabra.h" ex="false" tool="3" flavor2="0">
