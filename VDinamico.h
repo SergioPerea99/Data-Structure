@@ -49,8 +49,6 @@ class VDinamico{
         
         virtual ~VDinamico();
         
-        
-        
         unsigned long tam() const{return tamL;};
         int getTamF() const{return tamF;};
         
@@ -258,6 +256,11 @@ void VDinamico<T>::ordenarRev(){
     }
 };
 
+/**
+ * @brief Ordenado o no ordenado.
+ * @post Comprobación de si el vector dinámico se encuentra ordenado.
+ * @return Booleano que indica verdadero si está ordenado, falso en caso de no estarlo.
+ */
 template <class T>
 bool VDinamico<T>::estaOrdenado(){
     for(int i = 1; i < tamL; i++){
@@ -268,7 +271,7 @@ bool VDinamico<T>::estaOrdenado(){
 };
 
 /**
- * @bief Búsqueda binaria (tamaños pares).
+ * @brief Búsqueda binaria (tamaños pares).
  * @post Búsqueda binaria válida para un vector previamente ordenado y cuyo tamaño lógico de elementos sea de número par.
  * @param dato. Elemento a buscar en el vector.
  * @return Posición del elemento encontrado. En caso de no encontrarlo, devuelve -1.
@@ -304,10 +307,9 @@ int VDinamico<T>::busquedaBin(const T& dato){
  */
 template <class T>
 VDinamico<T>::~VDinamico(){
-    if(vector){
+    if(vector)
         delete []vector;
-        vector = nullptr;
-    }
+    vector = nullptr; 
 }
 
 
@@ -332,7 +334,7 @@ void VDinamico<T>::aumentarVector(){
 };
 
 /**
- * @bief Disminuir tamaño físico.
+ * @brief Disminuir tamaño físico.
  * @post Disminuye en caso de que haya menos de 1/3 de capacidad ocupada en el vector. En ese casp,
  * disminuye su tamaño a la mitad.
  */

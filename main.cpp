@@ -55,6 +55,11 @@ void comprobar() {
 	cout << "Tiempo implementación 1: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
 }
 
+/**
+ * @brief Cargar Palabras de un fichero.
+ * @post Función que, a partir del vector dinámico creado, inserta las palabras encontradas en el fichero indicado.
+ * @param vPalabras Vector de palabras insertadas a partir del fichero.
+ */
 void cargarPalabras(VDinamico<Palabra> &vPalabras) {
 	ifstream is("dicc-espanol.txt");
 	string palabra;
@@ -118,7 +123,13 @@ long buscarPalindromos(VDinamico<ParPalabras> &parPalabras, VDinamico<Palabra> &
 }
 
 
-
+/**
+ * @brief Buscar Anagramas.
+ * @post Función específica para encontrar los anagramas indicados como parametro de la función. Su funcionamiento
+ * se basa en la comprobacion de si es o no anagrama un elemento del vector respecto a todos sus siguientes en el vector.
+ * @param vPalabras Vector dinámico de palabras. 
+ * @param cantidad Número de anagramas que se quieren encontrar y mostrar.
+ */
 void buscarAnagramas(VDinamico<Palabra>& vPalabras, long cantidad){
     clock_t t_ini = clock();
     int contador = 0;
@@ -209,8 +220,5 @@ int main(int argc, char** argv) {
         cout<<"SALTO DE EXCEPCION EN: "<<e.GetExcepcion()<<endl;
     }
     
-    
-    
     return 0;
-    
 }
