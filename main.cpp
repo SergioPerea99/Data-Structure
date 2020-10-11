@@ -104,16 +104,17 @@ long buscarPalindromos(VDinamico<ParPalabras> &parPalabras, VDinamico<Palabra> &
     ParPalabras aux;
     long cont = 0;
     clock_t t_ini = clock();
-    //vPalabras.ordenar();
     for (long i= 0; i < vPalabras.tam(); i++) {
         aux.SetPal1(vPalabras[i].GetPalabra());
         for (long j = i+1; j < vPalabras.tam(); j++) {
             aux.SetPal2(vPalabras[j].GetPalabra());
             if(vPalabras[i].palindromo(vPalabras[j])){
-                parPalabras.insertar(aux);
-                if(cont < cantidad){
-                    cout<<parPalabras[cont].GetPal1()<<" ----- "<<parPalabras[cont].GetPal2()<<endl;
-                    ++cont;
+                if(!parPalabras.buscar(aux) && vPalabras[i].GetPalabra() != vPalabras[j].GetPalabra()){
+                    parPalabras.insertar(aux);
+                    if(cont < cantidad){
+                        cout<<parPalabras[cont].GetPal1()<<" ----- "<<parPalabras[cont].GetPal2()<<endl;
+                        ++cont;
+                    }
                 }
             }
         }
@@ -123,6 +124,40 @@ long buscarPalindromos(VDinamico<ParPalabras> &parPalabras, VDinamico<Palabra> &
     return parPalabras.tam();
 }
 
+
+/**
+ * @bief Busqueda de palindromos eficiente.
+ * @post A raiz de un vector ordenado (IMPORTANTE), se hace una busqueda coherente de los palindromos partiendo de la ultima letra de la palabra
+ * que quiere encontrar su palindromo. Con esta ultima letra hago busqueda binaria de ello y me posiciono en ese char de partida para empezar a comprobar
+ * si es palindromo o no.
+ * @param parPalabras Vector de palindromos encontrados.
+ * @param vPalabras Vector de palabras ORDENADO.
+ * @param cantidad Cantidad a querer mostrar por pantalla.
+ * @return 
+ */
+long palindromosEficiente(VDinamico<ParPalabras> &parPalabras, VDinamico<Palabra> &vOrdenado, long cantidad){
+    ParPalabras aux;
+    long cont = 0,pos;
+    clock_t t_ini = clock();
+    Palabra primera;
+    vOrdenado.ordenar();
+    for (long i= 0; i < vOrdenado.tam(); i++) {
+        aux.SetPal1(vOrdenado[i].GetPalabra());       
+        primera = vOrdenado[i];       
+        int pos = vOrdenado.busquedaBin(primera.reves());
+        if(pos != -1 && i < pos){
+            if(vOrdenado[pos].palindromo(vOrdenado[i])){
+                aux.SetPal2(vOrdenado[pos].GetPalabra());
+                if (!parPalabras.buscar(aux) && vOrdenado[i].GetPalabra() != vOrdenado[pos].GetPalabra())
+                    parPalabras.insertar(aux);
+            }
+        }
+
+    }
+    
+    cout << "Tiempo de encontrar todos los palindromos: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
+    return parPalabras.tam();
+}
 
 /**
  * @brief Buscar Anagramas.
@@ -184,15 +219,18 @@ int main(int argc, char** argv) {
         int opcion;
         cout<<"ELIGE LA OPCION QUE QUIERA REALIZAR"<<endl;
         cout<<"1: Vector de palíndromos."<<endl;
-        cout<<"2: Encontrar anagramas."<<endl;
-        cout<<"Tecla != {1,2}: EXIT."<<endl;
+        cout<<"2: Vector de palíndromos EFICIENTE."<<endl;
+        cout<<"3: Encontrar anagramas."<<endl;
+        cout<<"Tecla != {1,2,3}: EXIT."<<endl;
         cin>>opcion;
 
         long cont, cantidad;
         VDinamico<ParPalabras> parPalabras;
         switch(opcion){
+            
             /*-----BUSQUEDA DE PALINDROMOS-----*/
             case 1:
+                
                 cout<<"Le aviso que la instancia de todos los palíndromos tarda alrededor de 20 minutos en debug (16 minutos en release)."<<endl;
                 do{
                     cout<<"¿Cuántos palíndromos quiere mostrar por pantalla? ";
@@ -205,8 +243,22 @@ int main(int argc, char** argv) {
                 cout<<endl<<endl<<"Cantidad de palindromos encontrados: "<<cont<<endl;
                 break;
 
-            /*-----BUSQUEDA DE ANAGRAMAS-----*/    
+            /*-----BUSQUEDA DE PALINDROMOS EFICIENTE-----*/    
             case 2:
+                
+                cout<<endl<<"Comenzando la instancia de TODOS los palíndromos..."<<endl;
+                cont = palindromosEficiente(parPalabras,vPalabras,cantidad);
+                for(int i = 0; i < parPalabras.tam(); i++)
+                    cout<<"["<<parPalabras[i].GetPal1()<<","<<parPalabras[i].GetPal2()<<"], ";
+                cout<<endl<<endl<<"Cantidad de palindromos encontrados: "<<cont<<endl;
+                break;
+                
+            default:
+                break;
+                
+            /*-----BUSQUEDA DE ANAGRAMAS-----*/    
+            case 3:
+                
                 do{
                     cout<<"INTRODUCE LA CANTIDAD DE ANAGRAMAS QUE QUIERE ENCONTRAR: ";
                     cin>>cantidad;
@@ -214,9 +266,6 @@ int main(int argc, char** argv) {
                 cout<<endl<<"Comenzando la busqueda de "<<cantidad<<" anagramas..."<<endl;
                 buscarAnagramas(vPalabras,cantidad);
 
-                break;
-                
-            default:
                 break;
         }
 
@@ -228,64 +277,3 @@ int main(int argc, char** argv) {
 }
 
 
-//long busquedaChar(VDinamico<Palabra> &vOrdenado, string buscar,int i){
-//    
-//    int inf=i;
-//    int sup=vOrdenado.tam()-1;
-//    int curIn;
-//
-//    while(inf <= sup){
-//        curIn = (inf+sup)/2;
-//        //Suponiendo que el tipo T tiene el correspondiente operador de == y del operador <.
-////        char a = vOrdenado[curIn].GetPalabra()[0];
-////        char b = buscar[buscar.length()-1];
-//        if (vOrdenado[curIn].GetPalabra()[0] == buscar[buscar.length()-1]){
-//            return curIn;
-//        }else if (vOrdenado[curIn].GetPalabra()[0] < buscar[buscar.length()-1]){
-//            inf = curIn + 1;
-//        }else{
-//            sup = curIn-1;
-//        }
-//    }
-//    return -1;
-//}
-//
-///**
-// * @bief Busqueda de palindromos eficiente.
-// * @post A raiz de un vector ordenado (IMPORTANTE), se hace una busqueda coherente de los palindromos partiendo de la ultima letra de la palabra
-// * que quiere encontrar su palindromo. Con esta ultima letra hago busqueda binaria de ello y me posiciono en ese char de partida para empezar a comprobar
-// * si es palindromo o no.
-// * @param parPalabras Vector de palindromos encontrados.
-// * @param vPalabras Vector de palabras ORDENADO.
-// * @param cantidad Cantidad a querer mostrar por pantalla.
-// * @return 
-// */
-//long palindromosEficiente(VDinamico<ParPalabras> &parPalabras, VDinamico<Palabra> &vOrdenado, long cantidad){
-//    ParPalabras aux;
-//    long cont = 0,pos;
-//    clock_t t_ini = clock();
-//    string primera;
-//    vOrdenado.ordenar();
-//    for (long i= 0; i < vOrdenado.tam(); i++) {
-//        aux.SetPal1(vOrdenado[i].GetPalabra());
-//        primera = vOrdenado[i].GetPalabra();
-//        pos = busquedaChar(vOrdenado,primera,i);
-//        if (pos != -1){
-//            while(pos < vOrdenado.tam()){
-//                aux.SetPal2(vOrdenado[pos].GetPalabra());
-//                if(vOrdenado[i].palindromo(vOrdenado[pos])){                 
-//                    parPalabras.insertar(aux);
-//                    if(cont < cantidad){
-//                        cout<<parPalabras[cont].GetPal1()<<"   "<<parPalabras[cont].GetPal2()<<endl;
-//                        ++cont;
-//                    }
-//                    
-//                }
-//                ++pos;
-//            }
-//        }
-//    }
-//    
-//    cout << "Tiempo de encontrar todos los palindromos: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
-//    return parPalabras.tam();
-//}

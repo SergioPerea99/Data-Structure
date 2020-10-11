@@ -52,6 +52,7 @@ class VDinamico{
         unsigned long tam() const{return tamL;};
         int getTamF() const{return tamF;};
         
+        bool buscar(T& dato);
 
 };
 
@@ -286,9 +287,9 @@ int VDinamico<T>::busquedaBin(const T& dato){
         while(inf <= sup){
             curIn = (inf+sup)/2;
             //Suponiendo que el tipo T tiene el correspondiente operador de == y del operador <.
-            if (vector[curIn] == dato)
+            if (vector[curIn] == dato){
                 return curIn;
-            else if (vector[curIn] < dato)
+            }else if (vector[curIn] < dato)
                 inf = curIn + 1;
             else
                 sup = curIn-1;
@@ -299,6 +300,14 @@ int VDinamico<T>::busquedaBin(const T& dato){
     return -1;
 };
 
+template <class T>
+bool VDinamico<T>::buscar(T& dato){
+    for (int i = 0; i < tamL; i++){
+        if(vector[i] == dato)
+            return true;
+    }
+    return false;
+}
 
 /**
  * @brief Destructor.

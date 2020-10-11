@@ -134,8 +134,9 @@ bool Palabra::operator >=(const Palabra& dato){
  * @return Booleano.
  */
 bool Palabra::palindromo(Palabra& pal){
-    Palabra aux(pal.reves());
-    if(aux.GetPalabra() == palabra)
+    Palabra aux(pal);
+    Palabra aux2 = aux.reves();
+    if(aux2.GetPalabra() == palabra)
         return true;
     return false;
 }

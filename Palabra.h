@@ -23,7 +23,7 @@ using namespace std;
 class Palabra {
 private:
      string palabra;    
-     Palabra reves();     
+          
      
 public:
     Palabra();
@@ -43,6 +43,7 @@ public:
     
     bool palindromo(Palabra& pal);
     bool anagrama(Palabra& pal);
+    Palabra reves();
 
 };
 
