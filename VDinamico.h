@@ -23,7 +23,7 @@
 template <class T>
 class VDinamico{
     private:
-        long tamF, tamL;
+        int tamF, tamL;
         T* vector;
         
         void aumentarVector();
