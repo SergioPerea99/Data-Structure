@@ -300,6 +300,12 @@ int VDinamico<T>::busquedaBin(const T& dato){
     return -1;
 };
 
+/**
+ * @bief Busqueda clásica.
+ * @post Método de busqueda de un elemento del vector, en caso de no saber si esta ordenado o no un vector.
+ * @param dato Elemento a buscar.
+ * @return Posicion encontrada.
+ */
 template <class T>
 bool VDinamico<T>::buscar(T& dato){
     for (int i = 0; i < tamL; i++){

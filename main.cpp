@@ -127,9 +127,8 @@ long buscarPalindromos(VDinamico<ParPalabras> &parPalabras, VDinamico<Palabra> &
 
 /**
  * @bief Busqueda de palindromos eficiente.
- * @post A raiz de un vector ordenado (IMPORTANTE), se hace una busqueda coherente de los palindromos partiendo de la ultima letra de la palabra
- * que quiere encontrar su palindromo. Con esta ultima letra hago busqueda binaria de ello y me posiciono en ese char de partida para empezar a comprobar
- * si es palindromo o no.
+ * @post A raiz de un vector ordenado (IMPORTANTE), se hace una busqueda coherente de los palindromos partiendo del reves de la palabra y
+ * usando el busquedaBinaria para encontrarlo a con una eficiencia de prácticamente O(1).
  * @param parPalabras Vector de palindromos encontrados.
  * @param vPalabras Vector de palabras ORDENADO.
  * @param cantidad Cantidad a querer mostrar por pantalla.
