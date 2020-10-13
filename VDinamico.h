@@ -103,6 +103,8 @@ VDinamico<T>::VDinamico(const VDinamico<T>& orig){
  */
 template<class T> 
 VDinamico<T>::VDinamico(const VDinamico<T>& origen, unsigned int inicio, unsigned int num){
+    if (inicio >= tamL || inicio + num > tamL)
+        throw Exception("[VDinamico<T>::VDinamico] Valores no concordantes de inicio de la copia y cantidad de elementos a copiar por intento de acceso fuera del rango de elementos del vector a copiar.");
     tamL = num; 
     tamF = origen.tamF;
     vector = new T[tamF];

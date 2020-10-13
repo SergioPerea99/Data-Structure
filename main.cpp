@@ -64,7 +64,7 @@ void cargarPalabras(VDinamico<Palabra> &vPalabras) {
 	ifstream is("dicc-espanol.txt");
 	string palabra;
         Palabra pal;
-        
+        cout <<" -----------------------------------------------------" << endl;
 	while (is) {
 		is >> palabra;
                 
@@ -72,7 +72,7 @@ void cargarPalabras(VDinamico<Palabra> &vPalabras) {
                 vPalabras.insertar(pal);
 		//dicc.push_back(palabra);
 	}
-	cout << vPalabras.tam() << " palabras cargadas" << endl;
+	cout << vPalabras.tam() << " palabras cargadas en el vector Dinámico." << endl;
 
 	is.close();
 	is.open("quijote.txt");
