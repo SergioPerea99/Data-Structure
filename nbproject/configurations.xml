@@ -5,6 +5,9 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Exception.h</itemPath>
+      <itemPath>Iterador.h</itemPath>
+      <itemPath>ListaEnlazada.h</itemPath>
+      <itemPath>Nodo.h</itemPath>
       <itemPath>Palabra.h</itemPath>
       <itemPath>ParPalabras.h</itemPath>
       <itemPath>VDinamico.h</itemPath>
@@ -47,6 +50,12 @@
       </item>
       <item path="Exception.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Iterador.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ListaEnlazada.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Nodo.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Palabra.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Palabra.h" ex="false" tool="3" flavor2="0">
@@ -83,6 +92,12 @@
       <item path="Exception.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Exception.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Iterador.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ListaEnlazada.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Nodo.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Palabra.cpp" ex="false" tool="1" flavor2="0">
       </item>
