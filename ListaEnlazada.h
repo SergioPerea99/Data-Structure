@@ -70,17 +70,17 @@ ListaEnlazada<T>::ListaEnlazada(const ListaEnlazada<T>& orig) {
     if (orig.cabecera == nullptr && orig.cola == nullptr){
         cabecera = cola = nullptr; //throw Exception("[ListaEnlazada<T>::ListaEnlazada] Intento de copia de una listaEnlazada vacía.");
     }else{
-        cabecera = new Nodo<T>(orig.cabecera->dato,nullptr,nullptr);
+        cabecera = new Nodo<T>(orig.cabecera->dato,nullptr);
         Nodo<T> *nuevo = cabecera;
         Nodo<T> *p = orig.cabecera->sig;
         while(p!= orig.cola){
             //Coloco el puntero al siguiente sin dato.
-            nuevo->sig = new Nodo<T>(p->dato,nuevo,nullptr);
+            nuevo->sig = new Nodo<T>(p->dato,nullptr);
             nuevo = nuevo->sig;
             p = p->sig;
         }
         //Quedaria copiar el ultimo elemento correspondiente a la cola.
-        nuevo->sig = new Nodo<T>(cola->dato,nuevo,nullptr);
+        nuevo->sig = new Nodo<T>(cola->dato,nullptr);
         cola = nuevo->sig;
     }
     tam = orig.tam;
@@ -138,7 +138,7 @@ T& ListaEnlazada<T>::Inicio(){
     if (cabecera != nullptr){
         return cabecera->dato;
     }else{
-        throw Exception("[ListaEnlazada<T>::inicio] No existen elementos en la lista");
+        throw Exception("[ListaEnlazada<T>::Inicio] No existen elementos en la lista");
     }
 }
 
@@ -151,9 +151,9 @@ T& ListaEnlazada<T>::Inicio(){
 template <class T>
 T& ListaEnlazada<T>::Fin(){
     if (cola != nullptr){
-        return cabecera->dato;
+        return cola->dato;
     }else{
-        throw Exception("[ListaEnlazada<T>::inicio] No existen elementos en la lista");
+        throw Exception("[ListaEnlazada<T>::Fin] No existen elementos en la lista");
     }
 }
 
@@ -194,10 +194,14 @@ void ListaEnlazada<T>::borraInicio(){
  */
 template <class T>
 void ListaEnlazada<T>::borraFin(){
+    //COMPRUEBO QUE NO ESTÉ VACÍA.
     if(cola){
-        Nodo<T>*borrado = cola;
-        cola = cola->ant;
-        delete borrado;
+        Nodo<T>*aux = cabecera;
+        while (aux->sig != cola)
+            aux = aux->sig;
+        
+        delete cola;
+        cola = aux;
         
         if(cola == nullptr)
             cabecera = nullptr;
@@ -220,11 +224,12 @@ void ListaEnlazada<T>::borra(Iterador<T>& i){
         else if(p == cola)
             borraFin();
         else{
-            Nodo<T>*aux = p->ant;
-            if(aux){
-                aux->sig = p->sig;
-                p->sig->ant = aux;
-            }
+            Nodo<T>*aux = cabecera;
+            while(aux->sig != p)
+                aux = aux->sig;
+            
+            aux->sig = p->sig;
+
             delete p;
             --tam;
         }
@@ -239,9 +244,8 @@ void ListaEnlazada<T>::borra(Iterador<T>& i){
  */
 template <class T>
 void ListaEnlazada<T>::insertaInicio(T& dato){
-    Nodo<T>*aux = new Nodo<T>(dato,nullptr,cabecera);
-    if(cabecera)
-        cabecera = cabecera->ant;
+    Nodo<T>*aux = new Nodo<T>(dato,cabecera);
+    cabecera = aux;
     
     //CASO ESPECIAL: LA LISTA ESTABA VACIA.
     if(cola == nullptr)
@@ -255,7 +259,7 @@ void ListaEnlazada<T>::insertaInicio(T& dato){
  */
 template <class T>
 void ListaEnlazada<T>::insertaFin(T& dato){
-    Nodo<T> *nuevo = new Nodo<T>(dato,cola,nullptr);
+    Nodo<T> *nuevo = new Nodo<T>(dato,nullptr);
     if(cola)
         cola->sig = nuevo;
     cola = nuevo;
@@ -275,17 +279,21 @@ void ListaEnlazada<T>::insertaFin(T& dato){
  */
 template <class T>
 void ListaEnlazada<T>::inserta(Iterador<T>& i, T& dato){
-    Nodo<T> *p = i.nodo, *aux = i.nodo; //NO HACER OPERACIONES INTERNAS CON EL ITERADOR.
+    Nodo<T> *p = i.nodo; //NO HACER OPERACIONES INTERNAS CON EL ITERADOR.
     if(p){
-        if(p != cabecera){
-            
-            p = p->ant;
-            Nodo<T> *insertar = new Nodo<T>(dato,p->ant,p->sig);
-            p->sig = insertar; //Elemento de la posicion a insertar estará apuntando siguiente al dato insertado.
-            aux->ant = insertar; //Elemento que apunta el iterador, el puntero al anterior debe ser al dato insertado.
-        
-        }else{
+        if (p == cabecera){
             insertaInicio(dato);
+        }else if (p == cola){
+            insertaFin(dato);
+        }else{
+            
+            Nodo<T>* aux = cabecera;
+            while (aux->sig != p)
+                aux = aux->sig;
+            
+            Nodo<T> *insertar = new Nodo<T>(dato,p);
+            aux->sig = insertar;
+        
         }
     }else{
         throw Exception("[ListaEnlazada<T>::inserta] EL NODO AL QUE APUNTA EL ITERADOR ES NULO.");
@@ -302,8 +310,10 @@ void ListaEnlazada<T>::insertaOrdenado(T& dato){
         while(p && p->dato < dato)
             p = p->sig;
         
-        if(p == nullptr)
-            insertaFin();
+        if(p == cabecera)
+            insertaInicio(dato);
+        else if(p == nullptr)
+            insertaFin(dato);
         else{
             //DUDA. ¿PUEDO HACER ESTO? NO DEBERIA DE UTILIZAR EL ITERADOR PARA OPERAR DENTRO.
             Iterador<T> it(p);

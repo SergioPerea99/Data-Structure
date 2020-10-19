@@ -240,11 +240,10 @@ int main(int argc, char** argv) {
         cout<<"SALTO DE EXCEPCION EN: "<<e.GetExcepcion()<<endl;
     }
     
-    ListaEnlazada<Palabra> lista_prueba;
-    Palabra aux;
+    ListaEnlazada<int> lista_prueba;
+    
     for (int i = 1; i < 10; i++) {
-        aux.SetPalabra("hola");
-        lista_prueba.insertaFin(aux);
+        lista_prueba.insertaFin(i);
     }
     cout<<lista_prueba.tama()<<endl;
 

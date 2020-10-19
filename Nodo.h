@@ -18,17 +18,16 @@ template <class T>
 class Nodo {
     public:
         T dato;
-        Nodo *ant, *sig;
+        Nodo *sig;
     
-        Nodo(T& aDato, Nodo<T> *aAnt, Nodo<T> *aSig);
+        Nodo(T& aDato, Nodo<T> *aSig);
         Nodo(const Nodo<T>& orig);
         virtual ~Nodo();
      
 };
 template <class T>
-Nodo<T>::Nodo(T& aDato, Nodo<T> *aAnt, Nodo<T> *aSig) {
+Nodo<T>::Nodo(T& aDato, Nodo<T> *aSig) {
     dato = aDato;
-    ant = aAnt;
     sig = aSig;
 }
 
@@ -36,7 +35,6 @@ Nodo<T>::Nodo(T& aDato, Nodo<T> *aAnt, Nodo<T> *aSig) {
 template <class T>
 Nodo<T>::Nodo(const Nodo<T>& orig) {
     dato = orig.dato;
-    ant = orig.ant;
     sig = orig.sig;
 }
 template <class T>

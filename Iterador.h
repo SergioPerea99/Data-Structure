@@ -55,12 +55,12 @@ bool Iterador<T>::fin(){
 
 template <class T>
 void Iterador<T>::siguiente(){
-    nodo = nodo->GetSig();
+    nodo = nodo->sig;
 }
 
 template <class T>
 T& Iterador<T>::dato(){
-    return nodo->GetDato();
+    return nodo->dato;
 }
 
 #endif /* ITERADOR_H */
