@@ -18,7 +18,7 @@
 #include <climits> //Necesario para el UINT_MAX.
 #include <algorithm>
 
-#include "Exception.h"
+
 
 template <class T>
 class VDinamico{
@@ -104,7 +104,7 @@ VDinamico<T>::VDinamico(const VDinamico<T>& orig){
 template<class T> 
 VDinamico<T>::VDinamico(const VDinamico<T>& origen, unsigned int inicio, unsigned int num){
     if (inicio >= tamL || inicio + num > tamL)
-        throw Exception("[VDinamico<T>::VDinamico] Valores no concordantes de inicio de la copia y cantidad de elementos a copiar por intento de acceso fuera del rango de elementos del vector a copiar.");
+        throw std::out_of_range("[VDinamico<T>::VDinamico] Valores no concordantes de inicio de la copia y cantidad de elementos a copiar por intento de acceso fuera del rango de elementos del vector a copiar.");
     tamL = num; 
     tamF = origen.tamF;
     vector = new T[tamF];
@@ -146,7 +146,7 @@ T& VDinamico<T>::operator [](unsigned int pos){
     if (pos < tamL){
         return vector[pos];
     }else
-        throw Exception ("[VDinamico<T>::operator []] La posicion indicada esta fuera del rango.");
+        throw std::out_of_range("[VDinamico<T>::operator []] La posicion indicada esta fuera del rango.");
 };
 
 
@@ -162,7 +162,7 @@ template <class T>
 void VDinamico<T>::insertar(const T& dato, unsigned int pos){
         //En caso de dar una posición por parametro que sea superior al tamaño lógico.
     if(pos > tamL && pos != UINT_MAX) 
-        throw Exception("[VDinamico<T>::insertar] Intenta insertar fuera del rango del vector. Elija una posición positiva menor.");
+        throw std::out_of_range("[VDinamico<T>::insertar] Intenta insertar fuera del rango del vector. Elija una posición positiva menor.");
     
     if(vector){
         if (tamL < tamF){
@@ -203,7 +203,7 @@ void VDinamico<T>::insertar(const T& dato, unsigned int pos){
 template <class T>
 T VDinamico<T>::borrar(unsigned int pos){
     if(pos >= tamL && pos != UINT_MAX)
-        throw Exception("[VDinamico<T>::borrar] Intenta eliminar un elemento en una posición fuera del rango de elementos.");
+        throw std::out_of_range("[VDinamico<T>::borrar] Intenta eliminar un elemento en una posición fuera del rango de elementos.");
     if(vector){
             //Compruebo si al eliminar el elemento provoca que se tenga que disminuir el tamF reservado para el vector.
         if((tamL-1)*3 < tamF)
@@ -220,7 +220,7 @@ T VDinamico<T>::borrar(unsigned int pos){
             return aux;
         }
     }else
-        throw Exception("[VDinamico<T>::borrar] No existen elementos en el vector para borrar.");
+        throw std::invalid_argument("[VDinamico<T>::borrar] No existen elementos en el vector para borrar.");
 };
 
 /**

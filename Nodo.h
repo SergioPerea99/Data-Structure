@@ -19,7 +19,7 @@ class Nodo {
     public:
         T dato;
         Nodo *sig;
-    
+   
         Nodo(T& aDato, Nodo<T> *aSig);
         Nodo(const Nodo<T>& orig);
         virtual ~Nodo();

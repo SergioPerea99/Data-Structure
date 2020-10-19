@@ -17,12 +17,12 @@
 #include <fstream>
 #include <cstdio>
 #include <algorithm>
+#include <exception>
 
 #include "VDinamico.h"
 #include "Palabra.h"
 #include "ParPalabras.h"
 #include "ListaEnlazada.h"
-#include "Exception.h"
 
 using namespace std;
 
@@ -102,6 +102,7 @@ int main(int argc, char** argv) {
         /*-----INSTANCIA DE DATOS EN EL VECTOR DINAMICO-----*/
         VDinamico<Palabra> vPalabras;
         cargarPalabras(vPalabras);
+        VDinamico<Palabra> copiaParcial(vPalabras,-1,20);
 
         cout<<"TAMAÑO LOGICO DEL VECTOR: "<<vPalabras.tam()<<". TAMAÑO FISICO DEL VECTOR: "<<vPalabras.getTamF()<<endl<<endl; 
 
@@ -236,8 +237,8 @@ int main(int argc, char** argv) {
                 break;
         }
 
-    }catch(Exception& e){
-        cout<<"SALTO DE EXCEPCION EN: "<<e.GetExcepcion()<<endl;
+    }catch(exception& e){
+        cout<<"EXCEPCION EN "<<e.what()<<endl;
     }
     
     ListaEnlazada<int> lista_prueba;
@@ -246,7 +247,7 @@ int main(int argc, char** argv) {
         lista_prueba.insertaFin(i);
     }
     cout<<lista_prueba.tama()<<endl;
-
+    
     
     return 0;
 }

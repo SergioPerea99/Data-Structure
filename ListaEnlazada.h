@@ -15,7 +15,6 @@
 #define LISTAENLAZADA_H
 
 #include "Nodo.h"
-#include "Exception.h"
 #include "Iterador.h"
 
 
@@ -138,7 +137,7 @@ T& ListaEnlazada<T>::Inicio(){
     if (cabecera != nullptr){
         return cabecera->dato;
     }else{
-        throw Exception("[ListaEnlazada<T>::Inicio] No existen elementos en la lista");
+        throw std::invalid_argument("[ListaEnlazada<T>::Inicio] No existen elementos en la lista");
     }
 }
 
@@ -153,7 +152,7 @@ T& ListaEnlazada<T>::Fin(){
     if (cola != nullptr){
         return cola->dato;
     }else{
-        throw Exception("[ListaEnlazada<T>::Fin] No existen elementos en la lista");
+        throw std::invalid_argument("[ListaEnlazada<T>::Fin] No existen elementos en la lista");
     }
 }
 
@@ -234,7 +233,7 @@ void ListaEnlazada<T>::borra(Iterador<T>& i){
             --tam;
         }
     }else{
-        throw Exception("[ListaEnlazada<T>::borra] NO EXISTE NODO QUE BORRAR A PARTIR DEL ITERADOR PASADO COMO PARAMETRO.");
+        throw std::invalid_argument("[ListaEnlazada<T>::borra] NO EXISTE NODO QUE BORRAR A PARTIR DEL ITERADOR PASADO COMO PARAMETRO.");
     }
 }
 
@@ -296,7 +295,7 @@ void ListaEnlazada<T>::inserta(Iterador<T>& i, T& dato){
         
         }
     }else{
-        throw Exception("[ListaEnlazada<T>::inserta] EL NODO AL QUE APUNTA EL ITERADOR ES NULO.");
+        throw std::invalid_argument("[ListaEnlazada<T>::inserta] EL NODO AL QUE APUNTA EL ITERADOR ES NULO.");
     }
     ++tam;
 }
@@ -305,7 +304,6 @@ void ListaEnlazada<T>::inserta(Iterador<T>& i, T& dato){
 template <class T>
 void ListaEnlazada<T>::insertaOrdenado(T& dato){
     if(ordenado()){
-        
         Nodo<T>*p = cabecera;
         while(p && p->dato < dato)
             p = p->sig;
@@ -321,7 +319,7 @@ void ListaEnlazada<T>::insertaOrdenado(T& dato){
             ++tam;
         }
     }else{
-        throw Exception("[ListaEnlazada<T>::insertaOrdenado] LISTA NO ORDENADA. NECESITA ESTAR ORDENADA.");
+        throw std::invalid_argument("[ListaEnlazada<T>::insertaOrdenado] LISTA NO ORDENADA. NECESITA ESTAR ORDENADA.");
     }
 }
 
