@@ -16,22 +16,14 @@
 
 template <class T>
 class Nodo {
-    private:
+    public:
         T dato;
         Nodo *ant, *sig;
-    public:
+    
         Nodo(T& aDato, Nodo<T> *aAnt, Nodo<T> *aSig);
         Nodo(const Nodo<T>& orig);
         virtual ~Nodo();
-        
-        Nodo* GetSig() const;
-        Nodo* GetAnt() const;
-        T GetDato() const;
-        void SetSig(Nodo* sig);
-        void SetAnt(Nodo* ant);
-        
-    
-        
+     
 };
 template <class T>
 Nodo<T>::Nodo(T& aDato, Nodo<T> *aAnt, Nodo<T> *aSig) {
@@ -49,38 +41,6 @@ Nodo<T>::Nodo(const Nodo<T>& orig) {
 }
 template <class T>
 Nodo<T>::~Nodo() {
-}
-
-
-
-
-/*-------- GETTERS --------*/
-
-template <class T>
-Nodo* Nodo::GetSig() const {
-    return sig;
-}
-
-template <class T>
-Nodo* Nodo::GetAnt() const {
-    return ant;
-}
-
-template <class T>
-T Nodo::GetDato() const {
-    return dato;
-}
-
-/*-------- SETTERS --------*/
-
-template <class T>
-void Nodo::SetSig(Nodo* sig) {
-    this->sig = sig;
-}
-
-template <class T>
-void Nodo::SetAnt(Nodo* ant) {
-    this->ant = ant;
 }
 
 #endif /* NODO_H */

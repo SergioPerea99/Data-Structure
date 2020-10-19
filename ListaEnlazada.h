@@ -16,97 +16,322 @@
 
 #include "Nodo.h"
 #include "Exception.h"
+#include "Iterador.h"
+
 
 
 template <class T>
 class ListaEnlazada {
     private:
         Nodo<T> *cabecera, *cola;
-        
-        void vaciarListaEnlazada();
-        void insertarFinal(Nodo<T>* p);
-        
+        int tam;
+        bool ordenado();
     public:
+        int tama();
         ListaEnlazada();
         ListaEnlazada(const ListaEnlazada<T>& orig);
-        virtual ~ListaEnlazada();
-        
         ListaEnlazada<T>& operator=(const ListaEnlazada<T>& orig);
+        
+        T& Inicio();
+        T& Fin();
+        
+        Iterador<T> iterador(); //Sin & debido a que se crea dentro del método por lo que debo devolver una copia.
+        
+        void borraInicio();
+        void borraFin();
+        void borra(Iterador<T>&i);
+        
+        void insertaInicio(T& dato);
+        void insertaFin(T& dato);
+        void inserta(Iterador<T>& i, T& dato);
+        void insertaOrdenado(T& dato);
 
+        virtual ~ListaEnlazada();
 };
 
 /*------ MÉTODOS PÚBLICOS -------*/
-
+/**
+ * @brief Constructor por defecto.
+ */
 template <class T>
 ListaEnlazada<T>::ListaEnlazada() {
     cabecera = cola = nullptr;
+    tam = 0;
 }
 
+/**
+ * @brief Constructor copia.
+ * @post Copiar la lista pasada por parametro. En caso de estar vacía, se ponen a nullptr tanto la cabecera como la cola.
+ * @param orig ListaEnlazada a copiar.
+ */
 template <class T>
 ListaEnlazada<T>::ListaEnlazada(const ListaEnlazada<T>& orig) {
     //DUDA: Lanzo excepcion o simplemente pongo a nullptr la cabecera y la cola?
     if (orig.cabecera == nullptr && orig.cola == nullptr){
         cabecera = cola = nullptr; //throw Exception("[ListaEnlazada<T>::ListaEnlazada] Intento de copia de una listaEnlazada vacía.");
     }else{
-        cabecera = new Nodo<T>(orig.cabecera->GetDato(),nullptr,nullptr);
+        cabecera = new Nodo<T>(orig.cabecera->dato,nullptr,nullptr);
         Nodo<T> *nuevo = cabecera;
-        Nodo<T> *p = orig.cabecera->GetSig();
+        Nodo<T> *p = orig.cabecera->sig;
         while(p!= orig.cola){
             //Coloco el puntero al siguiente sin dato.
-            nuevo->SetSig( new Nodo<T>(p->GetDato(),nuevo,nullptr) );
-            nuevo = nuevo->GetSig();
-            p = p->GetSig();
+            nuevo->sig = new Nodo<T>(p->dato,nuevo,nullptr);
+            nuevo = nuevo->sig;
+            p = p->sig;
         }
         //Quedaria copiar el ultimo elemento correspondiente a la cola.
-        nuevo->SetSig( new Nodo<T>(cola->GetDato(),nuevo,nullptr) );
-        cola = nuevo->GetSig();
+        nuevo->sig = new Nodo<T>(cola->dato,nuevo,nullptr);
+        cola = nuevo->sig;
     }
+    tam = orig.tam;
 }
 
+/**
+ * @brief Operador de asignación.
+ * @post Asignación de cada uno de los valores de una lista en la lista destino. Previa limpieza
+ * de la lista antes de ser asignado cada uno de los elementos de la lista origen.
+ * @param orig ListaEnlazada de la que se asignarán los elementos.
+ * @return ListaEnlazada. Sirve para poder hacer una asignación en cascada.
+ */
 template <class T>
 ListaEnlazada<T>& ListaEnlazada<T>::operator =(const ListaEnlazada<T>& orig){
     if(this != orig){
         
         //Primero se debe vaciar la lista en caso de tener elementos.
-        if(cabecera != nullptr)
-            vaciarListaEnlazada();
+        while(cabecera != nullptr)
+            borraInicio();
         
         //Ahora, se crea una copia de cada uno de los nodos de la lista origen.
         Nodo<T> *p = orig.cabecera;
         while(p != nullptr){
-            insertarFinal(p);
-            p = p->GetSig();
+            insertaFin(p->dato);
+            p = p->sig;
         }
     }
 }
 
-template <class T>
+/**
+ * @brief Destructor de la ListaEnlazada.
+ * @post Este destructor llamará a los correspondientes destructores de los Nodos.
+ */
+template <typename T>
 ListaEnlazada<T>::~ListaEnlazada() {
-}
-
-/*------ MÉTODOS PRIVADOS -------*/
-
-template <T>
-void ListaEnlazada<class T>::vaciarListaEnlazada(){
-    Nodo<class T> *borrado = cabecera;
-    while(cabecera != nullptr){
-        cabecera = cabecera->GetSig();
-        delete borrado;
+    if(cabecera){
+        Nodo<T>* p = cabecera;
+        while(p != nullptr){
+            p = p->sig;
+            delete cabecera;
+            cabecera = p;
+        }
+        cabecera = cola = nullptr;
     }
-    if (cabecera == nullptr)
-        cola = nullptr;
 }
 
+/**
+ * @brief Dato de inicio.
+ * @post Dará el dato tipo T que hay en el inicio de una lista enlazada mediante la cabecera de ella.
+ * @throw Excepción en caso de que no exista dato en la cabecera de la lista enlazada.
+ * @return Dato de tipo T.
+ */
 template <class T>
-void ListaEnlazada<class T>::insertarFinal(Nodo<T>* p){
-    Nodo<T> *nuevo = new Nodo<T>(p->GetDato(),cola,nullptr);
-    if(cola != nullptr)
-        cola->SetSig(nuevo);
+T& ListaEnlazada<T>::Inicio(){
+    if (cabecera != nullptr){
+        return cabecera->dato;
+    }else{
+        throw Exception("[ListaEnlazada<T>::inicio] No existen elementos en la lista");
+    }
+}
+
+/**
+ * @brief Fin.
+ * @post Dará el dato tipo T que hay en el final de una lista enlazada mediante la cola de ella.
+ * @throw Excepción en caso de que no exista dato en la lista enlazada.
+ * @return Devuelve el dato tipo T.
+ */
+template <class T>
+T& ListaEnlazada<T>::Fin(){
+    if (cola != nullptr){
+        return cabecera->dato;
+    }else{
+        throw Exception("[ListaEnlazada<T>::inicio] No existen elementos en la lista");
+    }
+}
+
+/**
+ * @brief Iterador para la Lista.
+ * @post Se genera un iterador que apunte al elemento de la cabecera de la lista.
+ * En caso de no haber elementos, devolverá un iterador el cual está apuntando a nullptr,
+ * por lo que indicará que la lista se encuentra vacía.
+ * @return Iterador.
+ */
+template <class T>
+Iterador<T> ListaEnlazada<T>::iterador(){
+    Iterador<T> it(cabecera);
+    return it;
+}
+
+
+
+/**
+ * @brief Borrar primer elemento de una lista. 
+ */
+template <class T>
+void ListaEnlazada<T>::borraInicio(){
+    if(cabecera){
+        Nodo<T> *borrado = cabecera;
+        cabecera = cabecera->sig;
+        delete borrado;
+        
+        if (cabecera == nullptr)
+            cola = nullptr;
+        --tam;
+    }
+}
+
+/**
+ * @brief Borrar el ultimo elemento de la lista.
+ * @post Comprobaciones de si es ultimo elemento o no para poder eliminar de una forma u otra.
+ */
+template <class T>
+void ListaEnlazada<T>::borraFin(){
+    if(cola){
+        Nodo<T>*borrado = cola;
+        cola = cola->ant;
+        delete borrado;
+        
+        if(cola == nullptr)
+            cabecera = nullptr;
+        --tam;
+    }
+    
+}
+/**
+ * @brief Borrar un elemento.
+ * @post Borrar un elemento indicado por un iterador pasado por parámetro.
+ * @throw Excepcion en caso de que el nodo apunte a nulo en el iterador pasado como parametro.
+ * @param i Iterador.
+ */
+template <class T>
+void ListaEnlazada<T>::borra(Iterador<T>& i){
+    Nodo<T>* p = i.nodo; //NO HACER OPERACIONES INTERNAS CON EL ITERADOR.
+    if(p){
+        if(p == cabecera)
+            borraInicio();
+        else if(p == cola)
+            borraFin();
+        else{
+            Nodo<T>*aux = p->ant;
+            if(aux){
+                aux->sig = p->sig;
+                p->sig->ant = aux;
+            }
+            delete p;
+            --tam;
+        }
+    }else{
+        throw Exception("[ListaEnlazada<T>::borra] NO EXISTE NODO QUE BORRAR A PARTIR DEL ITERADOR PASADO COMO PARAMETRO.");
+    }
+}
+
+/**
+ * @brief Insertar en la cabecera.
+ * @param dato Dato a insertar de tipo T.
+ */
+template <class T>
+void ListaEnlazada<T>::insertaInicio(T& dato){
+    Nodo<T>*aux = new Nodo<T>(dato,nullptr,cabecera);
+    if(cabecera)
+        cabecera = cabecera->ant;
+    
+    //CASO ESPECIAL: LA LISTA ESTABA VACIA.
+    if(cola == nullptr)
+        cola = aux;
+    ++tam;
+}
+
+/**
+ * @brief Añadir un elemento al final de la lista.
+ * @param dato Elemento tipo T a añadir.
+ */
+template <class T>
+void ListaEnlazada<T>::insertaFin(T& dato){
+    Nodo<T> *nuevo = new Nodo<T>(dato,cola,nullptr);
+    if(cola)
+        cola->sig = nuevo;
     cola = nuevo;
     
     //CASO ESPECIAL: LA LISTA ESTABA VACIA.
     if(cabecera == nullptr)
         cabecera = nuevo;
+    ++tam;
+}
+
+/**
+ * @brief Insertar justo anterior al iterador.
+ * @post Inserta un elemento en la lista justo anterior al elemento que está apuntando
+ * el iterador.
+ * @param i Iterador.
+ * @param dato Elemento a insertar de tipo T.
+ */
+template <class T>
+void ListaEnlazada<T>::inserta(Iterador<T>& i, T& dato){
+    Nodo<T> *p = i.nodo, *aux = i.nodo; //NO HACER OPERACIONES INTERNAS CON EL ITERADOR.
+    if(p){
+        if(p != cabecera){
+            
+            p = p->ant;
+            Nodo<T> *insertar = new Nodo<T>(dato,p->ant,p->sig);
+            p->sig = insertar; //Elemento de la posicion a insertar estará apuntando siguiente al dato insertado.
+            aux->ant = insertar; //Elemento que apunta el iterador, el puntero al anterior debe ser al dato insertado.
+        
+        }else{
+            insertaInicio(dato);
+        }
+    }else{
+        throw Exception("[ListaEnlazada<T>::inserta] EL NODO AL QUE APUNTA EL ITERADOR ES NULO.");
+    }
+    ++tam;
+}
+
+
+template <class T>
+void ListaEnlazada<T>::insertaOrdenado(T& dato){
+    if(ordenado()){
+        
+        Nodo<T>*p = cabecera;
+        while(p && p->dato < dato)
+            p = p->sig;
+        
+        if(p == nullptr)
+            insertaFin();
+        else{
+            //DUDA. ¿PUEDO HACER ESTO? NO DEBERIA DE UTILIZAR EL ITERADOR PARA OPERAR DENTRO.
+            Iterador<T> it(p);
+            inserta(it,dato);
+            ++tam;
+        }
+    }else{
+        throw Exception("[ListaEnlazada<T>::insertaOrdenado] LISTA NO ORDENADA. NECESITA ESTAR ORDENADA.");
+    }
+}
+
+template <class T>
+int ListaEnlazada<T>::tama(){
+    return tam;
+}
+
+/*----------- METODOS PRIVADOS ------------*/
+
+template <class T>
+bool ListaEnlazada<T>::ordenado(){
+    Nodo<T> *p = cabecera;
+    while(p){
+        if(p->sig)
+            if(p->dato > p->sig->dato)
+                return false;
+        p = p->sig;
+    }
+    return true; 
 }
 
 #endif /* LISTAENLAZADA_H */

@@ -21,6 +21,7 @@
 #include "VDinamico.h"
 #include "Palabra.h"
 #include "ParPalabras.h"
+#include "ListaEnlazada.h"
 #include "Exception.h"
 
 using namespace std;
@@ -93,91 +94,6 @@ void cargarPalabras(VDinamico<Palabra> &vPalabras) {
 	cout << "Tiempo implementación 2: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
 }
 
-/**
- * @brief Buscar palindromos.
- * @post Busca, con orden cuadrático, todos los palindromos encontrados en el vector de palabras.
- * @param parPalabras Vector de pares de palabras que forman un palindromo.
- * @param vPalabras Palabras almacenadas.
- * @return Cantidad de palabras con palíndromo.
- */
-long buscarPalindromos(VDinamico<ParPalabras> &parPalabras, VDinamico<Palabra> &vPalabras, long cantidad){
-    ParPalabras aux;
-    long cont = 0;
-    clock_t t_ini = clock();
-    for (long i= 0; i < vPalabras.tam(); i++) {
-        aux.SetPal1(vPalabras[i].GetPalabra());
-        for (long j = i+1; j < vPalabras.tam(); j++) {
-            aux.SetPal2(vPalabras[j].GetPalabra());
-            if(vPalabras[i].palindromo(vPalabras[j])){
-                if(!parPalabras.buscar(aux) && vPalabras[i].GetPalabra() != vPalabras[j].GetPalabra()){
-                    parPalabras.insertar(aux);
-                    if(cont < cantidad){
-                        cout<<parPalabras[cont].GetPal1()<<" ----- "<<parPalabras[cont].GetPal2()<<endl;
-                        ++cont;
-                    }
-                }
-            }
-        }
-    }
-    
-    cout << "Tiempo de encontrar todos los palindromos: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
-    return parPalabras.tam();
-}
-
-
-/**
- * @bief Busqueda de palindromos eficiente.
- * @post A raiz de un vector ordenado (IMPORTANTE), se hace una busqueda coherente de los palindromos partiendo del reves de la palabra y
- * usando el busquedaBinaria para encontrarlo a con una eficiencia de prácticamente O(1).
- * @param parPalabras Vector de palindromos encontrados.
- * @param vPalabras Vector de palabras ORDENADO.
- * @param cantidad Cantidad a querer mostrar por pantalla.
- * @return 
- */
-long palindromosEficiente(VDinamico<ParPalabras> &parPalabras, VDinamico<Palabra> &vOrdenado, long cantidad){
-    ParPalabras aux;
-    long cont = 0,pos;
-    clock_t t_ini = clock();
-    Palabra primera;
-    vOrdenado.ordenar();
-    for (long i= 0; i < vOrdenado.tam(); i++) {
-        aux.SetPal1(vOrdenado[i].GetPalabra());       
-        primera = vOrdenado[i];       
-        int pos = vOrdenado.busquedaBin(primera.reves());
-        if(pos != -1 && i < pos){
-            if(vOrdenado[pos].palindromo(vOrdenado[i])){
-                aux.SetPal2(vOrdenado[pos].GetPalabra());
-                if (!parPalabras.buscar(aux) && vOrdenado[i].GetPalabra() != vOrdenado[pos].GetPalabra())
-                    parPalabras.insertar(aux);
-            }
-        }
-
-    }
-    
-    cout << "Tiempo de encontrar todos los palindromos: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
-    return parPalabras.tam();
-}
-
-/**
- * @brief Buscar Anagramas.
- * @post Función específica para encontrar los anagramas indicados como parametro de la función. Su funcionamiento
- * se basa en la comprobacion de si es o no anagrama un elemento del vector respecto a todos sus siguientes en el vector.
- * @param vPalabras Vector dinámico de palabras. 
- * @param cantidad Número de anagramas que se quieren encontrar y mostrar.
- */
-void buscarAnagramas(VDinamico<Palabra>& vPalabras, long cantidad){
-    clock_t t_ini = clock();
-    int contador = 0;
-    for(int i = 0; i < vPalabras.tam() && contador < cantidad; i++){
-        for(int j = i+1; j < vPalabras.tam() && contador < cantidad; j++){
-            if(vPalabras[i].anagrama(vPalabras[j])){
-                cout<<"ANAGRAMA ENCONTRADO: "<<vPalabras[i].GetPalabra()<<" ---- "<<vPalabras[j].GetPalabra()<<endl;
-                ++contador;
-            }
-        }
-    }
-    cout << "Tiempo de encontrar "<<cantidad<<" anagramas: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
-}
 
 int main(int argc, char** argv) {
     
@@ -225,6 +141,9 @@ int main(int argc, char** argv) {
 
         long cont, cantidad;
         VDinamico<ParPalabras> parPalabras;
+        clock_t t_ini;
+        ParPalabras aux;
+        Palabra primera;
         switch(opcion){
             
             /*-----BUSQUEDA DE PALINDROMOS-----*/
@@ -236,20 +155,59 @@ int main(int argc, char** argv) {
                     cin>>cantidad;
                 }while(cantidad < 0);
                 cout<<endl<<"Comenzando la instancia de TODOS los palíndromos y muestra de "<<cantidad<<" palíndromos..."<<endl;
-                cont = buscarPalindromos(parPalabras,vPalabras,cantidad);
+                //cont = buscarPalindromos(parPalabras,vPalabras,cantidad);
+                cont = 0;
+                t_ini = clock();
+                for (long i= 0; i < vPalabras.tam(); i++) {
+                    aux.SetPal1(vPalabras[i].GetPalabra());
+                    for (long j = i+1; j < vPalabras.tam(); j++) {
+                        aux.SetPal2(vPalabras[j].GetPalabra());
+                        if(vPalabras[i].palindromo(vPalabras[j])){
+                            if(!parPalabras.buscar(aux) && vPalabras[i].GetPalabra() != vPalabras[j].GetPalabra()){
+                                parPalabras.insertar(aux);
+                                if(cont < cantidad){
+                                    cout<<parPalabras[cont].GetPal1()<<" ----- "<<parPalabras[cont].GetPal2()<<endl;
+                                    ++cont;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                cout << "Tiempo de encontrar todos los palindromos: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
                 for(int i = 0; i < parPalabras.tam(); i++)
                     cout<<"["<<parPalabras[i].GetPal1()<<","<<parPalabras[i].GetPal2()<<"], ";
-                cout<<endl<<endl<<"Cantidad de palindromos encontrados: "<<cont<<endl;
+                cout<<endl<<endl<<"Cantidad de palindromos encontrados: "<<parPalabras.tam()<<endl;
                 break;
 
             /*-----BUSQUEDA DE PALINDROMOS EFICIENTE-----*/    
             case 2:
                 
                 cout<<endl<<"Comenzando la instancia de TODOS los palíndromos..."<<endl;
-                cont = palindromosEficiente(parPalabras,vPalabras,cantidad);
+                //cont = palindromosEficiente(parPalabras,vPalabras,cantidad);
+                cont = 0;
+                long pos;
+                t_ini = clock();
+                vPalabras.ordenar();
+                for (long i= 0; i < vPalabras.tam(); i++) {
+                    aux.SetPal1(vPalabras[i].GetPalabra());       
+                    primera = vPalabras[i];       
+                    int pos = vPalabras.busquedaBin(primera.reves());
+                    if(pos != -1 && i < pos){
+                        if(vPalabras[pos].palindromo(vPalabras[i])){
+                            aux.SetPal2(vPalabras[pos].GetPalabra());
+                            if (!parPalabras.buscar(aux) && vPalabras[i].GetPalabra() != vPalabras[pos].GetPalabra())
+                                parPalabras.insertar(aux);
+                        }
+                    }
+
+                }
+
+                cout << "Tiempo de encontrar todos los palindromos: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
+                
                 for(int i = 0; i < parPalabras.tam(); i++)
                     cout<<"["<<parPalabras[i].GetPal1()<<","<<parPalabras[i].GetPal2()<<"], ";
-                cout<<endl<<endl<<"Cantidad de palindromos encontrados: "<<cont<<endl;
+                cout<<endl<<endl<<"Cantidad de palindromos encontrados: "<<parPalabras.tam()<<endl;
                 break;
                 
             default:
@@ -263,15 +221,34 @@ int main(int argc, char** argv) {
                     cin>>cantidad;
                 }while(cantidad < 0);
                 cout<<endl<<"Comenzando la busqueda de "<<cantidad<<" anagramas..."<<endl;
-                buscarAnagramas(vPalabras,cantidad);
-
+                //buscarAnagramas(vPalabras,cantidad);
+                t_ini = clock();
+                int contador = 0;
+                for(int i = 0; i < vPalabras.tam() && contador < cantidad; i++){
+                    for(int j = i+1; j < vPalabras.tam() && contador < cantidad; j++){
+                        if(vPalabras[i].anagrama(vPalabras[j])){
+                            cout<<"ANAGRAMA ENCONTRADO: "<<vPalabras[i].GetPalabra()<<" ---- "<<vPalabras[j].GetPalabra()<<endl;
+                            ++contador;
+                        }
+                    }
+                }
+                cout << "Tiempo de encontrar "<<cantidad<<" anagramas: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
                 break;
         }
 
     }catch(Exception& e){
         cout<<"SALTO DE EXCEPCION EN: "<<e.GetExcepcion()<<endl;
     }
+    
+    ListaEnlazada<Palabra> lista_prueba;
+    Palabra aux;
+    for (int i = 1; i < 10; i++) {
+        aux.SetPalabra("hola");
+        lista_prueba.insertaFin(aux);
+    }
+    cout<<lista_prueba.tama()<<endl;
 
+    
     return 0;
 }
 
