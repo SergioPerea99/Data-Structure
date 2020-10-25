@@ -22,7 +22,7 @@ class Nodo {
         T dato;
         Nodo *sig;
         
-        Nodo(T& aDato, Nodo<T> *aSig) {
+        Nodo(const T& aDato, Nodo<T> *aSig) {
             dato = aDato;
             sig = aSig;
         };
@@ -30,7 +30,12 @@ class Nodo {
             dato = orig.dato;
             sig = orig.sig;
         };
-        virtual ~Nodo(){};
+        
+        virtual ~Nodo(){}
+
+        T GetDato() const {
+            return dato;
+        };
      
 };
 
@@ -72,10 +77,10 @@ class ListaEnlazada {
         void borraFin();
         void borra(Iterador<T>&i);
         
-        void insertaInicio(T& dato);
-        void insertaFin(T& dato);
-        void inserta(Iterador<T> i, T& dato);
-        void insertaOrdenado(T& dato);
+        void insertaInicio(const T& dato);
+        void insertaFin(const T& dato);
+        void inserta(Iterador<T> i,const T& dato);
+        void insertaOrdenado(const T& dato);
 
         virtual ~ListaEnlazada();
 };
@@ -257,7 +262,7 @@ void ListaEnlazada<T>::borra(Iterador<T>& i){
  * @param dato Dato a insertar de tipo T.
  */
 template <class T>
-void ListaEnlazada<T>::insertaInicio(T& dato){
+void ListaEnlazada<T>::insertaInicio(const T& dato){
     Nodo<T>*aux = new Nodo<T>(dato,cabecera);
     cabecera = aux;
     
@@ -272,7 +277,7 @@ void ListaEnlazada<T>::insertaInicio(T& dato){
  * @param dato Elemento tipo T a añadir.
  */
 template <class T>
-void ListaEnlazada<T>::insertaFin(T& dato){
+void ListaEnlazada<T>::insertaFin(const T& dato){
     Nodo<T> *nuevo = new Nodo<T>(dato,nullptr);
     if(cola)
         cola->sig = nuevo;
@@ -292,7 +297,7 @@ void ListaEnlazada<T>::insertaFin(T& dato){
  * @param dato Elemento a insertar de tipo T.
  */
 template <class T>
-void ListaEnlazada<T>::inserta(Iterador<T> i, T& dato){
+void ListaEnlazada<T>::inserta(Iterador<T> i,const T& dato){
     Nodo<T> *p = i.nodo; //NO HACER OPERACIONES INTERNAS CON EL ITERADOR.
     if(p){
         if (p == cabecera){
@@ -317,12 +322,15 @@ void ListaEnlazada<T>::inserta(Iterador<T> i, T& dato){
 
 
 template <class T>
-void ListaEnlazada<T>::insertaOrdenado(T& dato){
+void ListaEnlazada<T>::insertaOrdenado(const T& dato){
     if(true){
         Nodo<T>*p = cabecera;
         while(p && p->dato < dato)
             p = p->sig;
-
+        /*En caso de ser el mismo dato, no insertarlo.*/
+        if(p && p->dato == dato)
+            return;
+        
         if(p == cabecera)
             insertaInicio(dato);
         else if(p == nullptr)
