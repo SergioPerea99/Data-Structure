@@ -61,7 +61,7 @@ class ListaEnlazada {
     private:
         Nodo<T> *cabecera, *cola;
         int tam;
-        bool ordenado();
+        //bool ordenado();
     public:
         int tama();
         ListaEnlazada();
@@ -323,27 +323,25 @@ void ListaEnlazada<T>::inserta(Iterador<T> i,const T& dato){
 
 template <class T>
 void ListaEnlazada<T>::insertaOrdenado(const T& dato){
-    if(true){
-        Nodo<T>*p = cabecera;
-        while(p && p->dato < dato)
-            p = p->sig;
-        /*En caso de ser el mismo dato, no insertarlo.*/
-        if(p && p->dato == dato)
-            return;
-        
-        if(p == cabecera)
-            insertaInicio(dato);
-        else if(p == nullptr)
-            insertaFin(dato);
-        else{
-            
-            Iterador<T> it(p);
-            inserta(it,dato);
-            ++tam;
-        }
-    }else{
-        throw std::invalid_argument("[ListaEnlazada<T>::insertaOrdenado] LISTA NO ORDENADA. NECESITA ESTAR ORDENADA.");
+    
+    Nodo<T>*p = cabecera;
+    while(p && p->dato < dato)
+        p = p->sig;
+    /*En caso de ser el mismo dato, no insertarlo.*/
+    if(p && p->dato == dato)
+        return;
+
+    if(p == cabecera)
+        insertaInicio(dato);
+    else if(p == nullptr)
+        insertaFin(dato);
+    else{
+
+        Iterador<T> it(p);
+        inserta(it,dato);
+        ++tam;
     }
+    
 }
 
 template <class T>
@@ -370,17 +368,17 @@ ListaEnlazada<T>::~ListaEnlazada() {
 
 /*----------- METODOS PRIVADOS ------------*/
 
-template <class T>
-bool ListaEnlazada<T>::ordenado(){
-    Nodo<T> *p = cabecera;
-    while(p){
-        if(p->sig)
-            if(p->dato > p->sig->dato)
-                return false;
-        p = p->sig;
-    }
-    return true; 
-}
+//template <class T>
+//bool ListaEnlazada<T>::ordenado(){
+//    Nodo<T> *p = cabecera;
+//    while(p){
+//        if(p->sig)
+//            if(p->dato > p->sig->dato)
+//                return false;
+//        p = p->sig;
+//    }
+//    return true; 
+//}
 
 #endif /* LISTAENLAZADA_H */
 

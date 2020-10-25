@@ -32,9 +32,9 @@ public:
     
     /*---- GETTERS Y SETTERS ----*/
     void setTexto(Documento texto);
-    Documento* getTexto();
+    Documento& getTexto();
     void setDiccionario(Diccionario diccionario);
-    Diccionario* getDiccionario();
+    Diccionario& getDiccionario();
 };
 
 #endif /* GESTORTEXTOS_H */

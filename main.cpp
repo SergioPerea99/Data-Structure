@@ -71,10 +71,10 @@ int main(int argc, char** argv) {
         cout<<endl<<endl;
         cout<<" ---------INICIO PROGRAMA PRINCIPAL PRACTICA 2--------"<<endl;
         GestorTextos gestor1;
-        gestor1.getDiccionario()->SetNombreFich("El Quijote + diccionario Español.txt");
+        gestor1.getDiccionario().SetNombreFich("El Quijote + diccionario Español.txt");
         gestor1.chequearTexto("quijote-sin-simbolos.txt","dicc-espanol-sin.txt");
 
-        Iterador<Palabra> it = gestor1.getTexto()->getInexistentes()->iterador();
+        Iterador<Palabra> it = gestor1.getTexto().getInexistentes().iterador();
         int i = 0;
         cout<<"[ ";
         while(!it.fin()){
@@ -83,8 +83,34 @@ int main(int argc, char** argv) {
             i++;
         }
         cout<<"]."<<endl;
-
-        cout<<"NUMERO DE PALABRAS INEXISTENTES : "<<gestor1.getTexto()->getInexistentes()->tama()<<endl;
+        
+        it = gestor1.getTexto().getInexistentes().iterador();
+        int borrados = 0;
+        cout<<"[ ";
+        while(!it.fin()){
+            if(it.dato().GetPalabra()[0] >= 65 && it.dato().GetPalabra()[0] <= 90){
+                cout<<it.dato().GetPalabra()<<"   ";
+                gestor1.getTexto().getInexistentes().borra(it);
+                it = gestor1.getTexto().getInexistentes().iterador();
+                ++borrados;
+            }
+            it.siguiente();
+            
+        }
+        cout<<"]."<<endl;
+        
+        
+        it = gestor1.getTexto().getInexistentes().iterador();
+        cout<<"[ ";
+        while(!it.fin()){
+            cout<<it.dato().GetPalabra()<<", ";
+            it.siguiente();
+        }
+        cout<<"]."<<endl;
+        
+        cout<<"NOMBRES PROPIOS ELIMINADOS : "<<borrados<<endl;
+       
+        cout<<"NUMERO DE PALABRAS INEXISTENTES : "<<gestor1.getTexto().getInexistentes().tama()<<endl;
     }catch(exception &e){
         cout<<e.what()<<endl;
     }

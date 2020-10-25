@@ -35,7 +35,7 @@ public:
     
     
     /*GETTERS Y SETTERS.*/
-    VDinamico<Palabra>* GetTerminos();
+    VDinamico<Palabra>& GetTerminos();
     void SetNombreFich(std::string nombreFich);
     std::string GetNombreFich() const;
     

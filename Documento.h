@@ -32,7 +32,7 @@ public:
     
     
     /*---- GETTERS Y SETTERS ----*/
-    ListaEnlazada<Palabra>* getInexistentes();
+    ListaEnlazada<Palabra>& getInexistentes();
     void setNombreFich(std::string nombreFich);
     std::string getNombreFich();
 

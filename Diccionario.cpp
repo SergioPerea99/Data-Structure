@@ -29,8 +29,8 @@ Diccionario::Diccionario(const Diccionario& orig) {
 Diccionario::~Diccionario() {
 }
 
-VDinamico<Palabra>* Diccionario::GetTerminos(){
-    return &terminos;
+VDinamico<Palabra>& Diccionario::GetTerminos(){
+    return terminos;
 }
 
 void Diccionario::SetNombreFich(std::string nombreFich) {

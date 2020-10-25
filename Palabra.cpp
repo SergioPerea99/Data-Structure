@@ -189,7 +189,7 @@ void Palabra::limpiar(){
         if (!isalpha(palabra[i]) && i > palabra.length()-3)
             ultimoValido--;
     }
-    tolower(palabra[primerValido]);
+    //std::transform(palabra.begin(),palabra.end(),palabra.begin(), ::tolower);
     palabra = palabra.substr(primerValido,ultimoValido-primerValido+1);
     
 }
