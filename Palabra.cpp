@@ -12,6 +12,7 @@
  */
 
 #include <string.h>
+#include <ctype.h>
 
 #include "Palabra.h"
 #include "VDinamico.h"
@@ -182,13 +183,14 @@ void Palabra::limpiar(){
      */
     int primerValido = 0;
     int ultimoValido = palabra.length()-1;
-    cout<<ultimoValido<<endl;
     for (int i = 0 ; i < palabra.length(); i++){
         if(!isalpha(palabra[i]) && i < 3)
             primerValido++;
         if (!isalpha(palabra[i]) && i > palabra.length()-3)
             ultimoValido--;
     }
+    tolower(palabra[primerValido]);
     palabra = palabra.substr(primerValido,ultimoValido-primerValido+1);
+    
 }
     

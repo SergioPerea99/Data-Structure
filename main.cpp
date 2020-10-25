@@ -32,7 +32,7 @@ using namespace std;
 void comprobar() {
 	vector<string> dicc;
         
-	ifstream is("dicc-espanol.txt");
+	ifstream is("dicc-espanol-sin.txt");
 	string palabra;
 
 	while (is) {
@@ -42,7 +42,7 @@ void comprobar() {
 	cout << dicc.size() << " palabras cargadas" << endl;
 
 	is.close();
-	is.open("quijote.txt");
+	is.open("quijote-sin-simbolos.txt");
 
 	clock_t t_ini = clock();
 
@@ -105,190 +105,43 @@ int main(int argc, char** argv) {
     /*-----------------------------------------------------------------------------------------------------*/
     /*------------------------------- MENÚ PRINCIPAL: PRÁCTICA 2 ------------------------------------------*/
     /*-----------------------------------------------------------------------------------------------------*/
+    try{
+        cout<<endl<<endl;
+        cout<<" ---------INICIO PROGRAMA PRINCIPAL PRACTICA 2--------"<<endl;
+        //Diccionario diccionario("Diccionario de palabras.txt");
+        //cargarPalabras(diccionario.GetTerminos());
+        GestorTextos gestor1;
+        gestor1.getDiccionario()->SetNombreFich("Diccionario de palabras.txt");
+        gestor1.chequearTexto("quijote-sin-simbolos.txt","dicc-espanol-sin.txt");
 
-    cout<<endl<<endl;
-    cout<<" ---------INICIO PROGRAMA PRINCIPAL PRACTICA 2--------"<<endl;
-    //Diccionario diccionario("Diccionario de palabras.txt");
-    //cargarPalabras(diccionario.GetTerminos());
-    GestorTextos gestor1;
-    gestor1.getDiccionario().SetNombreFich("Diccionario de palabras.txt");
-    gestor1.chequearTexto("quijote.txt","dicc-espanol.txt");
-    cout<<gestor1.getDiccionario().GetTerminos().tam()<<endl;
-    
-    Palabra pal1("jose");
-    Palabra pal2("abel");
-    Palabra pal3("sergioño");
-    Palabra pal4("babilonio");
-    Palabra pal5("carlos");
-    
-    ListaEnlazada<Palabra> list_ordenada;
-    list_ordenada.insertaOrdenado(pal1);
-    list_ordenada.insertaOrdenado(pal2);
-    list_ordenada.insertaOrdenado(pal3);
-    list_ordenada.insertaOrdenado(pal4);
-    list_ordenada.insertaOrdenado(pal5);
-    
-    /*Probar que funciona bien el insertaOrdenado de la listaEnlazada.*/
-    Iterador<Palabra> it(list_ordenada.iterador());
-    while(!it.fin()){
-        cout<<it.dato().GetPalabra()<<" - ";
-        it.siguiente();
+        
+        Iterador<Palabra> it = gestor1.getTexto()->getInexistentes()->iterador();
+        int i = 0;
+        while(!it.fin() && i < 300){
+            cout<<it.dato().GetPalabra()<<endl;
+            it.siguiente();
+            i++;
+        }
+
+        cout<<"NUMERO DE PALABRAS INEXISTENTES : "<<gestor1.getTexto()->getInexistentes()->tama()<<endl;
+    }catch(exception &e){
+        cout<<e.what()<<endl;
     }
-    cout<<endl;
-    
-    /*Probar que limpia bien una palabra.*/
-    Palabra limpiar(".¡ñoñoreiñ!.");
-    limpiar.limpiar();
-    cout<<"---"<<limpiar.GetPalabra()<<"---> "<<endl;
-    
-    /*-----------------------------------------------------------------------------------------------------*/
-    /*------------------------------- MENÚ PRINCIPAL: PRÁCTICA 1 ------------------------------------------*/
-    /*-----------------------------------------------------------------------------------------------------*/
-    
-//    try{
-        /*-----INSTANCIA DE DATOS EN EL VECTOR DINAMICO-----*/
-//        VDinamico<Palabra> vPalabras;
-//        cargarPalabras(vPalabras);
-//
-//        cout<<"TAMAÑO LOGICO DEL VECTOR: "<<vPalabras.tam()<<". TAMAÑO FISICO DEL VECTOR: "<<vPalabras.getTamF()<<endl<<endl; 
-//
-//
-//
-//        /*-----ORDENAR VECTOR EN CASO DE NO ESTAR ORDENADO-----*/
-//        if(vPalabras.estaOrdenado())
-//            cout<<"El vector se encuentra ordenado."<<endl;
-//        else{
-//            cout<<"Vector no ordenado. Comenzando a ordenar..."<<endl;
-//            vPalabras.ordenar();
-//
-//            if(vPalabras.estaOrdenado())
-//                cout<<"VECTOR ORDENADO CORRECTAMENTE."<<endl;
-//        }
-//
-//        cout<<endl<<endl;
-//
-//
-//        /*-----ORDENAR EL VECTOR AL REVÉS.-----*/
-//        //He mostrado los 10 primeros elementos del inicio y final del vector, antes (previo vector ordenado) y después de hacer el orden inverso.
-//        for (int i = 0; i < 10; i++)
-//            cout<<vPalabras[i].GetPalabra()<<"      "<<vPalabras[vPalabras.tam()-i-1].GetPalabra()<<endl;
-//        cout<<"Comenzando a ordenar de forma inversa..."<<endl;
-//        vPalabras.ordenarRev();
-//        for (int i = 0; i < 10; i++)
-//            cout<<vPalabras[i].GetPalabra()<<"      "<<vPalabras[vPalabras.tam()-i-1].GetPalabra()<<endl;
-//
-//        cout<<endl<<endl;
-//        int opcion;
-//        cout<<"ELIGE LA OPCION QUE QUIERA REALIZAR"<<endl;
-//        cout<<"1: Vector de palíndromos."<<endl;
-//        cout<<"2: Vector de palíndromos EFICIENTE."<<endl;
-//        cout<<"3: Encontrar anagramas."<<endl;
-//        cout<<"Tecla != {1,2,3}: EXIT."<<endl;
-//        cin>>opcion;
-//
-//        long cont, cantidad;
-//        VDinamico<ParPalabras> parPalabras;
-//        clock_t t_ini;
-//        ParPalabras aux;
-//        Palabra primera;
-//        switch(opcion){
-//            
-//            /*-----BUSQUEDA DE PALINDROMOS-----*/
-//            case 1:
-//                
-//                cout<<"Le aviso que la instancia de todos los palíndromos tarda alrededor de 20 minutos en debug (16 minutos en release)."<<endl;
-//                do{
-//                    cout<<"¿Cuántos palíndromos quiere mostrar por pantalla? ";
-//                    cin>>cantidad;
-//                }while(cantidad < 0);
-//                cout<<endl<<"Comenzando la instancia de TODOS los palíndromos y muestra de "<<cantidad<<" palíndromos..."<<endl;
-//                //cont = buscarPalindromos(parPalabras,vPalabras,cantidad);
-//                cont = 0;
-//                t_ini = clock();
-//                for (long i= 0; i < vPalabras.tam(); i++) {
-//                    aux.SetPal1(vPalabras[i].GetPalabra());
-//                    for (long j = i+1; j < vPalabras.tam(); j++) {
-//                        aux.SetPal2(vPalabras[j].GetPalabra());
-//                        if(vPalabras[i].palindromo(vPalabras[j])){
-//                            if(!parPalabras.buscar(aux) && vPalabras[i].GetPalabra() != vPalabras[j].GetPalabra()){
-//                                parPalabras.insertar(aux);
-//                                if(cont < cantidad){
-//                                    cout<<parPalabras[cont].GetPal1()<<" ----- "<<parPalabras[cont].GetPal2()<<endl;
-//                                    ++cont;
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                cout << "Tiempo de encontrar todos los palindromos: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
-//                for(int i = 0; i < parPalabras.tam(); i++)
-//                    cout<<"["<<parPalabras[i].GetPal1()<<","<<parPalabras[i].GetPal2()<<"], ";
-//                cout<<endl<<endl<<"Cantidad de palindromos encontrados: "<<parPalabras.tam()<<endl;
-//                break;
-//
-//            /*-----BUSQUEDA DE PALINDROMOS EFICIENTE-----*/    
-//            case 2:
-//                
-//                cout<<endl<<"Comenzando la instancia de TODOS los palíndromos..."<<endl;
-//                //cont = palindromosEficiente(parPalabras,vPalabras,cantidad);
-//                cont = 0;
-//                long pos;
-//                t_ini = clock();
-//                vPalabras.ordenar();
-//                for (long i= 0; i < vPalabras.tam(); i++) {
-//                    aux.SetPal1(vPalabras[i].GetPalabra());       
-//                    primera = vPalabras[i];       
-//                    int pos = vPalabras.busquedaBin(primera.reves());
-//                    if(pos != -1 && i < pos){
-//                        if(vPalabras[pos].palindromo(vPalabras[i])){
-//                            aux.SetPal2(vPalabras[pos].GetPalabra());
-//                            if (!parPalabras.buscar(aux) && vPalabras[i].GetPalabra() != vPalabras[pos].GetPalabra())
-//                                parPalabras.insertar(aux);
-//                        }
-//                    }
-//
-//                }
-//
-//                cout << "Tiempo de encontrar todos los palindromos: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
-//                
-//                for(int i = 0; i < parPalabras.tam(); i++)
-//                    cout<<"["<<parPalabras[i].GetPal1()<<","<<parPalabras[i].GetPal2()<<"], ";
-//                cout<<endl<<endl<<"Cantidad de palindromos encontrados: "<<parPalabras.tam()<<endl;
-//                break;
-//                
-//            default:
-//                break;
-//                
-//            /*-----BUSQUEDA DE ANAGRAMAS-----*/    
-//            case 3:
-//                
-//                do{
-//                    cout<<"INTRODUCE LA CANTIDAD DE ANAGRAMAS QUE QUIERE ENCONTRAR: ";
-//                    cin>>cantidad;
-//                }while(cantidad < 0);
-//                cout<<endl<<"Comenzando la busqueda de "<<cantidad<<" anagramas..."<<endl;
-//                //buscarAnagramas(vPalabras,cantidad);
-//                t_ini = clock();
-//                int contador = 0;
-//                for(int i = 0; i < vPalabras.tam() && contador < cantidad; i++){
-//                    for(int j = i+1; j < vPalabras.tam() && contador < cantidad; j++){
-//                        if(vPalabras[i].anagrama(vPalabras[j])){
-//                            cout<<"ANAGRAMA ENCONTRADO: "<<vPalabras[i].GetPalabra()<<" ---- "<<vPalabras[j].GetPalabra()<<endl;
-//                            ++contador;
-//                        }
-//                    }
-//                }
-//                cout << "Tiempo de encontrar "<<cantidad<<" anagramas: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
-//                break;
-//        }
-//
-//    }catch(exception& e){
-//        cout<<"EXCEPCION EN "<<e.what()<<endl;
-//    }
 
-    
     return 0;
 }
 
 
+//        Palabra pal("hola");
+//        Palabra pal2("hola2");
+//        Palabra pal3("adios2");
+//        Palabra pal4("adios1");
+        
+//        gestor1.getTexto()->getInexistentes()->insertaOrdenado(pal);
+//        gestor1.getTexto()->addInexistente(pal);
+//        gestor1.getTexto()->getInexistentes()->insertaOrdenado(pal2);
+//        gestor1.getTexto()->addInexistente(pal2);
+//        gestor1.getTexto()->getInexistentes()->insertaOrdenado(pal3);
+//        gestor1.getTexto()->addInexistente(pal3);
+//        gestor1.getTexto()->getInexistentes()->insertaOrdenado(pal4);
+//        gestor1.getTexto()->addInexistente(pal4);

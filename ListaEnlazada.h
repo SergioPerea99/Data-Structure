@@ -318,17 +318,17 @@ void ListaEnlazada<T>::inserta(Iterador<T> i, T& dato){
 
 template <class T>
 void ListaEnlazada<T>::insertaOrdenado(T& dato){
-    if(ordenado()){
+    if(true){
         Nodo<T>*p = cabecera;
         while(p && p->dato < dato)
             p = p->sig;
-        
+
         if(p == cabecera)
             insertaInicio(dato);
         else if(p == nullptr)
             insertaFin(dato);
         else{
-            //DUDA. ¿PUEDO HACER ESTO? NO DEBERIA DE UTILIZAR EL ITERADOR PARA OPERAR DENTRO.
+            
             Iterador<T> it(p);
             inserta(it,dato);
             ++tam;

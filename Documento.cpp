@@ -22,8 +22,8 @@ Documento::Documento(const Documento& orig) {
     inexistentes = orig.inexistentes;
 }
 
-ListaEnlazada<Palabra> Documento::getInexistentes(){
-    return inexistentes;
+ListaEnlazada<Palabra>* Documento::getInexistentes(){
+    return &inexistentes;
 }
 
 void Documento::setNombreFich(std::string nombreFich) {

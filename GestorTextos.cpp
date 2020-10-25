@@ -11,6 +11,8 @@
  * Created on 20 de octubre de 2020, 18:02
  */
 
+#include <ctype.h>
+
 #include "GestorTextos.h"
 
 
@@ -22,16 +24,16 @@ void GestorTextos::setTexto(Documento texto) {
     this->texto = texto;
 }
 
-Documento GestorTextos::getTexto(){
-    return texto;
+Documento* GestorTextos::getTexto(){
+    return &texto;
 }
 
 void GestorTextos::setDiccionario(Diccionario diccionario) {
     this->diccionario = diccionario;
 }
 
-Diccionario GestorTextos::getDiccionario(){
-    return diccionario;
+Diccionario* GestorTextos::getDiccionario(){
+    return &diccionario;
 }
 
 GestorTextos::GestorTextos(const GestorTextos& orig) {
@@ -52,11 +54,11 @@ void GestorTextos::chequearTexto (string _documento, string _diccionario) {
 	while (is) {
 		is >> palabra;
                 pal.SetPalabra(palabra);
-                diccionario.GetTerminos().insertar(pal);
+                diccionario.GetTerminos()->insertar(pal);
 	}
         /*Ordenación para poder luego buscar en él con una búsqueda binaria.*/
-        diccionario.GetTerminos().ordenar();
-	cout << diccionario.GetTerminos().tam() << " palabras cargadas en los TERMINOS del diccionario." << endl;
+        diccionario.GetTerminos()->ordenar();
+	cout << diccionario.GetTerminos()->tam() << " palabras cargadas en los TERMINOS del diccionario." << endl;
 	is.close();
         
 
@@ -69,11 +71,11 @@ void GestorTextos::chequearTexto (string _documento, string _diccionario) {
 		is >> palabra;
                 pal.SetPalabra(palabra);
 		++total;
-                /*TODO: Comprobar los 2 char incial y final de la palabra para ver si hay caracteres no válidos.*/
-                
-		if (!(diccionario.GetTerminos().busquedaBin(pal) != -1)) {
-			++no_validadas;
-                        
+                /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
+                pal.limpiar();
+		if (!getDiccionario()->buscarDicotomica(pal)) {
+                    ++no_validadas;
+                    getTexto()->addInexistente(pal);
 		}
 	}
 	cout <<"Total palabras: " << total << " --------- Total de palabras no_validadas: " << no_validadas << endl;
