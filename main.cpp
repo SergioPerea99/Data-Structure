@@ -137,7 +137,7 @@ int main(int argc, char** argv) {
     cout<<endl;
     
     /*Probar que limpia bien una palabra.*/
-    Palabra limpiar("¿Julio?.");
+    Palabra limpiar(".¡ñoñoreiñ!.");
     limpiar.limpiar();
     cout<<"---"<<limpiar.GetPalabra()<<"---> "<<endl;
     

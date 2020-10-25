@@ -180,27 +180,15 @@ void Palabra::limpiar(){
      * La "Ñ" es posible que no la reconozca en caso de usar isalpha().
      * Comprobar únicamente los 2 primeros y los 2 últimos caracteres del string con isalpha().
      */
+    int primerValido = 0;
+    int ultimoValido = palabra.length()-1;
+    cout<<ultimoValido<<endl;
     for (int i = 0 ; i < palabra.length(); i++){
-        
-//        if( i <= 3){
-//            if (!isalpha(palabra[i])){ 
-//                for(int j = i; j <= palabra.length(); j++)
-//                    palabra[j] = palabra[j+1];
-//            }
-//        }
-        
-        /*ELIMINAR POR EL FINAL BIEN.*/
-        if(i >= palabra.length()-3){
-            if (!isalpha(palabra[i])){ /* Caracter incorrecto.*/
-                
-                for (int j = palabra.length()-1; j >= 0; j--){ /*Machaco el caracter no válido.*/
-                    palabra[j] = palabra[j-1];   
-                }
-                cout<<GetPalabra()<<endl;
-            }
-        }
-        
-        
+        if(!isalpha(palabra[i]) && i < 3)
+            primerValido++;
+        if (!isalpha(palabra[i]) && i > palabra.length()-3)
+            ultimoValido--;
     }
+    palabra = palabra.substr(primerValido,ultimoValido-primerValido+1);
 }
     
