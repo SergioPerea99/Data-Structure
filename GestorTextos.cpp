@@ -20,29 +20,17 @@ GestorTextos::GestorTextos() {
     
 }
 
-void GestorTextos::setTexto(Documento texto) {
-    this->texto = texto;
-}
-
-Documento& GestorTextos::getTexto(){
-    return texto;
-}
-
-void GestorTextos::setDiccionario(Diccionario diccionario) {
-    this->diccionario = diccionario;
-}
-
-Diccionario& GestorTextos::getDiccionario(){
-    return diccionario;
-}
-
 GestorTextos::GestorTextos(const GestorTextos& orig) {
     diccionario = orig.diccionario;
     texto = orig.texto;
 }
 
 /**
- * @brief Chequear texto 
+ * @brief Chequear texto.
+ * @post A partir de 2 nombres de textos pasados como parametros, uno referenciará al diccionario y el otro corresponderá al texto. Una vez
+ * se haya insertado todas las palabras en el diccionario se comparará una a una las palabras del texto. Cada vez que se encuentre
+ * una palabra del texto la cuál es limpiada (y puesta en minúscula auxiliarmente), se añadirá en una lista de inexistentes palabras en el 
+ * objeto referente al Documento; es decir, en el texto.
  */
 void GestorTextos::chequearTexto (string _documento, string _diccionario) {
     
@@ -86,9 +74,27 @@ void GestorTextos::chequearTexto (string _documento, string _diccionario) {
         
 }
 
-
-
-
+/**
+ * @brief Destructor.
+ */
 GestorTextos::~GestorTextos() {
 }
 
+
+/*---- GETTERS Y SETTERS ----*/
+
+void GestorTextos::setTexto(Documento texto) {
+    this->texto = texto;
+}
+
+Documento& GestorTextos::getTexto(){
+    return texto;
+}
+
+void GestorTextos::setDiccionario(Diccionario diccionario) {
+    this->diccionario = diccionario;
+}
+
+Diccionario& GestorTextos::getDiccionario(){
+    return diccionario;
+}

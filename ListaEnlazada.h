@@ -320,7 +320,13 @@ void ListaEnlazada<T>::inserta(Iterador<T> i,const T& dato){
     ++tam;
 }
 
-
+/**
+ * @brief Insertar de forma ordenada.
+ * @post Se inserta un elemento tipo T en una lista de forma ordenada, en caso de encontrarse ya dicho elemento
+ * se saldrá del método y no realizará ninguna operación o llamada a otro método.
+ * @pre Antes de insertar el elemento, debe la lista de encontrarse ordenada.
+ * @param dato Elemento a insertar de tipo T.
+ */
 template <class T>
 void ListaEnlazada<T>::insertaOrdenado(const T& dato){
     
@@ -362,7 +368,7 @@ ListaEnlazada<T>::~ListaEnlazada() {
             delete cabecera;
             cabecera = p;
         }
-        cabecera = cola = nullptr;
+        cola = nullptr;
     }
 }
 

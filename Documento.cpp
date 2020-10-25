@@ -13,15 +13,35 @@
 
 #include "Documento.h"
 
+/**
+ * @brief Constructor por defecto.
+ */
 Documento::Documento() {
     nombreFich = "null";
 }
 
+/**
+ * @brief Constructor copia.
+ * @param orig Documento a ser copiado.
+ */
 Documento::Documento(const Documento& orig) {
     nombreFich = orig.nombreFich;
     inexistentes = orig.inexistentes;
 }
 
+
+/**
+ * @brief Añadir palabra inexistente.
+ * @post Añade en la estructura de la lista enlazada simple las palabras que no han sido encontradas en el vector de palabras del diccionario.
+ * @pre Debe de corresponder a una lista ordenada, por lo que se insertará de forma ordenada.
+ * @param p Palabra a añadir.
+ */
+void Documento::addInexistente(Palabra p) {
+    /*La lista debe de mantenerse ordenada.*/
+    inexistentes.insertaOrdenado(p);
+}
+
+/*---- GETTERS Y SETTERS ----*/
 ListaEnlazada<Palabra>& Documento::getInexistentes(){
     return inexistentes;
 }
@@ -34,12 +54,9 @@ std::string Documento::getNombreFich(){
     return nombreFich;
 }
 
-void Documento::addInexistente(Palabra p) {
-    /*La lista debe de mantenerse ordenada.*/
-    inexistentes.insertaOrdenado(p);
-}
-
-
+/**
+ * @brief Destructor.
+ */
 Documento::~Documento() {
 }
 
