@@ -121,7 +121,7 @@ VDinamico<T>::VDinamico(const VDinamico<T>& origen, unsigned int inicio, unsigne
  */
 template <class T>
 VDinamico<T>& VDinamico<T>::operator =(const VDinamico<T>& orig){
-    if (this != orig){
+    if (this != &orig){
         if (vector)
             delete []vector;
         

@@ -35,6 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Diccionario.o \
+	${OBJECTDIR}/Documento.o \
+	${OBJECTDIR}/GestorTextos.o \
 	${OBJECTDIR}/Palabra.o \
 	${OBJECTDIR}/ParPalabras.o \
 	${OBJECTDIR}/main.o
@@ -63,6 +66,21 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/eedd_pr1.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/eedd_pr1 ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/Diccionario.o: Diccionario.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Diccionario.o Diccionario.cpp
+
+${OBJECTDIR}/Documento.o: Documento.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Documento.o Documento.cpp
+
+${OBJECTDIR}/GestorTextos.o: GestorTextos.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GestorTextos.o GestorTextos.cpp
 
 ${OBJECTDIR}/Palabra.o: Palabra.cpp
 	${MKDIR} -p ${OBJECTDIR}

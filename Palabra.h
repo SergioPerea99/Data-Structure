@@ -41,9 +41,13 @@ public:
     bool operator <=(const Palabra& dato);
     bool operator >=(const Palabra& dato);
     
+    /*---- MÉTODOS PRÁCTICA 1 ----*/
     bool palindromo(Palabra& pal);
     bool anagrama(Palabra& pal);
     Palabra reves();
+    
+    /*---- MÉTODOS PRÁCTICA 2 ----*/
+    void limpiar();
 
 };
 

@@ -175,3 +175,32 @@ bool Palabra::anagrama(Palabra& pal){
 }
 
 
+void Palabra::limpiar(){
+    /*COSAS A TENER EN CUENTA:
+     * La "Ñ" es posible que no la reconozca en caso de usar isalpha().
+     * Comprobar únicamente los 2 primeros y los 2 últimos caracteres del string con isalpha().
+     */
+    for (int i = 0 ; i < palabra.length(); i++){
+        
+//        if( i <= 3){
+//            if (!isalpha(palabra[i])){ 
+//                for(int j = i; j <= palabra.length(); j++)
+//                    palabra[j] = palabra[j+1];
+//            }
+//        }
+        
+        /*ELIMINAR POR EL FINAL BIEN.*/
+        if(i >= palabra.length()-3){
+            if (!isalpha(palabra[i])){ /* Caracter incorrecto.*/
+                
+                for (int j = palabra.length()-1; j >= 0; j--){ /*Machaco el caracter no válido.*/
+                    palabra[j] = palabra[j-1];   
+                }
+                cout<<GetPalabra()<<endl;
+            }
+        }
+        
+        
+    }
+}
+    

@@ -14,9 +14,41 @@
 #ifndef LISTAENLAZADA_H
 #define LISTAENLAZADA_H
 
-#include "Nodo.h"
-#include "Iterador.h"
+#include <iostream>
 
+template <class T>
+class Nodo {
+    public:
+        T dato;
+        Nodo *sig;
+        
+        Nodo(T& aDato, Nodo<T> *aSig) {
+            dato = aDato;
+            sig = aSig;
+        };
+        Nodo(const Nodo<T>& orig) {
+            dato = orig.dato;
+            sig = orig.sig;
+        };
+        virtual ~Nodo(){};
+     
+};
+
+template <class T>
+class Iterador{
+    public:
+        Nodo<T> *nodo;
+        
+        Iterador(Nodo<T> *aNodo){ nodo = aNodo;};
+        Iterador(const Iterador& orig){ nodo = orig.nodo;};
+        virtual ~Iterador(){};
+        
+        bool fin(){ return nodo == nullptr;};
+        void siguiente(){ nodo = nodo->sig;};
+        T& dato(){ return nodo->dato;};
+
+
+};
 
 
 template <class T>
@@ -42,7 +74,7 @@ class ListaEnlazada {
         
         void insertaInicio(T& dato);
         void insertaFin(T& dato);
-        void inserta(Iterador<T>& i, T& dato);
+        void inserta(Iterador<T> i, T& dato);
         void insertaOrdenado(T& dato);
 
         virtual ~ListaEnlazada();
@@ -94,36 +126,19 @@ ListaEnlazada<T>::ListaEnlazada(const ListaEnlazada<T>& orig) {
  */
 template <class T>
 ListaEnlazada<T>& ListaEnlazada<T>::operator =(const ListaEnlazada<T>& orig){
-    if(this != orig){
-        
-        //Primero se debe vaciar la lista en caso de tener elementos.
-        while(cabecera != nullptr)
-            borraInicio();
-        
-        //Ahora, se crea una copia de cada uno de los nodos de la lista origen.
-        Nodo<T> *p = orig.cabecera;
-        while(p != nullptr){
-            insertaFin(p->dato);
-            p = p->sig;
-        }
-    }
-}
+    
+    //Primero se debe vaciar la lista en caso de tener elementos.
+    while(cabecera != nullptr)
+        borraInicio();
 
-/**
- * @brief Destructor de la ListaEnlazada.
- * @post Este destructor llamará a los correspondientes destructores de los Nodos.
- */
-template <typename T>
-ListaEnlazada<T>::~ListaEnlazada() {
-    if(cabecera){
-        Nodo<T>* p = cabecera;
-        while(p != nullptr){
-            p = p->sig;
-            delete cabecera;
-            cabecera = p;
-        }
-        cabecera = cola = nullptr;
+    //Ahora, se crea una copia de cada uno de los nodos de la lista origen.
+    Nodo<T> *p = orig.cabecera;
+    while(p != nullptr){
+        insertaFin(p->dato);
+        p = p->sig;
     }
+    
+    return *this;
 }
 
 /**
@@ -277,7 +292,7 @@ void ListaEnlazada<T>::insertaFin(T& dato){
  * @param dato Elemento a insertar de tipo T.
  */
 template <class T>
-void ListaEnlazada<T>::inserta(Iterador<T>& i, T& dato){
+void ListaEnlazada<T>::inserta(Iterador<T> i, T& dato){
     Nodo<T> *p = i.nodo; //NO HACER OPERACIONES INTERNAS CON EL ITERADOR.
     if(p){
         if (p == cabecera){
@@ -326,6 +341,23 @@ void ListaEnlazada<T>::insertaOrdenado(T& dato){
 template <class T>
 int ListaEnlazada<T>::tama(){
     return tam;
+}
+
+/**
+ * @brief Destructor de la ListaEnlazada.
+ * @post Este destructor llamará a los correspondientes destructores de los Nodos.
+ */
+template <class T>
+ListaEnlazada<T>::~ListaEnlazada() {
+    if(cabecera){
+        Nodo<T>* p = cabecera;
+        while(p != nullptr){
+            p = p->sig;
+            delete cabecera;
+            cabecera = p;
+        }
+        cabecera = cola = nullptr;
+    }
 }
 
 /*----------- METODOS PRIVADOS ------------*/
