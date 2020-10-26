@@ -61,10 +61,8 @@ void GestorTextos::chequearTexto (string _documento, string _diccionario) {
 		++total;
                 /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
                 pal.limpiar();
-                string minus = pal.GetPalabra();
-                std::transform(minus.begin(),minus.end(),minus.begin(), ::tolower);
-                Palabra aux(minus);
-		if (!getDiccionario().buscarDicotomica(aux)) {
+                
+		if (!getDiccionario().buscarDicotomica(pal.conversionMinus())) {
                     ++no_validadas;
                     getTexto().addInexistente(pal);
 		}

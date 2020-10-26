@@ -77,6 +77,9 @@ int main(int argc, char** argv) {
         gestor1.chequearTexto("quijote-sin-simbolos.txt","dicc-espanol-sin.txt");
         
         /*SACO POR PANTALLA TODOS LOS ELEMENTOS DE LA LISTA DE INEXISTENTES INICIAL (SIN CONTAR REPETIDOS).*/
+        cout<<endl<<endl;
+        cout<<"-----------------------------------------------------------------------"<<endl;
+        cout<<"---------------      PALABRAS INEXISTENTES      -----------------------"<<endl;
         Iterador<Palabra> it = gestor1.getTexto().getInexistentes().iterador();
         int i = 0;
         cout<<"[ ";
@@ -88,12 +91,14 @@ int main(int argc, char** argv) {
         cout<<"]."<<endl<<endl<<endl;
         
         /*ELIMINO Y MUESTRO POR PANTALLA LOS ELEMENTOS QUE SON NOMBRES PROPIOS*/
+        cout<<"---------------------------------------------------------------------"<<endl;
+        cout<<"---------------      PALABRAS ELIMINADAS      -----------------------"<<endl;
         it = gestor1.getTexto().getInexistentes().iterador();
         int borrados = 0;
         cout<<"[ ";
         while(!it.fin()){
             if(it.dato().GetPalabra()[0] >= 65 && it.dato().GetPalabra()[0] <= 90){
-                cout<<it.dato().GetPalabra()<<"   ";
+                cout<<it.dato().GetPalabra()<<"___";
                 gestor1.getTexto().getInexistentes().borra(it);
                 it = gestor1.getTexto().getInexistentes().iterador();
                 ++borrados;
@@ -101,9 +106,11 @@ int main(int argc, char** argv) {
             it.siguiente();
             
         }
-        cout<<"]."<<endl<<endl<<endl;
+        cout<<"]."<<endl<<endl<<endl<<endl;
         
         /*MUESTRO POR PANTALLA LA LISTA DE PALABRAS INEXISTENTES SIN REPETIDOS Y SIN NOMBRES PROPIOS.*/
+        cout<<"-------------------------------------------------------------------------------"<<endl;
+        cout<<"---------------      PALABRAS INEXISTENTES FINALES      -----------------------"<<endl;
         it = gestor1.getTexto().getInexistentes().iterador();
         cout<<"[ ";
         while(!it.fin()){

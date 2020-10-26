@@ -175,22 +175,41 @@ bool Palabra::anagrama(Palabra& pal){
     return false;
 }
 
-
+/**
+ * @brief Limpiar Palabra.
+ * @post Limpia una palabra de los caracteres que no corresponden al alfabeto.
+ */
 void Palabra::limpiar(){
-    /*COSAS A TENER EN CUENTA:
-     * La "Ñ" es posible que no la reconozca en caso de usar isalpha().
-     * Comprobar únicamente los 2 primeros y los 2 últimos caracteres del string con isalpha().
-     */
-    int primerValido = 0;
-    int ultimoValido = palabra.length()-1;
-    for (int i = 0 ; i < palabra.length(); i++){
-        if(!isalpha(palabra[i]) && i < 3)
-            primerValido++;
-        if (!isalpha(palabra[i]) && i > palabra.length()-3)
-            ultimoValido--;
-    }
-    //std::transform(palabra.begin(),palabra.end(),palabra.begin(), ::tolower);
-    palabra = palabra.substr(primerValido,ultimoValido-primerValido+1);
     
+    int incorrectos = 0;
+    for (int i = 0 ; i < palabra.length(); i++){
+        if(!isalpha(palabra[i])){
+            incorrectos++;
+        }else
+            break;
+        
+    }
+    palabra.erase(palabra.begin(),palabra.begin()+incorrectos);
+    incorrectos = 0;
+    for (int i = palabra.length()-1 ; i >= 0; i--){
+        if (!isalpha(palabra[i]) ){
+            incorrectos++;
+        }else
+            break;
+    }
+    palabra.erase(palabra.end()-incorrectos,palabra.end());
+   
+}
+
+/**
+ * @brief Pasar a Minúsculas una palabra.
+ * @post A partir de la Palabra que llama al método, se genera una copia auxiliar de ella en minúsculas todas sus letras.
+ * @return Palabra auxiliar devuelta con todas las letras en minúscula.
+ */
+Palabra Palabra::conversionMinus(){
+    string minus = GetPalabra();
+    std::transform(minus.begin(),minus.end(),minus.begin(), ::tolower);
+    Palabra aux(minus);
+    return aux;
 }
     

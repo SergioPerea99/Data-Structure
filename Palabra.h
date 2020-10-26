@@ -48,6 +48,7 @@ public:
     
     /*---- MÉTODOS PRÁCTICA 2 ----*/
     void limpiar();
+    Palabra conversionMinus();
 
 };
 

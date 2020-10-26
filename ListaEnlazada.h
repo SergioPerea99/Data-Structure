@@ -333,6 +333,7 @@ void ListaEnlazada<T>::insertaOrdenado(const T& dato){
     Nodo<T>*p = cabecera;
     while(p && p->dato < dato)
         p = p->sig;
+    
     /*En caso de ser el mismo dato, no insertarlo.*/
     if(p && p->dato == dato)
         return;
