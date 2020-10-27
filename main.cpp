@@ -94,16 +94,18 @@ int main(int argc, char** argv) {
         cout<<"---------------------------------------------------------------------"<<endl;
         cout<<"---------------      PALABRAS ELIMINADAS      -----------------------"<<endl;
         it = gestor1.getTexto().getInexistentes().iterador();
+        Iterador<Palabra> aux = it;
         int borrados = 0;
         cout<<"[ ";
         while(!it.fin()){
             if(it.dato().GetPalabra()[0] >= 65 && it.dato().GetPalabra()[0] <= 90){
                 cout<<it.dato().GetPalabra()<<"___";
-                gestor1.getTexto().getInexistentes().borra(it);
-                it = gestor1.getTexto().getInexistentes().iterador();
+                aux = it;
+                it.siguiente();
+                gestor1.getTexto().getInexistentes().borra(aux);
                 ++borrados;
-            }
-            it.siguiente();
+            }else
+                it.siguiente();
             
         }
         cout<<"]."<<endl<<endl<<endl<<endl;

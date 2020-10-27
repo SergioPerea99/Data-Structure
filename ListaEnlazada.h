@@ -348,7 +348,7 @@ void ListaEnlazada<T>::insertaOrdenado(const T& dato){
         inserta(it,dato);
         ++tam;
     }
-    
+
 }
 
 template <class T>
