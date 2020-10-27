@@ -4,7 +4,10 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>Exception.h</itemPath>
+      <itemPath>Diccionario.h</itemPath>
+      <itemPath>Documento.h</itemPath>
+      <itemPath>GestorTextos.h</itemPath>
+      <itemPath>ListaEnlazada.h</itemPath>
       <itemPath>Palabra.h</itemPath>
       <itemPath>ParPalabras.h</itemPath>
       <itemPath>VDinamico.h</itemPath>
@@ -16,7 +19,9 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>Exception.cpp</itemPath>
+      <itemPath>Diccionario.cpp</itemPath>
+      <itemPath>Documento.cpp</itemPath>
+      <itemPath>GestorTextos.cpp</itemPath>
       <itemPath>Palabra.cpp</itemPath>
       <itemPath>ParPalabras.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
@@ -43,9 +48,19 @@
       </toolsSet>
       <compileType>
       </compileType>
-      <item path="Exception.cpp" ex="false" tool="1" flavor2="0">
+      <item path="Diccionario.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="Exception.h" ex="false" tool="3" flavor2="0">
+      <item path="Diccionario.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Documento.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Documento.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GestorTextos.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GestorTextos.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ListaEnlazada.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Palabra.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -80,9 +95,19 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="Exception.cpp" ex="false" tool="1" flavor2="0">
+      <item path="Diccionario.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="Exception.h" ex="false" tool="3" flavor2="0">
+      <item path="Diccionario.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Documento.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Documento.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GestorTextos.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GestorTextos.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ListaEnlazada.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Palabra.cpp" ex="false" tool="1" flavor2="0">
       </item>

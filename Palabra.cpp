@@ -12,6 +12,7 @@
  */
 
 #include <string.h>
+#include <ctype.h>
 
 #include "Palabra.h"
 #include "VDinamico.h"
@@ -174,4 +175,41 @@ bool Palabra::anagrama(Palabra& pal){
     return false;
 }
 
+/**
+ * @brief Limpiar Palabra.
+ * @post Limpia una palabra de los caracteres que no corresponden al alfabeto.
+ */
+void Palabra::limpiar(){
+    
+    int incorrectos = 0;
+    for (int i = 0 ; i < palabra.length(); i++){
+        if(!isalpha(palabra[i])){
+            incorrectos++;
+        }else
+            break;
+        
+    }
+    palabra.erase(palabra.begin(),palabra.begin()+incorrectos);
+    incorrectos = 0;
+    for (int i = palabra.length()-1 ; i >= 0; i--){
+        if (!isalpha(palabra[i]) ){
+            incorrectos++;
+        }else
+            break;
+    }
+    palabra.erase(palabra.end()-incorrectos,palabra.end());
+   
+}
 
+/**
+ * @brief Pasar a Minúsculas una palabra.
+ * @post A partir de la Palabra que llama al método, se genera una copia auxiliar de ella en minúsculas todas sus letras.
+ * @return Palabra auxiliar devuelta con todas las letras en minúscula.
+ */
+Palabra Palabra::conversionMinus(){
+    string minus = GetPalabra();
+    std::transform(minus.begin(),minus.end(),minus.begin(), ::tolower);
+    Palabra aux(minus);
+    return aux;
+}
+    

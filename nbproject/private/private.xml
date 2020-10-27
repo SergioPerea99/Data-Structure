@@ -4,12 +4,21 @@
         <activeConfTypeElem>1</activeConfTypeElem>
         <activeConfIndexElem>1</activeConfIndexElem>
     </data>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>main.cpp</url>
+            <bookmark id="1">
+                <name/>
+                <line>60</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/VDinamico.h</file>
-            <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/dicc-espanol.txt</file>
+            <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/Documento.cpp</file>
             <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/main.cpp</file>
+            <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/ListaEnlazada.h</file>
         </group>
     </open-files>
 </project-private>
