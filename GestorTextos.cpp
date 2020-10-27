@@ -16,7 +16,7 @@
 #include "GestorTextos.h"
 
 
-GestorTextos::GestorTextos() {
+GestorTextos::GestorTextos(): diccionario("dicc-espanol-sin.txt"), texto("quijote-sin-simbolos.txt"){
     
 }
 
@@ -32,43 +32,28 @@ GestorTextos::GestorTextos(const GestorTextos& orig) {
  * una palabra del texto la cuál es limpiada (y puesta en minúscula auxiliarmente), se añadirá en una lista de inexistentes palabras en el 
  * objeto referente al Documento; es decir, en el texto.
  */
-void GestorTextos::chequearTexto (string _documento, string _diccionario) {
+void GestorTextos::chequearTexto () {
     
-    diccionario.SetNombreFich(_diccionario);
-    /*Primera parte: Cargar el diccionario en el Gestor de Textos.*/
-    ifstream is(_diccionario);
-	string palabra;
-        Palabra pal;
-	while (is) {
-		is >> palabra;
-                pal.SetPalabra(palabra);
-                diccionario.GetTerminos().insertar(pal);
-	}
-        /*Ordenación para poder luego buscar en él con una búsqueda binaria.*/
-        diccionario.GetTerminos().ordenar();
-	cout << diccionario.GetTerminos().tam() << " palabras cargadas en los TERMINOS del diccionario." << endl;
-	is.close();
-        
+    ifstream is("quijote-sin-simbolos.txt");
+    texto.setNombreFich("quijote-sin-simbolos.txt");
+    string palabra;
+    Palabra pal;
+    clock_t t_ini = clock();
+    int no_validadas = 0, total = 0, p;
+    while (is) {
+        is >> palabra;
+        pal.SetPalabra(palabra);
+        ++total;
+        /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
+        pal.limpiar();
 
-        /*Segunda parte: Comprobar palabras válidas del quijote.*/
-        texto.setNombreFich(_documento);
-        is.open(_documento);
-	clock_t t_ini = clock();
-	int no_validadas = 0, total = 0, p;
-	while (is) {
-		is >> palabra;
-                pal.SetPalabra(palabra);
-		++total;
-                /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
-                pal.limpiar();
-                
-		if (!getDiccionario().buscarDicotomica(pal.conversionMinus())) {
-                    ++no_validadas;
-                    getTexto().addInexistente(pal);
-		}
-	}
-	cout <<"Total palabras: " << total << " --------- Total de palabras no_validadas: " << no_validadas << endl;
-	cout << "Tiempo para chequear el texto: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
+        if (!getDiccionario().buscarDicotomica(pal.conversionMinus())) {
+            ++no_validadas;
+            getTexto().addInexistente(pal);
+        }
+    }
+    cout << "Total palabras: " << total << " --------- Total de palabras no_validadas: " << no_validadas << endl;
+    cout << "Tiempo para chequear el texto: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
         
 }
 

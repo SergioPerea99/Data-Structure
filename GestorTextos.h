@@ -28,7 +28,7 @@ public:
     virtual ~GestorTextos();
     
     /*---- MÉTODOS DEL UML PRACTICA 2 ----*/
-    void chequearTexto(std::string _documento, std::string _texto);
+    void chequearTexto();
     
     /*---- GETTERS Y SETTERS ----*/
     void setTexto(Documento texto);

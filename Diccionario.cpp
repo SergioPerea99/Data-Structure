@@ -17,7 +17,20 @@
  * @brief Constructor por defecto.
  */
 Diccionario::Diccionario() {
-    nombreFich = "null";
+    nombreFich = "dicc-espanol-sin.txt";
+    /*Primera parte: Cargar el diccionario en el Gestor de Textos.*/
+    ifstream is("dicc-espanol-sin.txt");
+    string palabra;
+    Palabra pal;
+    while (is) {
+        is >> palabra;
+        pal.SetPalabra(palabra);
+        GetTerminos().insertar(pal);
+    }
+    /*Ordenación para poder luego buscar en él con una búsqueda binaria.*/
+    GetTerminos().ordenar();
+    cout << GetTerminos().tam() << " palabras cargadas en los TERMINOS del diccionario." << endl;
+    is.close();
 }
 
 /**
@@ -26,6 +39,19 @@ Diccionario::Diccionario() {
  */
 Diccionario::Diccionario(std::string _nombreFich) {
     nombreFich = _nombreFich;
+    /*Primera parte: Cargar el diccionario en el Gestor de Textos.*/
+    ifstream is(_nombreFich);
+    string palabra;
+    Palabra pal;
+    while (is) {
+        is >> palabra;
+        pal.SetPalabra(palabra);
+        GetTerminos().insertar(pal);
+    }
+    /*Ordenación para poder luego buscar en él con una búsqueda binaria.*/
+    GetTerminos().ordenar();
+    cout << GetTerminos().tam() << " palabras cargadas en los TERMINOS del diccionario." << endl;
+    is.close();
 }
 
 /**

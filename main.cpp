@@ -18,7 +18,6 @@
 #include <cstdio>
 #include <algorithm>
 #include <exception>
-#include <locale.h>
 
 #include "VDinamico.h"
 #include "Palabra.h"
@@ -74,7 +73,7 @@ int main(int argc, char** argv) {
         /*INSTANCIO EL GESTOR DE TEXTOS CON SU RESPECTIVO TEXTO Y DICCIONARIO.*/
         GestorTextos gestor1;
         gestor1.getDiccionario().SetNombreFich("El Quijote + diccionario Español.txt");
-        gestor1.chequearTexto("quijote-sin-simbolos.txt","dicc-espanol-sin.txt");
+        gestor1.chequearTexto();
         
         /*SACO POR PANTALLA TODOS LOS ELEMENTOS DE LA LISTA DE INEXISTENTES INICIAL (SIN CONTAR REPETIDOS).*/
         cout<<endl<<endl;

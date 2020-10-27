@@ -15,9 +15,11 @@
 #define DICCIONARIO_H
 
 #include <iostream>
+#include <fstream>
 
 #include "VDinamico.h"
 #include "Palabra.h"
+
 
 class Diccionario {
 private:

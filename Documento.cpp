@@ -17,7 +17,11 @@
  * @brief Constructor por defecto.
  */
 Documento::Documento() {
-    nombreFich = "null";
+    nombreFich = "quijote-sin-simbolos.txt";
+}
+
+Documento::Documento(std::string _texto){
+    nombreFich = _texto;
 }
 
 /**

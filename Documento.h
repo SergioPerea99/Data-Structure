@@ -24,6 +24,7 @@ private:
     ListaEnlazada<Palabra> inexistentes;
 public:
     Documento();
+    Documento(std::string _texto);
     Documento(const Documento& orig);
     virtual ~Documento();
     
