@@ -58,6 +58,25 @@ void comprobar() {
 	cout << "Tiempo implementación 1: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
 }
 
+int eliminarNombrePropio(GestorTextos& gestor1){
+    Iterador<Palabra> it = gestor1.getTexto().getInexistentes().iterador();
+    Iterador<Palabra> aux = it;
+    int borrados = 0;
+    cout << "[ ";
+    while (!it.fin()) {
+        if (it.dato().GetPalabra()[0] >= 65 && it.dato().GetPalabra()[0] <= 90) {
+            cout << it.dato().GetPalabra() << "___";
+            aux = it;
+            it.siguiente();
+            gestor1.getTexto().getInexistentes().borra(aux);
+            ++borrados;
+        } else
+            it.siguiente();
+
+    }
+    return borrados;
+}
+
 
 int main(int argc, char** argv) {
     
@@ -92,21 +111,7 @@ int main(int argc, char** argv) {
         /*ELIMINO Y MUESTRO POR PANTALLA LOS ELEMENTOS QUE SON NOMBRES PROPIOS*/
         cout<<"---------------------------------------------------------------------"<<endl;
         cout<<"---------------      PALABRAS ELIMINADAS      -----------------------"<<endl;
-        it = gestor1.getTexto().getInexistentes().iterador();
-        Iterador<Palabra> aux = it;
-        int borrados = 0;
-        cout<<"[ ";
-        while(!it.fin()){
-            if(it.dato().GetPalabra()[0] >= 65 && it.dato().GetPalabra()[0] <= 90){
-                cout<<it.dato().GetPalabra()<<"___";
-                aux = it;
-                it.siguiente();
-                gestor1.getTexto().getInexistentes().borra(aux);
-                ++borrados;
-            }else
-                it.siguiente();
-            
-        }
+        int borrados = eliminarNombrePropio(gestor1);
         cout<<"]."<<endl<<endl<<endl<<endl;
         
         /*MUESTRO POR PANTALLA LA LISTA DE PALABRAS INEXISTENTES SIN REPETIDOS Y SIN NOMBRES PROPIOS.*/
@@ -125,6 +130,7 @@ int main(int argc, char** argv) {
     }catch(exception &e){
         cout<<e.what()<<endl;
     }
-
+    
+    
     return 0;
 }

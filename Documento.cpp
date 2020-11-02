@@ -16,11 +16,11 @@
 /**
  * @brief Constructor por defecto.
  */
-Documento::Documento() {
+Documento::Documento() : inexistentes(){
     nombreFich = "quijote-sin-simbolos.txt";
 }
 
-Documento::Documento(std::string _texto){
+Documento::Documento(std::string _texto): inexistentes(){
     nombreFich = _texto;
 }
 
