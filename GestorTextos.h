@@ -21,20 +21,25 @@
 class GestorTextos {
 private:
     Diccionario diccionario;
-    Documento texto;
+    VDinamico<Documento*> documentos;
 public:
     GestorTextos();
     GestorTextos(const GestorTextos& orig);
     virtual ~GestorTextos();
     
     /*---- MÉTODOS DEL UML PRACTICA 2 ----*/
-    void chequearTexto();
+    //void chequearTexto(int pos);
+    
+    /*---- MÉTODOS DEL UML PRACTICA 3 ----*/
+    int addDocumento(std::string nombreFich);
+    Documento buscarDocumento(std::string nombreFich);
     
     /*---- GETTERS Y SETTERS ----*/
     void setTexto(Documento texto);
     Documento& getTexto();
-    void setDiccionario(Diccionario diccionario);
-    Diccionario& getDiccionario();
+    void setDiccionario(Diccionario& diccionario);
+    Diccionario* getDiccionario();
+    VDinamico<Documento*> getDocumentos();
 };
 
 #endif /* GESTORTEXTOS_H */

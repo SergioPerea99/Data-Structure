@@ -25,7 +25,7 @@ Diccionario::Diccionario() {
     while (is) {
         is >> palabra;
         pal.SetPalabra(palabra);
-        GetTerminos().insertar(pal);
+        terminos.insertar(pal);
     }
     /*Ordenación para poder luego buscar en él con una búsqueda binaria.*/
     GetTerminos().ordenar();
@@ -61,6 +61,7 @@ Diccionario::Diccionario(std::string _nombreFich) {
 Diccionario::Diccionario(const Diccionario& orig) {
     nombreFich = orig.nombreFich;
     terminos = orig.terminos;
+    
 }
 
 /**
@@ -83,10 +84,17 @@ bool Diccionario::buscarDicotomica(Palabra buscar){
     return false;
 }
 
+Diccionario& Diccionario::operator =(const Diccionario& orig){
+    if (this != &orig){
+        nombreFich = orig.nombreFich;
+        terminos = orig.terminos;
+    }
+}
+
 
 /*---- GETTERS Y SETTERS ----*/
 
-VDinamico<Palabra>& Diccionario::GetTerminos(){
+VDinamico<Palabra> Diccionario::GetTerminos() const{
     return terminos;
 }
 

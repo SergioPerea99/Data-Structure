@@ -18,10 +18,12 @@
  */
 Documento::Documento() : inexistentes(){
     nombreFich = "quijote-sin-simbolos.txt";
+    dicc = nullptr;
 }
 
-Documento::Documento(std::string _texto): inexistentes(){
+Documento::Documento(std::string _texto, Diccionario* _dicc): inexistentes(){
     nombreFich = _texto;
+    dicc = _dicc;
 }
 
 /**
@@ -31,6 +33,7 @@ Documento::Documento(std::string _texto): inexistentes(){
 Documento::Documento(const Documento& orig) {
     nombreFich = orig.nombreFich;
     inexistentes = orig.inexistentes;
+    dicc = orig.dicc;
 }
 
 
@@ -45,6 +48,44 @@ void Documento::addInexistente(Palabra p) {
     inexistentes.insertaOrdenado(p);
 }
 
+
+bool Documento::operator ==(const Documento& dato){
+    return nombreFich == dato.nombreFich ? true : false;
+}
+
+Documento& Documento::operator =(const Documento& dato){
+    if(this != &dato){
+        nombreFich = dato.nombreFich;
+        inexistentes = dato.inexistentes;
+    }
+    return *this;
+}
+
+
+void Documento::chequearTexto(){
+    ifstream is(nombreFich);
+    string palabra;
+    Palabra pal;
+    clock_t t_ini = clock();
+    int no_validadas = 0, total = 0, p;
+    while (is) {
+        is >> palabra;
+        pal.SetPalabra(palabra);
+        ++total;
+        /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
+        pal.limpiar();
+
+        if (!getDicc()->buscarDicotomica(pal.conversionMinus())) {
+            ++no_validadas;
+            addInexistente(pal);
+        }
+    }
+    cout << "Total palabras: " << total << " --------- Total de palabras no_validadas: " << no_validadas << endl;
+    cout << "Tiempo para chequear el texto: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
+}
+
+
+
 /*---- GETTERS Y SETTERS ----*/
 ListaEnlazada<Palabra>& Documento::getInexistentes(){
     return inexistentes;
@@ -56,6 +97,14 @@ void Documento::setNombreFich(std::string nombreFich) {
 
 std::string Documento::getNombreFich(){
     return nombreFich;
+}
+
+Diccionario* Documento::getDicc() const{
+    return dicc;
+}
+
+void Documento::setDicc(Diccionario* dicc) {
+    this->dicc = dicc;
 }
 
 /**

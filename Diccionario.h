@@ -35,9 +35,11 @@ public:
     /*---- MÉTODOS DEL UML PRACTICA 2 ----*/
     bool buscarDicotomica(Palabra buscar);
     
+    /*---- MÉTODOS NECESARIO PRACTICA 3 ----*/
+    Diccionario& operator=(const Diccionario& orig);
     
     /*GETTERS Y SETTERS.*/
-    VDinamico<Palabra>& GetTerminos();
+    VDinamico<Palabra> GetTerminos() const;
     void SetNombreFich(std::string nombreFich);
     std::string GetNombreFich() const;
     

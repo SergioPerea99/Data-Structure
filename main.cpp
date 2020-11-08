@@ -58,8 +58,9 @@ void comprobar() {
 	cout << "Tiempo implementación 1: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
 }
 
-int eliminarNombrePropio(GestorTextos& gestor1){
-    Iterador<Palabra> it = gestor1.getTexto().getInexistentes().iterador();
+int eliminarNombrePropio(GestorTextos& gestor1, int pos){
+
+    Iterador<Palabra> it = gestor1.getDocumentos()[pos]->getInexistentes().iterador();
     Iterador<Palabra> aux = it;
     int borrados = 0;
     cout << "[ ";
@@ -68,7 +69,7 @@ int eliminarNombrePropio(GestorTextos& gestor1){
             cout << it.dato().GetPalabra() << "___";
             aux = it;
             it.siguiente();
-            gestor1.getTexto().getInexistentes().borra(aux);
+            gestor1.getDocumentos()[pos]->getInexistentes().borra(aux);
             ++borrados;
         } else
             it.siguiente();
@@ -86,19 +87,32 @@ int main(int argc, char** argv) {
     /*------------------------------- MENÚ PRINCIPAL: PRÁCTICA 2 ------------------------------------------*/
     /*-----------------------------------------------------------------------------------------------------*/
     try{
-        cout<<endl<<endl;
-        cout<<" ---------INICIO PROGRAMA PRINCIPAL PRACTICA 2--------"<<endl;
         
-        /*INSTANCIO EL GESTOR DE TEXTOS CON SU RESPECTIVO TEXTO Y DICCIONARIO.*/
+        cout<<endl<<endl;
+        cout<<" ---------INICIO PROGRAMA PRINCIPAL PRACTICA 3--------"<<endl;
+        
+        
+
+        /*INSTANCIO EL GESTOR DE TEXTOS CON SU RESPECTIVO TEXTO A USAR Y DICCIONARIO.*/
         GestorTextos gestor1;
-        gestor1.getDiccionario().SetNombreFich("El Quijote + diccionario Español.txt");
-        gestor1.chequearTexto();
+        
+        std::string nombreFich = "quijote-sin-simbolos.txt";
+        int pos = gestor1.addDocumento(nombreFich);
+        
+        Diccionario * dic = gestor1.getDocumentos()[pos]->getDicc();
+        
+        cout<<gestor1.getDocumentos()[pos]->getDicc()->GetNombreFich()<<endl;
+        //HASTA AQUI LO HACE BIEN, POR FIN HE CONECTADO EL DICCIONARIO AL DOCUMENTO ASOCIANDOLO.
+        
+        gestor1.getDocumentos()[pos]->chequearTexto();
+        //gestor1.chequearTexto(pos);
+       
         
         /*SACO POR PANTALLA TODOS LOS ELEMENTOS DE LA LISTA DE INEXISTENTES INICIAL (SIN CONTAR REPETIDOS).*/
         cout<<endl<<endl;
         cout<<"-----------------------------------------------------------------------"<<endl;
         cout<<"---------------      PALABRAS INEXISTENTES      -----------------------"<<endl;
-        Iterador<Palabra> it = gestor1.getTexto().getInexistentes().iterador();
+        Iterador<Palabra> it = gestor1.getDocumentos()[pos]->getInexistentes().iterador();
         int i = 0;
         cout<<"[ ";
         while(!it.fin()){
@@ -111,13 +125,13 @@ int main(int argc, char** argv) {
         /*ELIMINO Y MUESTRO POR PANTALLA LOS ELEMENTOS QUE SON NOMBRES PROPIOS*/
         cout<<"---------------------------------------------------------------------"<<endl;
         cout<<"---------------      PALABRAS ELIMINADAS      -----------------------"<<endl;
-        int borrados = eliminarNombrePropio(gestor1);
+        int borrados = eliminarNombrePropio(gestor1, pos);
         cout<<"]."<<endl<<endl<<endl<<endl;
         
         /*MUESTRO POR PANTALLA LA LISTA DE PALABRAS INEXISTENTES SIN REPETIDOS Y SIN NOMBRES PROPIOS.*/
         cout<<"-------------------------------------------------------------------------------"<<endl;
         cout<<"---------------      PALABRAS INEXISTENTES FINALES      -----------------------"<<endl;
-        it = gestor1.getTexto().getInexistentes().iterador();
+        it = gestor1.getDocumentos()[pos]->getInexistentes().iterador();
         cout<<"[ ";
         while(!it.fin()){
             cout<<it.dato().GetPalabra()<<", ";
@@ -126,7 +140,7 @@ int main(int argc, char** argv) {
         cout<<"]."<<endl<<endl<<endl;
         
         cout<<"NOMBRES PROPIOS ELIMINADOS : "<<borrados<<endl;
-        cout<<"NUMERO DE PALABRAS INEXISTENTES (SIN NOMBRES PROPIOS NI REPETIDOS): "<<gestor1.getTexto().getInexistentes().tama()<<endl;
+        cout<<"NUMERO DE PALABRAS INEXISTENTES (SIN NOMBRES PROPIOS NI REPETIDOS): "<<gestor1.getDocumentos()[pos]->getInexistentes().tama()<<endl;
     }catch(exception &e){
         cout<<e.what()<<endl;
     }
