@@ -45,7 +45,7 @@ private:
     
     void copiaRecursivamente(NodoAVL<T> *actual, NodoAVL<T> *copiar);
     void destruyeRecursivamente(NodoAVL<T> *borrar);
-    bool buscaRecursivamente(NodoAVL<T> *buscar, T& dato);
+    NodoAVL<T>* buscaRecursivamente(NodoAVL<T> *buscar, T& dato);
     void inordenRecursivo(NodoAVL<T> *p);
 public:
     Arbol_AVL();
@@ -191,7 +191,11 @@ int Arbol_AVL<T>::inserta(NodoAVL<T>*& c, T& dato){
  */
 template <class T>
 bool Arbol_AVL<T>::buscaNR(T& dato, T& result){
-    return buscaRecursivamente(raiz,dato)?true:false;
+    NodoAVL<T>* encontrado = buscaRecursivamente(raiz,dato);
+    if(encontrado)
+        return true;
+    else
+        return false;
 }
 
 
@@ -343,17 +347,17 @@ void Arbol_AVL<T>::rotDecha(NodoAVL<T>*& p){
  * @return Booleano que indica si se ha encontrado.
  */
 template <class T>
-bool Arbol_AVL<T>::buscaRecursivamente(NodoAVL<T>* buscar, T& dato){
+NodoAVL<T>* Arbol_AVL<T>::buscaRecursivamente(NodoAVL<T>* buscar, T& dato){
     if(buscar){
         if (dato < buscar->dato)
-            buscaRecursivamente(buscar->izq,dato); /*Si el elemento es menor estricto, se busca por subarbol cuya raiz es el hijo izquierdo.*/
+            return buscaRecursivamente(buscar->izq,dato); /*Si el elemento es menor estricto, se busca por subarbol cuya raiz es el hijo izquierdo.*/
+        else if (dato > buscar->dato)
+            return buscaRecursivamente(buscar->der,dato); /*Si el elemento es mayor estricto, se busca por subarbol cuya raiz es el hijo derecho. */
         else
-            buscaRecursivamente(buscar->der,dato); /*Si el elemento es mayor estricto, se busca por subarbol cuya raiz es el hijo derecho. */
-        
-        if(buscar->dato == dato) 
-            return true; /*En caso de haberlo encontrado, fin de la recursividad.*/
+            return buscar; /*En caso de haberlo encontrado, fin de la recursividad.*/
     }
-    return false;
+    return nullptr;
+
 }
 
 

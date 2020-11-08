@@ -100,45 +100,50 @@ int main(int argc, char** argv) {
         std::string nombreFich = "quijote-sin-simbolos.txt";
         int pos = gestor1.addDocumento(nombreFich);
         
-        Diccionario * dic = gestor1.getDocumentos()[pos]->getDicc();
+        std::cout<<"¿ QUÉ FORMA DE EJECUTAR LA PRÁCTICA PREFIERE ? "<<endl;
+        std::cout<<"1 :: SALIR."<<endl;
+        std::cout<<"2 :: PRÁCTICA 2."<<endl;
+        std::cout<<"3 :: PRÁCTICA 3."<<endl;
+        unsigned int num_practica;
+        std::cin>>num_practica;
         
-        gestor1.getDocumentos()[pos]->chequearTexto();
-        //gestor1.chequearTexto(pos);
+        if (num_practica != 1){
+            gestor1.getDocumentos()[pos]->chequearTexto(num_practica);
         
-        /*SACO POR PANTALLA TODOS LOS ELEMENTOS DE LA LISTA DE INEXISTENTES INICIAL (SIN CONTAR REPETIDOS).*/
-        cout<<endl<<endl;
-        cout<<"-----------------------------------------------------------------------"<<endl;
-        cout<<"---------------      PALABRAS INEXISTENTES      -----------------------"<<endl;
-        Iterador<Palabra> it = gestor1.getDocumentos()[pos]->getInexistentes().iterador();
-        int i = 0;
-        cout<<"[ ";
-        while(!it.fin()){
-            cout<<it.dato().GetPalabra()<<", ";
-            it.siguiente();
-            i++;
+            /*SACO POR PANTALLA TODOS LOS ELEMENTOS DE LA LISTA DE INEXISTENTES INICIAL (SIN CONTAR REPETIDOS).*/
+            cout<<endl<<endl;
+            cout<<"-----------------------------------------------------------------------"<<endl;
+            cout<<"---------------      PALABRAS INEXISTENTES      -----------------------"<<endl;
+            Iterador<Palabra> it = gestor1.getDocumentos()[pos]->getInexistentes().iterador();
+            int i = 0;
+            cout<<"[ ";
+            while(!it.fin()){
+                cout<<it.dato().GetPalabra()<<", ";
+                it.siguiente();
+                i++;
+            }
+            cout<<"]."<<endl<<endl<<endl;
+
+            /*ELIMINO Y MUESTRO POR PANTALLA LOS ELEMENTOS QUE SON NOMBRES PROPIOS*/
+            cout<<"---------------------------------------------------------------------"<<endl;
+            cout<<"---------------      PALABRAS ELIMINADAS      -----------------------"<<endl;
+            int borrados = eliminarNombrePropio(gestor1, pos);
+            cout<<"]."<<endl<<endl<<endl<<endl;
+
+            /*MUESTRO POR PANTALLA LA LISTA DE PALABRAS INEXISTENTES SIN REPETIDOS Y SIN NOMBRES PROPIOS.*/
+            cout<<"-------------------------------------------------------------------------------"<<endl;
+            cout<<"---------------      PALABRAS INEXISTENTES FINALES      -----------------------"<<endl;
+            it = gestor1.getDocumentos()[pos]->getInexistentes().iterador();
+            cout<<"[ ";
+            while(!it.fin()){
+                cout<<it.dato().GetPalabra()<<", ";
+                it.siguiente();
+            }
+            cout<<"]."<<endl<<endl<<endl;
+
+            cout<<"NOMBRES PROPIOS ELIMINADOS : "<<borrados<<endl;
+            cout<<"NUMERO DE PALABRAS INEXISTENTES (SIN NOMBRES PROPIOS NI REPETIDOS): "<<gestor1.getDocumentos()[pos]->getInexistentes().tama()<<endl;
         }
-        cout<<"]."<<endl<<endl<<endl;
-        
-        /*ELIMINO Y MUESTRO POR PANTALLA LOS ELEMENTOS QUE SON NOMBRES PROPIOS*/
-        cout<<"---------------------------------------------------------------------"<<endl;
-        cout<<"---------------      PALABRAS ELIMINADAS      -----------------------"<<endl;
-        int borrados = eliminarNombrePropio(gestor1, pos);
-        cout<<"]."<<endl<<endl<<endl<<endl;
-        
-        /*MUESTRO POR PANTALLA LA LISTA DE PALABRAS INEXISTENTES SIN REPETIDOS Y SIN NOMBRES PROPIOS.*/
-        cout<<"-------------------------------------------------------------------------------"<<endl;
-        cout<<"---------------      PALABRAS INEXISTENTES FINALES      -----------------------"<<endl;
-        it = gestor1.getDocumentos()[pos]->getInexistentes().iterador();
-        cout<<"[ ";
-        while(!it.fin()){
-            cout<<it.dato().GetPalabra()<<", ";
-            it.siguiente();
-        }
-        cout<<"]."<<endl<<endl<<endl;
-        
-        cout<<"NOMBRES PROPIOS ELIMINADOS : "<<borrados<<endl;
-        cout<<"NUMERO DE PALABRAS INEXISTENTES (SIN NOMBRES PROPIOS NI REPETIDOS): "<<gestor1.getDocumentos()[pos]->getInexistentes().tama()<<endl;
-    
     }catch(exception &e){
         cout<<e.what()<<endl;
     }

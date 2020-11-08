@@ -62,9 +62,9 @@ Documento& Documento::operator =(const Documento& dato){
 }
 
 
-void Documento::chequearTexto(){
+void Documento::chequearTexto(unsigned int num_practica){
     ifstream is(nombreFich);
-    cout<<nombreFich<<endl;
+    cout<<"NOMBRE DEL FICHERO QUE SE VA A CHEQUEAR: "<<nombreFich<<endl;
     string palabra;
     Palabra pal,aux;
     clock_t t_ini = clock();
@@ -75,11 +75,18 @@ void Documento::chequearTexto(){
         ++total;
         /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
         pal.limpiar();
-
-        if (!getDicc()->buscar(pal.conversionMinus(aux))) {
-            //cout<<"Palabra inexistente -> "<<pal.GetPalabra()<<endl;
-            ++no_validadas;
-            addInexistente(pal);
+        
+        if(num_practica == 3){
+            if (!getDicc()->buscar(pal.conversionMinus(aux))) {
+                ++no_validadas;
+                addInexistente(pal);
+            }
+        }
+        if (num_practica == 2){
+            if (!getDicc()->buscarDicotomica(pal.conversionMinus(aux))) {
+                ++no_validadas;
+                addInexistente(pal);
+            }
         }
     }
     is.close();

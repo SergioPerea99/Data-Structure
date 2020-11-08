@@ -39,7 +39,7 @@ public:
     /*---- MÉTODOS NECESARIOS PRACTICA 3  ----*/
     Documento& operator=(const Documento& dato);
     bool operator==(const Documento& dato);
-    void chequearTexto();
+    void chequearTexto(unsigned int num_practica);
     
     /*---- GETTERS Y SETTERS ----*/
     ListaEnlazada<Palabra>& getInexistentes();

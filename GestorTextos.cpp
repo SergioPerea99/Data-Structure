@@ -62,10 +62,8 @@ GestorTextos::GestorTextos(const GestorTextos& orig) {
  * @param nombreFich String que se quiere añadir a la estructura como Documento.
  */
 int GestorTextos::addDocumento(std::string nombreFich){
-    Documento *doc = new Documento(nombreFich, getDiccionario());
-    if(doc->getDicc()) cout<<"TIENE APUNTANDO A "<<doc->getDicc()->GetNombreFich()<<endl;
-    documentos.insertar(doc,documentos.tam()); //REVISAR PK NO LLEGA A TENER EL DOCUMENTO ASOCIADO A SU DICCIONARIO
-    if(documentos[documentos.tam()-1]->getDicc()) cout<<"SE HA INSERTADO UN DOCUMENTO QUE TIENE DICCIONARIO"<<endl;
+    Documento *doc = new Documento(nombreFich, getDiccionario()); 
+    documentos.insertar(doc,documentos.tam()); 
     return documentos.tam()-1;
 }
 
@@ -92,6 +90,8 @@ Documento* GestorTextos::buscarDocumento(std::string nombreFich){
  * @brief Destructor.
  */
 GestorTextos::~GestorTextos() {
+    for (int i = 0; i < documentos.tam(); i++)
+        delete documentos[i];
 }
 
 

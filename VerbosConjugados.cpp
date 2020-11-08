@@ -52,7 +52,7 @@ VerbosConjugados::VerbosConjugados(const VerbosConjugados& orig) {
 
 bool VerbosConjugados::buscar(Palabra& pal){
     Palabra encontrada;
-    return vconjugados.buscarIt(pal,encontrada);
+    return vconjugados.buscaNR(pal,encontrada);
 }
 
 
