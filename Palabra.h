@@ -40,6 +40,7 @@ public:
     bool operator <=(const Palabra& dato);
     bool operator >=(const Palabra& dato);
     
+    
     /*---- MÉTODOS PRÁCTICA 1 ----*/
     bool palindromo(Palabra& pal);
     bool anagrama(Palabra& pal);
@@ -50,6 +51,9 @@ public:
     Palabra& conversionMinus(Palabra& aux);
 
 };
+
+/*DUDA: ¿PORQUÉ TIENE QUE SER FUERA DE LA CLASE ?*/
+std::ostream &operator<<(std::ostream &os, const Palabra &f);
 
 #endif /* PALABRA_H */
 

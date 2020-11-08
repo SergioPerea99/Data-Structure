@@ -128,6 +128,14 @@ bool Palabra::operator >=(const Palabra& dato){
 }
 
 
+ostream &operator<<(ostream &os, const Palabra &f)
+{
+	os << f.GetPalabra();
+	return os;
+}
+
+
+
 /**
  * @brief Palíndromo.
  * @post Método que indica si una palabra respecto a otra es palíndromo o no.

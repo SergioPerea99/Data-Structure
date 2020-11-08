@@ -100,6 +100,9 @@ int main(int argc, char** argv) {
         std::string nombreFich = "quijote-sin-simbolos.txt";
         int pos = gestor1.addDocumento(nombreFich);
         
+        /*RECORRIDO EN INORDEN. POR SI QUIERE VERLO EL PROFESOR.*/
+        //gestor1.getDocumentos()[pos]->getDicc()->getVerbos()->getVconjugados()->recorreInorden();
+        
         std::cout<<"¿ QUÉ FORMA DE EJECUTAR LA PRÁCTICA PREFIERE ? "<<endl;
         std::cout<<"1 :: SALIR."<<endl;
         std::cout<<"2 :: PRÁCTICA 2."<<endl;

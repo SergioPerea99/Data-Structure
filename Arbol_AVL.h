@@ -229,6 +229,8 @@ bool Arbol_AVL<T>::buscarIt(T& dato, T& result){
 template <class T>
 void Arbol_AVL<T>::recorreInorden(){
     inordenRecursivo(raiz);
+    std::cout<<std::endl;
+    
 }
 
 /**
@@ -364,14 +366,12 @@ NodoAVL<T>* Arbol_AVL<T>::buscaRecursivamente(NodoAVL<T>* buscar, T& dato){
 template <class T>
 void Arbol_AVL<T>::inordenRecursivo(NodoAVL<T>* p){
     if(p){
-        if(p->izq) /*Primero compruebo si aún hay hijo izquierda*/
-            inordenRecursivo(p->izq);
+        inordenRecursivo(p->izq);
         
         /*Importante: necesario que el tipo T tenga implementado el operador <<.*/
         std::cout<<p->dato<<" || "; /*Se procesa tanto ese hijo izquierda como aquel padre en caso de no haber ya hijo izquierda.*/
         
-        if(p->der)
-            inordenRecursivo(p->der); /*Compruebo si hay hijo derecho y vuelve a comprobar el proceso anterior.*/
+        inordenRecursivo(p->der); /*Compruebo si hay hijo derecho y vuelve a comprobar el proceso anterior.*/
     }
 }
 

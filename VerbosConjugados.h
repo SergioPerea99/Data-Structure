@@ -32,6 +32,10 @@ public:
     virtual ~VerbosConjugados();
     
     bool buscar (Palabra& pal);
+    
+    
+    /*---- GETTERS Y SETTERS ----*/
+    Arbol_AVL<Palabra>* getVconjugados();
 
 };
 

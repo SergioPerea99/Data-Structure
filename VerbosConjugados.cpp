@@ -59,3 +59,6 @@ bool VerbosConjugados::buscar(Palabra& pal){
 VerbosConjugados::~VerbosConjugados() {
 }
 
+Arbol_AVL<Palabra>* VerbosConjugados::getVconjugados(){
+    return &vconjugados;
+}

@@ -16,7 +16,8 @@
 /**
  * @brief Constructor por defecto.
  */
-Diccionario::Diccionario() : verbos(){
+Diccionario::Diccionario() {
+    verbos = new VerbosConjugados();
     nombreFich = "dicc-espanol-sin.txt";
     /*Primera parte: Cargar el diccionario en el Gestor de Textos.*/
     ifstream is("dicc-espanol-sin.txt");
@@ -37,7 +38,8 @@ Diccionario::Diccionario() : verbos(){
  * @brief Constructor parametrizado.
  * @param _nombreFich String que indica el nombre del diccionario.
  */
-Diccionario::Diccionario(std::string _nombreFich): verbos("verbos_conjugados_sin_tildes_desordenados.txt"){
+Diccionario::Diccionario(std::string _nombreFich){
+    verbos = new VerbosConjugados("verbos_conjugados_sin_tildes_desordenados.txt");
     nombreFich = _nombreFich;
     /*Primera parte: Cargar el diccionario en el Gestor de Textos.*/
     ifstream is(_nombreFich);
@@ -69,6 +71,9 @@ Diccionario::Diccionario(const Diccionario& orig) {
  * @brief Destructor.
  */
 Diccionario::~Diccionario() {
+    if(verbos)
+        delete verbos;
+    verbos = nullptr;
 }
 
 
@@ -84,7 +89,7 @@ bool Diccionario::buscar(Palabra& buscar){
     if(buscarDicotomica(buscar))
         return true;
     else
-        if (verbos.buscar(buscar))
+        if (verbos->buscar(buscar))
             return true;
     return false;
 }
@@ -102,6 +107,10 @@ void Diccionario::SetNombreFich(std::string nombreFich) {
 
 std::string Diccionario::GetNombreFich() const {
     return nombreFich;
+}
+
+VerbosConjugados* Diccionario::getVerbos() const {
+    return verbos;
 }
 
 
