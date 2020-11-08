@@ -58,7 +58,7 @@ void comprobar() {
 	cout << "Tiempo implementación 1: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
 }
 
-int eliminarNombrePropio(GestorTextos& gestor1, int pos){
+int eliminarNombresPropios(GestorTextos& gestor1, int pos){
 
     Iterador<Palabra> it = gestor1.getDocumentos()[pos]->getInexistentes().iterador();
     Iterador<Palabra> aux = it;
@@ -84,17 +84,14 @@ int main(int argc, char** argv) {
     comprobar();
     
     /*-----------------------------------------------------------------------------------------------------*/
-    /*------------------------------- MENÚ PRINCIPAL: PRÁCTICA 2 ------------------------------------------*/
+    /*------------------------------- MENÚ PRINCIPAL: PRÁCTICA 3 ------------------------------------------*/
     /*-----------------------------------------------------------------------------------------------------*/
     try{
         
         cout<<endl<<endl;
-        cout<<" ---------INICIO PROGRAMA PRINCIPAL PRACTICA 3--------"<<endl;
+        cout<<" ---------INICIO PROGRAMA PRINCIPAL PRACTICA 3--------"<<endl<<endl;
         
-        
-
-        /*---- COMPROBACION EN TIEMPO DE COMO SERÍA LA BÚSQUEDA DE PALABRAS INEXISTENTES SIN VERBOS CONJUGADOS (PRACTICA 2) ----.*/
-        
+      
         GestorTextos gestor1;
         
         std::string nombreFich = "quijote-sin-simbolos.txt";
@@ -103,10 +100,10 @@ int main(int argc, char** argv) {
         /*RECORRIDO EN INORDEN. POR SI QUIERE VERLO EL PROFESOR.*/
         //gestor1.getDocumentos()[pos]->getDicc()->getVerbos()->getVconjugados()->recorreInorden();
         
-        std::cout<<"¿ QUÉ FORMA DE EJECUTAR LA PRÁCTICA PREFIERE ? "<<endl;
+        std::cout<<endl<<"¿ QUÉ FORMA DE EJECUTAR LA PRÁCTICA PREFIERE ? "<<endl;
         std::cout<<"1 :: SALIR."<<endl;
-        std::cout<<"2 :: PRÁCTICA 2."<<endl;
-        std::cout<<"3 :: PRÁCTICA 3."<<endl;
+        std::cout<<"2 :: PRÁCTICA 2. BÚSQUEDA DE PALABRAS EN DICCIONARIO SIN VERBOS CONJUGADOS."<<endl;
+        std::cout<<"3 :: PRÁCTICA 3. BÚSQUEDA DE PALABRAS EN DICCIONARO CON VERBOS CONJUGADOS."<<endl;
         unsigned int num_practica;
         std::cin>>num_practica;
         
@@ -130,7 +127,7 @@ int main(int argc, char** argv) {
             /*ELIMINO Y MUESTRO POR PANTALLA LOS ELEMENTOS QUE SON NOMBRES PROPIOS*/
             cout<<"---------------------------------------------------------------------"<<endl;
             cout<<"---------------      PALABRAS ELIMINADAS      -----------------------"<<endl;
-            int borrados = eliminarNombrePropio(gestor1, pos);
+            int borrados = eliminarNombresPropios(gestor1, pos);
             cout<<"]."<<endl<<endl<<endl<<endl;
 
             /*MUESTRO POR PANTALLA LA LISTA DE PALABRAS INEXISTENTES SIN REPETIDOS Y SIN NOMBRES PROPIOS.*/

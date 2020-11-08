@@ -21,6 +21,11 @@ Documento::Documento() : inexistentes(){
     dicc = nullptr;
 }
 
+/**
+ * @brief Constructor parametrizado.
+ * @param _texto Nombre del documento.
+ * @param _dicc Puntero al diccionario que tiene asociado este Documento.
+ */
 Documento::Documento(std::string _texto, Diccionario* _dicc): inexistentes(){
     nombreFich = _texto;
     dicc = _dicc;
@@ -49,10 +54,20 @@ void Documento::addInexistente(Palabra p) {
 }
 
 
+/**
+ * @brief Operador de igualdad.
+ * @param dato Dato a ser comparado con el destinatario.
+ * @return Booleano falso o verdadero.
+ */
 bool Documento::operator ==(const Documento& dato){
     return nombreFich == dato.nombreFich ? true : false;
 }
 
+/**
+ * @brief Operador de asignación.
+ * @param dato Dato a ser asignado al destinatario.
+ * @return Documento destinatario, con la posibilidad de realizar una asignación en cascada por el &.
+ */
 Documento& Documento::operator =(const Documento& dato){
     if(this != &dato){
         nombreFich = dato.nombreFich;
@@ -61,7 +76,13 @@ Documento& Documento::operator =(const Documento& dato){
     return *this;
 }
 
-
+/**
+ * @brief Chequear texto.
+ * @post El propio documento en sí chequea que palabras de su documento son y cuáles no partícipes del diccionario que tiene asociado.
+ * Dependiendo del número del parámetro, se realizará una búsqueda de palabras del diccionario básico (número 2, por la práctica 2)
+ * o en caso de pasar como parámetro el valor 3 (número de la práctica 3) se comprueba también si dicha palabra es un verbo conjugado.
+ * @param num_practica Número que indica que tipo de busqueda de palabras en el diccionario se quiere realizar.
+ */
 void Documento::chequearTexto(unsigned int num_practica){
     ifstream is(nombreFich);
     cout<<"NOMBRE DEL FICHERO QUE SE VA A CHEQUEAR: "<<nombreFich<<endl;
@@ -95,8 +116,16 @@ void Documento::chequearTexto(unsigned int num_practica){
 }
 
 
+/**
+ * @brief Destructor.
+ */
+Documento::~Documento() {
+}
+
+
 
 /*---- GETTERS Y SETTERS ----*/
+
 ListaEnlazada<Palabra>& Documento::getInexistentes(){
     return inexistentes;
 }
@@ -117,9 +146,5 @@ void Documento::setDicc(Diccionario* dicc) {
     this->dicc = dicc;
 }
 
-/**
- * @brief Destructor.
- */
-Documento::~Documento() {
-}
+
 

@@ -41,102 +41,6 @@ Palabra::Palabra(const Palabra& orig) {
 }
 
 /**
- * @brief Destructor.
- */
-Palabra::~Palabra() {
-}
-
-/**
- * @brief Getter de atributo palabra.
- * @return String.
- */
-string Palabra::GetPalabra() const {
-    return palabra;
-}
-
-/**
- * @brief Setter de atributo palabra.
- * @param palabra String a asignar al atributo.
- */
-void Palabra::SetPalabra(string palabra) {
-    this->palabra = palabra;
-}
-
-/**
- * @brief Operador de comparación de igualdad.
- * @param dato Palabra a comparar.
- * @return Booleano.
- */
-bool Palabra::operator ==(const Palabra& dato){
-    if (palabra == dato.GetPalabra())
-        return true;
-    return false;
-}
-
-/**
- * @brief Operador de comparación <.
- * @param dato Palabra a comparar.
- * @return Booleano.
- */
-bool Palabra::operator <(const Palabra& dato){
-    if (palabra < dato.GetPalabra())
-        return true;
-    return false;
-}
-
-/**
- * @brief Operador de comparación >.
- * @param dato Palabra a comparar.
- * @return Booleano.
- */
-bool Palabra::operator >(const Palabra& dato){
-    if (palabra > dato.GetPalabra())
-        return true;
-    return false;
-}
-
-/**
- * @brief Operador de asignación.
- * @param dato Palabra a asignar.
- * @return El contenido del objeto de la clase que ha llamado al método.
- */
-Palabra& Palabra::operator =(const Palabra& dato){
-    palabra = dato.palabra;
-    return *this;
-}
-
-/**
- * @brief Operador de comparación <=.
- * @param dato Palabra a comparar.
- * @return Booleano.
- */
-bool Palabra::operator <=(const Palabra& dato){
-    if (palabra <= dato.GetPalabra())
-        return true;
-    return false;
-}
-
-/**
- * @brief Operador de comparación >=.
- * @param dato Palabra a comparar.
- * @return Booleano.
- */
-bool Palabra::operator >=(const Palabra& dato){
-    if(palabra >= dato.GetPalabra())
-        return true;
-    return false;
-}
-
-
-ostream &operator<<(ostream &os, const Palabra &f)
-{
-	os << f.GetPalabra();
-	return os;
-}
-
-
-
-/**
  * @brief Palíndromo.
  * @post Método que indica si una palabra respecto a otra es palíndromo o no.
  * @param pal Palabra a comprobar.
@@ -220,4 +124,111 @@ Palabra& Palabra::conversionMinus(Palabra& aux){
     aux.SetPalabra(minus);
     return aux;
 }
+
+/**
+ * @brief Destructor.
+ */
+Palabra::~Palabra() {
+}
     
+
+/*---- OPERADORES DE ASIGNACIÓN, COMPROBACIÓN Y MUESTRAS POR PANTALLA ----*/
+
+/**
+ * @brief Operador de comparación de igualdad.
+ * @param dato Palabra a comparar.
+ * @return Booleano.
+ */
+bool Palabra::operator ==(const Palabra& dato){
+    if (palabra == dato.GetPalabra())
+        return true;
+    return false;
+}
+
+/**
+ * @brief Operador de comparación <.
+ * @param dato Palabra a comparar.
+ * @return Booleano.
+ */
+bool Palabra::operator <(const Palabra& dato){
+    if (palabra < dato.GetPalabra())
+        return true;
+    return false;
+}
+
+/**
+ * @brief Operador de comparación >.
+ * @param dato Palabra a comparar.
+ * @return Booleano.
+ */
+bool Palabra::operator >(const Palabra& dato){
+    if (palabra > dato.GetPalabra())
+        return true;
+    return false;
+}
+
+/**
+ * @brief Operador de asignación.
+ * @param dato Palabra a asignar.
+ * @return El contenido del objeto de la clase que ha llamado al método.
+ */
+Palabra& Palabra::operator =(const Palabra& dato){
+    palabra = dato.palabra;
+    return *this;
+}
+
+/**
+ * @brief Operador de comparación <=.
+ * @param dato Palabra a comparar.
+ * @return Booleano.
+ */
+bool Palabra::operator <=(const Palabra& dato){
+    if (palabra <= dato.GetPalabra())
+        return true;
+    return false;
+}
+
+/**
+ * @brief Operador de comparación >=.
+ * @param dato Palabra a comparar.
+ * @return Booleano.
+ */
+bool Palabra::operator >=(const Palabra& dato){
+    if(palabra >= dato.GetPalabra())
+        return true;
+    return false;
+}
+
+
+/**
+ * @brief Operador de mostrar por pantalla.
+ * @post A partir del atributo string de la Palabra que es lo que se quiere mostrar,
+ *  se recoge su valor en un ostream para poder realizar la muestra por pantalla de ello.
+ * @param os
+ * @param f
+ * @return 
+ */
+ostream &operator<<(ostream &os, const Palabra &f)
+{
+	os << f.GetPalabra();
+	return os;
+}
+
+
+/*---- GETTERS Y SETTERS ----*/
+
+/**
+ * @brief Getter de atributo palabra.
+ * @return String.
+ */
+string Palabra::GetPalabra() const {
+    return palabra;
+}
+
+/**
+ * @brief Setter de atributo palabra.
+ * @param palabra String a asignar al atributo.
+ */
+void Palabra::SetPalabra(string palabra) {
+    this->palabra = palabra;
+}

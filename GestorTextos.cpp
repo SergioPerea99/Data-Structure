@@ -15,44 +15,21 @@
 
 #include "GestorTextos.h"
 
-
+/**
+ * @brief Constructor por defecto.
+ */
 GestorTextos::GestorTextos():diccionario("dicc-espanol-sin.txt"), documentos(){
 }
 
+/**
+ * @brief Constructor copia.
+ * @param orig GestorTextos a ser copiado por el destinatario.
+ */
 GestorTextos::GestorTextos(const GestorTextos& orig) {
     diccionario = orig.diccionario;
     documentos = orig.documentos;
 }
 
-/**
- * @brief Chequear texto.
- * @post A partir de 2 nombres de textos pasados como parametros, uno referenciará al diccionario y el otro corresponderá al texto. Una vez
- * se haya insertado todas las palabras en el diccionario se comparará una a una las palabras del texto. Cada vez que se encuentre
- * una palabra del texto la cuál es limpiada (y puesta en minúscula auxiliarmente), se añadirá en una lista de inexistentes palabras en el 
- * objeto referente al Documento; es decir, en el texto.
- */
-//void GestorTextos::chequearTexto (int pos) {
-//    ifstream is(documentos[pos].getNombreFich());
-//    string palabra;
-//    Palabra pal;
-//    clock_t t_ini = clock();
-//    int no_validadas = 0, total = 0, p;
-//    while (is) {
-//        is >> palabra;
-//        pal.SetPalabra(palabra);
-//        ++total;
-//        /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
-//        pal.limpiar();
-//
-//        if (!getDiccionario().buscarDicotomica(pal.conversionMinus())) {
-//            ++no_validadas;
-//            documentos[pos].addInexistente(pal);
-//        }
-//    }
-//    cout << "Total palabras: " << total << " --------- Total de palabras no_validadas: " << no_validadas << endl;
-//    cout << "Tiempo para chequear el texto: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
-//        
-//}
 
 /**
  * @brief Insertar documento.
@@ -84,10 +61,9 @@ Documento* GestorTextos::buscarDocumento(std::string nombreFich){
     return nullptr;
 }
 
-
-
 /**
  * @brief Destructor.
+ * @post Destruye los objetos documento creados que habían sido añadidos al vector dinámico documentos.
  */
 GestorTextos::~GestorTextos() {
     for (int i = 0; i < documentos.tam(); i++)
@@ -111,3 +87,34 @@ Diccionario* GestorTextos::getDiccionario(){
 VDinamico<Documento*> GestorTextos::getDocumentos(){
     return documentos;
 }
+
+
+/**
+ * @brief Chequear texto.
+ * @post A partir de 2 nombres de textos pasados como parametros, uno referenciará al diccionario y el otro corresponderá al texto. Una vez
+ * se haya insertado todas las palabras en el diccionario se comparará una a una las palabras del texto. Cada vez que se encuentre
+ * una palabra del texto la cuál es limpiada (y puesta en minúscula auxiliarmente), se añadirá en una lista de inexistentes palabras en el 
+ * objeto referente al Documento; es decir, en el texto.
+ */
+//void GestorTextos::chequearTexto (int pos) {
+//    ifstream is(documentos[pos].getNombreFich());
+//    string palabra;
+//    Palabra pal;
+//    clock_t t_ini = clock();
+//    int no_validadas = 0, total = 0, p;
+//    while (is) {
+//        is >> palabra;
+//        pal.SetPalabra(palabra);
+//        ++total;
+//        /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
+//        pal.limpiar();
+//
+//        if (!getDiccionario().buscarDicotomica(pal.conversionMinus())) {
+//            ++no_validadas;
+//            documentos[pos].addInexistente(pal);
+//        }
+//    }
+//    cout << "Total palabras: " << total << " --------- Total de palabras no_validadas: " << no_validadas << endl;
+//    cout << "Tiempo para chequear el texto: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
+//        
+//}

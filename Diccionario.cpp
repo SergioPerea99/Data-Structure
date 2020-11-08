@@ -69,6 +69,8 @@ Diccionario::Diccionario(const Diccionario& orig) {
 
 /**
  * @brief Destructor.
+ * @post Se destruye, en caso de haber sido reservado memoria para ello, los verbos
+ * los cuales formaban parte del diccionario.
  */
 Diccionario::~Diccionario() {
     if(verbos)
@@ -77,11 +79,18 @@ Diccionario::~Diccionario() {
 }
 
 
-
+/**
+ * @brief Operador de asignación.
+ * @param orig Diccionario a ser asignado por el destinatario.
+ * @return 
+ */
 Diccionario& Diccionario::operator =(const Diccionario& orig){
     if (this != &orig){
         nombreFich = orig.nombreFich;
         terminos = orig.terminos;
+        if(verbos)
+            delete verbos;
+        verbos = new VerbosConjugados(*orig.verbos);
     }
 }
 

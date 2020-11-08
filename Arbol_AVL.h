@@ -125,7 +125,14 @@ Arbol_AVL<T>::~Arbol_AVL(){
 }
 
 
-
+/**
+ * @brief Insertar elemento.
+ * @post Inserta un elemento tipo T en el árbol, donde previamente comprueba que ese 
+ * dato no exista ya en el árbol y posteriormente si no está llama al método privado
+ * recursivo que se encarga de insertar el elemento.
+ * @param dato Dato a buscar/insertar.
+ * @return Booleano que indica si ha sido añadido o no el elemento.
+ */
 template <class T>
 bool Arbol_AVL<T>::inserta(T& dato){
     T resultado;
@@ -225,7 +232,11 @@ bool Arbol_AVL<T>::buscarIt(T& dato, T& result){
 }
 
 
-
+/**
+ * @brief Recorre en INORDEN.
+ * @post Método público que se encarga de llamar al método privado para recorrer el
+ * árbol de forma recursiva.
+ */
 template <class T>
 void Arbol_AVL<T>::recorreInorden(){
     inordenRecursivo(raiz);
@@ -362,7 +373,12 @@ NodoAVL<T>* Arbol_AVL<T>::buscaRecursivamente(NodoAVL<T>* buscar, T& dato){
 
 }
 
-
+/**
+ * @brief Recorrido INORDEN recursivo.
+ * @post Método privado para recorrer el árbol en inorden; es decir, primero el 
+ * hijo izquierdo, después el padre, y por último el hijo derecho.
+ * @param p Nodo actual del árbol.
+ */
 template <class T>
 void Arbol_AVL<T>::inordenRecursivo(NodoAVL<T>* p){
     if(p){
