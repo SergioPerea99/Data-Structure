@@ -62,9 +62,7 @@ GestorTextos::GestorTextos(const GestorTextos& orig) {
  * @param nombreFich String que se quiere añadir a la estructura como Documento.
  */
 int GestorTextos::addDocumento(std::string nombreFich){
-    Diccionario *dicc = getDiccionario();
-    if(dicc) cout<<"CONSIGO ALGO"<<endl; //se consigue coger un diccionario.
-    Documento *doc = new Documento(nombreFich, dicc);
+    Documento *doc = new Documento(nombreFich, getDiccionario());
     if(doc->getDicc()) cout<<"TIENE APUNTANDO A "<<doc->getDicc()->GetNombreFich()<<endl;
     documentos.insertar(doc,documentos.tam()); //REVISAR PK NO LLEGA A TENER EL DOCUMENTO ASOCIADO A SU DICCIONARIO
     if(documentos[documentos.tam()-1]->getDicc()) cout<<"SE HA INSERTADO UN DOCUMENTO QUE TIENE DICCIONARIO"<<endl;
@@ -78,16 +76,14 @@ int GestorTextos::addDocumento(std::string nombreFich){
  * @param nombreFich Nombre del documento que se quiere buscar.
  * @return Documento que se ha buscado, en caso de no encontrarlo se lanza una excepción.
  */
-Documento GestorTextos::buscarDocumento(std::string nombreFich){
-    //Diccionario *dicc = &getDiccionario();
+Documento* GestorTextos::buscarDocumento(std::string nombreFich){
     Documento *texto_buscar =  new Documento(nombreFich,getDiccionario());
     if(documentos.buscar(texto_buscar)){
         delete texto_buscar;
-        return *texto_buscar;
-    }else{
-        delete texto_buscar;
-        throw std::invalid_argument("[GestorTextos::buscarDocumento] No se ha encontrado ningun documento con el nombre pasado como parámetro.");
+        return texto_buscar;
     }
+    delete texto_buscar;
+    return nullptr;
 }
 
 

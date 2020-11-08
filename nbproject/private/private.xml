@@ -2,14 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
         <activeConfTypeElem>1</activeConfTypeElem>
-        <activeConfIndexElem>1</activeConfIndexElem>
+        <activeConfIndexElem>0</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
         <file>
             <url>main.cpp</url>
             <bookmark id="1">
                 <name/>
-                <line>79</line>
+                <line>80</line>
                 <key/>
             </bookmark>
         </file>
@@ -18,10 +18,13 @@
         <group>
             <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/GestorTextos.h</file>
             <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/Arbol_AVL.h</file>
+            <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/Diccionario.cpp</file>
             <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/Palabra.cpp</file>
             <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/Documento.cpp</file>
             <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/Palabra.h</file>
             <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/VDinamico.h</file>
+            <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/Diccionario.h</file>
+            <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/GestorTextos.cpp</file>
             <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/Documento.h</file>
             <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/main.cpp</file>
             <file>file:/C:/Users/spdlc/Documents/NetBeansProjects/EEDD_PR1/ListaEnlazada.h</file>

@@ -16,7 +16,7 @@
 /**
  * @brief Constructor por defecto.
  */
-Diccionario::Diccionario() {
+Diccionario::Diccionario() : verbos(){
     nombreFich = "dicc-espanol-sin.txt";
     /*Primera parte: Cargar el diccionario en el Gestor de Textos.*/
     ifstream is("dicc-espanol-sin.txt");
@@ -37,7 +37,7 @@ Diccionario::Diccionario() {
  * @brief Constructor parametrizado.
  * @param _nombreFich String que indica el nombre del diccionario.
  */
-Diccionario::Diccionario(std::string _nombreFich) {
+Diccionario::Diccionario(std::string _nombreFich): verbos("verbos_conjugados_sin_tildes_desordenados.txt"){
     nombreFich = _nombreFich;
     /*Primera parte: Cargar el diccionario en el Gestor de Textos.*/
     ifstream is(_nombreFich);
@@ -46,11 +46,11 @@ Diccionario::Diccionario(std::string _nombreFich) {
     while (is) {
         is >> palabra;
         pal.SetPalabra(palabra);
-        GetTerminos().insertar(pal);
+        terminos.insertar(pal);
     }
     /*Ordenación para poder luego buscar en él con una búsqueda binaria.*/
-    GetTerminos().ordenar();
-    cout << GetTerminos().tam() << " palabras cargadas en los TERMINOS del diccionario." << endl;
+    terminos.ordenar();
+    cout << terminos.tam() << " palabras cargadas en los TERMINOS del diccionario." << endl;
     is.close();
 }
 
@@ -61,6 +61,7 @@ Diccionario::Diccionario(std::string _nombreFich) {
 Diccionario::Diccionario(const Diccionario& orig) {
     nombreFich = orig.nombreFich;
     terminos = orig.terminos;
+    verbos = orig.verbos;
     
 }
 
@@ -76,7 +77,7 @@ Diccionario::~Diccionario() {
  * @param buscar Dato de tipo Palabra que se quiere buscar.
  * @return Booleano que expresa si se ha encontrado o no.
  */
-bool Diccionario::buscarDicotomica(Palabra buscar){
+bool Diccionario::buscarDicotomica(const Palabra& buscar){
     //Suponemos que el vector de palabras debe de estar ordenado para su llamada.
     int pos = terminos.busquedaBin(buscar);
     if(pos != -1)

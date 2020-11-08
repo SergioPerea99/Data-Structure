@@ -64,6 +64,7 @@ Documento& Documento::operator =(const Documento& dato){
 
 void Documento::chequearTexto(){
     ifstream is(nombreFich);
+    cout<<nombreFich<<endl;
     string palabra;
     Palabra pal;
     clock_t t_ini = clock();
@@ -76,10 +77,12 @@ void Documento::chequearTexto(){
         pal.limpiar();
 
         if (!getDicc()->buscarDicotomica(pal.conversionMinus())) {
+            //cout<<"Palabra inexistente -> "<<pal.GetPalabra()<<endl;
             ++no_validadas;
             addInexistente(pal);
         }
     }
+    is.close();
     cout << "Total palabras: " << total << " --------- Total de palabras no_validadas: " << no_validadas << endl;
     cout << "Tiempo para chequear el texto: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
 }

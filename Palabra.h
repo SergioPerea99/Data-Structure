@@ -23,7 +23,6 @@ using namespace std;
 class Palabra {
 private:
      string palabra;    
-          
      
 public:
     Palabra();

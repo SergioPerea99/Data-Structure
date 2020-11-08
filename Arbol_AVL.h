@@ -14,14 +14,16 @@
 #ifndef ARBOL_AVL_H
 #define ARBOL_AVL_H
 
+#include <iostream>
+
 template <class T>
-class Nodo{
+class NodoAVL{
 public:
-    Nodo<T> *izq, *der;
+    NodoAVL<T> *izq, *der;
     T dato;
     int bal; // -1,0,1 como valores válidos para el AVL.
     
-    Nodo(T& ele){
+    NodoAVL(T& ele){
         izq = der = nullptr;
         bal = 0;
         dato = ele;
@@ -31,20 +33,20 @@ public:
 template <class T>
 class Arbol_AVL {
 private:
-    Nodo<T> *raiz;
+    NodoAVL<T> *raiz;
     unsigned int contador; //Atributo para contar el número de elementos del arbol.
     
-    int inserta(Nodo<T>* &c, T& dato);
+    int inserta(NodoAVL<T>* &c, T& dato);
     
-    void rotDecha(Nodo<T>* &p);
-    void rotIzqda(Nodo<T>* &p);
+    void rotDecha(NodoAVL<T>* &p);
+    void rotIzqda(NodoAVL<T>* &p);
     
-    unsigned int calcularAltura(Nodo<T>* p);
+    unsigned int calcularAltura(NodoAVL<T>* p);
     
-    void copiaRecursivamente(Nodo<T> *actual, Nodo<T> *copiar);
-    void destruyeRecursivamente(Nodo<T> *borrar);
-    bool buscaRecursivamente(Nodo<T> *buscar, T& dato);
-    void inordenRecursivo(Nodo<T> *p);
+    void copiaRecursivamente(NodoAVL<T> *actual, NodoAVL<T> *copiar);
+    void destruyeRecursivamente(NodoAVL<T> *borrar);
+    bool buscaRecursivamente(NodoAVL<T> *buscar, T& dato);
+    void inordenRecursivo(NodoAVL<T> *p);
 public:
     Arbol_AVL();
     Arbol_AVL(const Arbol_AVL& orig);
@@ -97,16 +99,15 @@ Arbol_AVL<T>::Arbol_AVL(const Arbol_AVL& orig){
  * @param orig Árbol a ser asignado al destinatario.
  * @return Árbol destinatario con su nueva asignación. Sirve para el uso en cascada del operador.
  */
+template <class T>
 Arbol_AVL<T>& Arbol_AVL<T>::operator =(const Arbol_AVL& orig){
-    if(orig.raiz){
-        if (this != &orig){
-            if(raiz) 
-                destruyeRecursivamente(raiz); /*Compruebo que si tiene nodos, primero los elimine recursivamente.*/
-            copiaRecursivamente(raiz,orig.raiz); /*Copio elemento a elemento usando el método recursivo.*/
-        }
-        return *this;
-    }else
-        throw std::invalid_argument("[Arbol_AVL<T>::operator =] NO hay nodos en el árbol que asignar al destinatario.");
+    if (this != &orig){
+        if(raiz) 
+            destruyeRecursivamente(raiz); /*Compruebo que si tiene nodos, primero los elimine recursivamente.*/
+        copiaRecursivamente(raiz,orig.raiz); /*Copio elemento a elemento usando el método recursivo.*/
+    }
+    return *this;
+    
 }
 
 
@@ -120,15 +121,21 @@ template <class T>
 Arbol_AVL<T>::~Arbol_AVL(){
     if(raiz)
         destruyeRecursivamente(raiz);
-    else
-        raiz = 0; /*Posible caso en el que se haya eliminado elementos hasta eliminar el raíz y no haberlo apuntado a nullptr.*/
+    raiz = 0; /*Posible caso en el que se haya eliminado elementos hasta eliminar el raíz y no haberlo apuntado a nullptr.*/
 }
 
 
 
 template <class T>
 bool Arbol_AVL<T>::inserta(T& dato){
-    return inserta(raiz,dato);
+    T resultado;
+    if(buscaNR(dato,resultado))/*Primero compruebo si ya se encuentra insertado.*/
+        return false;
+    else{
+        inserta(raiz,dato);
+        ++contador;
+        return true;
+    }
 }
 
 /**
@@ -139,11 +146,11 @@ bool Arbol_AVL<T>::inserta(T& dato){
  * @return 
  */
 template <class T>
-int Arbol_AVL<T>::inserta(Nodo<T>*& c, T& dato){
-    Nodo<T> *p = c;
+int Arbol_AVL<T>::inserta(NodoAVL<T>*& c, T& dato){
+    NodoAVL<T> *p = c;
     int deltaH = 0;
     if(!p){ /*La recursión llega a una hoja, entonces inserta.*/
-        p = new Nodo<T>(dato);
+        p = new NodoAVL<T>(dato);
         c = p; deltaH = 1; /*DUDA: La variable deltaH sirve para controlar si se ha insertado o no el elemento.*/
     }
     else if (dato > p->dato){ /*Recursión hacia el hijo de la derecha.*/
@@ -156,22 +163,23 @@ int Arbol_AVL<T>::inserta(Nodo<T>*& c, T& dato){
                     rotDecha(p->der); /*1º Debe rotar a derechas.*/
                 rotIzqda(c); /*Debe de rotar a izquierdas (ya sea rotación doble o no).*/
             }
-            else if (dato < p->dato){ /*Recursión hacia el hijo de la izquierda.*/
-                if(inserta(p->izq,dato)){
-                    p->bal++;
-                    if (p->bal == 1)
-                        deltaH = 1;
-                    else if (p->bal == 2){ /*Con esto controla si es rotación doble. Caso 2.*/
-                        if (p->izq->bal == -1)
-                            rotIzqda(p->izq);
-                        rotDecha(c); /*Debe de rotar a derechas (ya sea rotación doble o no).*/
-                    }
-                }
+        }
+    }else if (dato < p->dato){ /*Recursión hacia el hijo de la izquierda.*/
+        if(inserta(p->izq,dato)){
+            p->bal++;
+            if (p->bal == 1)
+                deltaH = 1;
+            else if (p->bal == 2){ /*Con esto controla si es rotación doble. Caso 2.*/
+                if (p->izq->bal == -1)
+                    rotIzqda(p->izq);
+                rotDecha(c); /*Debe de rotar a derechas (ya sea rotación doble o no).*/
             }
-            return deltaH;
         }
     }
+    return deltaH;
 }
+    
+
 
 /**
  * @brief Búsqueda pública de un elemento recursivo.
@@ -181,6 +189,7 @@ int Arbol_AVL<T>::inserta(Nodo<T>*& c, T& dato){
  * @param result DUDA: Para mi no me sirve devolve el result, o eso creo.
  * @return Booleano que indica si lo ha encontrado o no.
  */
+template <class T>
 bool Arbol_AVL<T>::buscaNR(T& dato, T& result){
     return buscaRecursivamente(raiz,dato)?true:false;
 }
@@ -194,9 +203,10 @@ bool Arbol_AVL<T>::buscaNR(T& dato, T& result){
  * @param result
  * @return Booleano que indica si se ha encontrado o no.
  */
+template <class T>
 bool Arbol_AVL<T>::buscarIt(T& dato, T& result){
     if(raiz){
-        Nodo<T> *buscar = raiz;
+        NodoAVL<T> *buscar = raiz;
         while(buscar){
             if(buscar->dato == dato)
                 return true;
@@ -211,6 +221,8 @@ bool Arbol_AVL<T>::buscarIt(T& dato, T& result){
 }
 
 
+
+template <class T>
 void Arbol_AVL<T>::recorreInorden(){
     inordenRecursivo(raiz);
 }
@@ -220,6 +232,7 @@ void Arbol_AVL<T>::recorreInorden(){
  * @post Método público para mostrar la altura de un arbol.
  * @return Entero que indica la altura. En caso de no tener raíz, devuelve 0.
  */
+template <class T>
 unsigned int Arbol_AVL<T>::altura(){
     if(raiz)
         return calcularAltura(raiz) - 1;
@@ -232,6 +245,7 @@ unsigned int Arbol_AVL<T>::altura(){
  * @brief Número de elementos del árbol.
  * @return Entero que indica el número de elementos.
  */
+template <class T>
 unsigned int Arbol_AVL<T>::numElementos(){
     return contador;
 }
@@ -253,10 +267,11 @@ unsigned int Arbol_AVL<T>::numElementos(){
  * @param actual Nodo en el cual se debe de realizar la copia.
  * @param copiar Nodo a ser copiado por otro.
  */
-void Arbol_AVL<T>::copiaRecursivamente(Nodo<T>* actual, Nodo<T>* copiar){
+template <class T>
+void Arbol_AVL<T>::copiaRecursivamente(NodoAVL<T>* actual, NodoAVL<T>* copiar){
     if(copiar){ /*COPIAR EN PREORDEN.*/
-        actual = new Nodo<T>; 
-        actual->dato = copiar->dato; /*Copio el nodo padre.*/
+        actual = new NodoAVL<T>(copiar->dato); 
+        //actual->dato = copiar->dato; /*Copio el nodo padre.*/
         contador++;
         if (copiar->izq) /*Compruebo que el nodo copiar tiene hijo izquierdo*/
             copiaRecursivamente(actual->izq,copiar->izq);
@@ -271,15 +286,15 @@ void Arbol_AVL<T>::copiaRecursivamente(Nodo<T>* actual, Nodo<T>* copiar){
  * recursiva.
  * @param borrar Nodo a ser borrado, en caso de que sea un nodo hoja.
  */
-void Arbol_AVL<T>::destruyeRecursivamente(Nodo<T>* borrar){
+template <class T>
+void Arbol_AVL<T>::destruyeRecursivamente(NodoAVL<T>* borrar){
     /*DESTRUIR EN POSTORDEN.*/
     if (borrar){
-        
         if(borrar->izq) /*Compruebo si tiene hijo izquierdo.*/
             destruyeRecursivamente(borrar->izq);
         
         if(borrar->der) /*Compruebo si tiene hijo derecho.*/
-            destruyeRecursivamente(borrar = borrar->der);
+            destruyeRecursivamente(borrar->der);
         
         delete borrar; /*Elimino el nodo, lo pongo a nullptr y resto un elemento al contador.*/
         borrar = 0;
@@ -290,8 +305,8 @@ void Arbol_AVL<T>::destruyeRecursivamente(Nodo<T>* borrar){
 
 //Copiado de diapositiva. COMPROBADO.
 template <class T>
-void Arbol_AVL<T>::rotIzqda(Nodo<T>*& p){
-    Nodo<T> *q = p, *r;
+void Arbol_AVL<T>::rotIzqda(NodoAVL<T>*& p){
+    NodoAVL<T> *q = p, *r;
     p = r = q->der;
     q->der = r->izq;
     r->izq = q;
@@ -306,8 +321,8 @@ void Arbol_AVL<T>::rotIzqda(Nodo<T>*& p){
 
 //Copiado de diapositiva. COMPROBADO.
 template <class T>
-void Arbol_AVL<T>::rotDecha(Nodo<T>*& p){
-    Nodo<T> *q = p, *l;
+void Arbol_AVL<T>::rotDecha(NodoAVL<T>*& p){
+    NodoAVL<T> *q = p, *l;
     p = l = q->izq;
     q->izq = l->der;
     l->der = q;
@@ -327,7 +342,8 @@ void Arbol_AVL<T>::rotDecha(Nodo<T>*& p){
  * @param dato Elemento tipo T a encontrar.
  * @return Booleano que indica si se ha encontrado.
  */
-bool Arbol_AVL<T>::buscaRecursivamente(Nodo<T>* buscar, T& dato){
+template <class T>
+bool Arbol_AVL<T>::buscaRecursivamente(NodoAVL<T>* buscar, T& dato){
     if(buscar){
         if(buscar->dato == dato) 
             return true; /*En caso de haberlo encontrado, fin de la recursividad.*/
@@ -340,7 +356,8 @@ bool Arbol_AVL<T>::buscaRecursivamente(Nodo<T>* buscar, T& dato){
 }
 
 
-void Arbol_AVL<T>::inordenRecursivo(Nodo<T>* p){
+template <class T>
+void Arbol_AVL<T>::inordenRecursivo(NodoAVL<T>* p){
     if(p){
         if(p->izq) /*Primero compruebo si aún hay hijo izquierda*/
             inordenRecursivo(p->izq);
@@ -360,7 +377,8 @@ void Arbol_AVL<T>::inordenRecursivo(Nodo<T>* p){
  * @param p Nodo desde el que empieza a calcular la altura.
  * @return Entero que equivale al valor de la altura actual.
  */
-int Arbol_AVL<T>::calcularAltura(Nodo<T>* p){
+template <class T>
+unsigned int Arbol_AVL<T>::calcularAltura(NodoAVL<T>* p){
     if(!p)
         return 0;
     int altura_izquierda = calcularAltura(p->izq);
@@ -370,6 +388,7 @@ int Arbol_AVL<T>::calcularAltura(Nodo<T>* p){
         return (altura_izquierda + 1);
     else
         return (altura_derecha +  1);
+    
 }
     
 /**/

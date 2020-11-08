@@ -32,7 +32,7 @@ public:
     
     /*---- MÉTODOS DEL UML PRACTICA 3 ----*/
     int addDocumento(std::string nombreFich);
-    Documento buscarDocumento(std::string nombreFich);
+    Documento* buscarDocumento(std::string nombreFich);
     
     /*---- GETTERS Y SETTERS ----*/
     void setTexto(Documento texto);

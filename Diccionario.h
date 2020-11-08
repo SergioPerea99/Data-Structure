@@ -19,13 +19,17 @@
 
 #include "VDinamico.h"
 #include "Palabra.h"
+#include "VerbosConjugados.h"
 
 
 class Diccionario {
 private:
     std::string nombreFich;
     VDinamico<Palabra> terminos;
-
+    
+    /*---- ATRIBUTOS PRÁCTICA 3 ----*/
+    VerbosConjugados verbos;
+    
 public:
     Diccionario();
     Diccionario(std::string _nombreFich);
@@ -33,7 +37,7 @@ public:
     virtual ~Diccionario();
     
     /*---- MÉTODOS DEL UML PRACTICA 2 ----*/
-    bool buscarDicotomica(Palabra buscar);
+    bool buscarDicotomica(const Palabra& buscar);
     
     /*---- MÉTODOS NECESARIO PRACTICA 3 ----*/
     Diccionario& operator=(const Diccionario& orig);

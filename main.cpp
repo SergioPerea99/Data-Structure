@@ -93,7 +93,8 @@ int main(int argc, char** argv) {
         
         
 
-        /*INSTANCIO EL GESTOR DE TEXTOS CON SU RESPECTIVO TEXTO A USAR Y DICCIONARIO.*/
+        /*---- COMPROBACION EN TIEMPO DE COMO SERÍA LA BÚSQUEDA DE PALABRAS INEXISTENTES SIN VERBOS CONJUGADOS (PRACTICA 2) ----.*/
+        
         GestorTextos gestor1;
         
         std::string nombreFich = "quijote-sin-simbolos.txt";
@@ -101,12 +102,8 @@ int main(int argc, char** argv) {
         
         Diccionario * dic = gestor1.getDocumentos()[pos]->getDicc();
         
-        cout<<gestor1.getDocumentos()[pos]->getDicc()->GetNombreFich()<<endl;
-        //HASTA AQUI LO HACE BIEN, POR FIN HE CONECTADO EL DICCIONARIO AL DOCUMENTO ASOCIANDOLO.
-        
         gestor1.getDocumentos()[pos]->chequearTexto();
         //gestor1.chequearTexto(pos);
-       
         
         /*SACO POR PANTALLA TODOS LOS ELEMENTOS DE LA LISTA DE INEXISTENTES INICIAL (SIN CONTAR REPETIDOS).*/
         cout<<endl<<endl;
@@ -141,6 +138,7 @@ int main(int argc, char** argv) {
         
         cout<<"NOMBRES PROPIOS ELIMINADOS : "<<borrados<<endl;
         cout<<"NUMERO DE PALABRAS INEXISTENTES (SIN NOMBRES PROPIOS NI REPETIDOS): "<<gestor1.getDocumentos()[pos]->getInexistentes().tama()<<endl;
+    
     }catch(exception &e){
         cout<<e.what()<<endl;
     }
