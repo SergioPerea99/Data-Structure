@@ -345,12 +345,13 @@ void Arbol_AVL<T>::rotDecha(NodoAVL<T>*& p){
 template <class T>
 bool Arbol_AVL<T>::buscaRecursivamente(NodoAVL<T>* buscar, T& dato){
     if(buscar){
-        if(buscar->dato == dato) 
-            return true; /*En caso de haberlo encontrado, fin de la recursividad.*/
         if (dato < buscar->dato)
             buscaRecursivamente(buscar->izq,dato); /*Si el elemento es menor estricto, se busca por subarbol cuya raiz es el hijo izquierdo.*/
         else
             buscaRecursivamente(buscar->der,dato); /*Si el elemento es mayor estricto, se busca por subarbol cuya raiz es el hijo derecho. */
+        
+        if(buscar->dato == dato) 
+            return true; /*En caso de haberlo encontrado, fin de la recursividad.*/
     }
     return false;
 }

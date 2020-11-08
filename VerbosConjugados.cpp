@@ -49,6 +49,13 @@ VerbosConjugados::VerbosConjugados(const VerbosConjugados& orig) {
     vconjugados = orig.vconjugados;
 }
 
+
+bool VerbosConjugados::buscar(Palabra& pal){
+    Palabra encontrada;
+    return vconjugados.buscarIt(pal,encontrada);
+}
+
+
 VerbosConjugados::~VerbosConjugados() {
 }
 

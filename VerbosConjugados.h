@@ -31,7 +31,7 @@ public:
     VerbosConjugados(const VerbosConjugados& orig);
     virtual ~VerbosConjugados();
     
-    bool buscar (const Palabra& pal);
+    bool buscar (Palabra& pal);
 
 };
 

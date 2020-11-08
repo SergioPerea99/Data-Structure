@@ -66,7 +66,7 @@ void Documento::chequearTexto(){
     ifstream is(nombreFich);
     cout<<nombreFich<<endl;
     string palabra;
-    Palabra pal;
+    Palabra pal,aux;
     clock_t t_ini = clock();
     int no_validadas = 0, total = 0, p;
     while (is) {
@@ -76,7 +76,7 @@ void Documento::chequearTexto(){
         /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
         pal.limpiar();
 
-        if (!getDicc()->buscarDicotomica(pal.conversionMinus())) {
+        if (!getDicc()->buscar(pal.conversionMinus(aux))) {
             //cout<<"Palabra inexistente -> "<<pal.GetPalabra()<<endl;
             ++no_validadas;
             addInexistente(pal);

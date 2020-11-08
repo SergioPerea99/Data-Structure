@@ -206,10 +206,10 @@ void Palabra::limpiar(){
  * @post A partir de la Palabra que llama al método, se genera una copia auxiliar de ella en minúsculas todas sus letras.
  * @return Palabra auxiliar devuelta con todas las letras en minúscula.
  */
-Palabra Palabra::conversionMinus(){
+Palabra& Palabra::conversionMinus(Palabra& aux){
     string minus = GetPalabra();
     std::transform(minus.begin(),minus.end(),minus.begin(), ::tolower);
-    Palabra aux(minus);
+    aux.SetPalabra(minus);
     return aux;
 }
     

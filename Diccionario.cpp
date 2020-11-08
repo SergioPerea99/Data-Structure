@@ -71,25 +71,22 @@ Diccionario::Diccionario(const Diccionario& orig) {
 Diccionario::~Diccionario() {
 }
 
-/**
- * @brief Busqueda dicotómica.
- * @post Busqueda logarítmica que a su vez llamará al búsqueda binaria de la estructura de datos del vector dinámico.
- * @param buscar Dato de tipo Palabra que se quiere buscar.
- * @return Booleano que expresa si se ha encontrado o no.
- */
-bool Diccionario::buscarDicotomica(const Palabra& buscar){
-    //Suponemos que el vector de palabras debe de estar ordenado para su llamada.
-    int pos = terminos.busquedaBin(buscar);
-    if(pos != -1)
-        return true;
-    return false;
-}
+
 
 Diccionario& Diccionario::operator =(const Diccionario& orig){
     if (this != &orig){
         nombreFich = orig.nombreFich;
         terminos = orig.terminos;
     }
+}
+
+bool Diccionario::buscar(Palabra& buscar){
+    if(buscarDicotomica(buscar))
+        return true;
+    else
+        if (verbos.buscar(buscar))
+            return true;
+    return false;
 }
 
 
@@ -105,4 +102,20 @@ void Diccionario::SetNombreFich(std::string nombreFich) {
 
 std::string Diccionario::GetNombreFich() const {
     return nombreFich;
+}
+
+
+/*---- MÉTODOS PRIVADOS ----*/
+/**
+ * @brief Busqueda dicotómica.
+ * @post Busqueda logarítmica que a su vez llamará al búsqueda binaria de la estructura de datos del vector dinámico.
+ * @param buscar Dato de tipo Palabra que se quiere buscar.
+ * @return Booleano que expresa si se ha encontrado o no.
+ */
+bool Diccionario::buscarDicotomica(const Palabra& buscar){
+    //Suponemos que el vector de palabras debe de estar ordenado para su llamada.
+    int pos = terminos.busquedaBin(buscar);
+    if(pos != -1)
+        return true;
+    return false;
 }
