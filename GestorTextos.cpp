@@ -66,8 +66,10 @@ Documento* GestorTextos::buscarDocumento(std::string nombreFich){
  * @post Destruye los objetos documento creados que habían sido añadidos al vector dinámico documentos.
  */
 GestorTextos::~GestorTextos() {
-    for (int i = 0; i < documentos.tam(); i++)
+    for (int i = 0; i < documentos.tam(); i++){
         delete documentos[i];
+        documentos[i] = 0;
+    }
 }
 
 
