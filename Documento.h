@@ -16,28 +16,40 @@
 
 #include "ListaEnlazada.h"
 #include "Palabra.h"
+#include "Diccionario.h"
 
 
 class Documento {
 private:
     std::string nombreFich;
     ListaEnlazada<Palabra> inexistentes;
+    
+    /*Atributos PRÁCTICA 3*/
+    Diccionario *dicc;
+    
 public:
     Documento();
-    Documento(std::string _texto);
+    Documento(std::string _texto, Diccionario* _dicc);
     Documento(const Documento& orig);
     virtual ~Documento();
     
     /*---- MÉTODOS DEL UML PRACTICA 2 ----*/
     void addInexistente(Palabra p);
     
+    /*---- MÉTODOS NECESARIOS PRACTICA 3  ----*/
+    Documento& operator=(const Documento& dato);
+    bool operator==(const Documento& dato);
+    void chequearTexto(unsigned int num_practica);
     
     /*---- GETTERS Y SETTERS ----*/
     ListaEnlazada<Palabra>& getInexistentes();
     void setNombreFich(std::string nombreFich);
     std::string getNombreFich();
-
-
+    Diccionario* getDicc() const;
+    void setDicc(Diccionario* dicc);
+    
+    
+    
 };
 
 #endif /* DOCUMENTO_H */

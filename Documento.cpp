@@ -16,12 +16,19 @@
 /**
  * @brief Constructor por defecto.
  */
-Documento::Documento() {
+Documento::Documento() : inexistentes(){
     nombreFich = "quijote-sin-simbolos.txt";
+    dicc = nullptr;
 }
 
-Documento::Documento(std::string _texto){
+/**
+ * @brief Constructor parametrizado.
+ * @param _texto Nombre del documento.
+ * @param _dicc Puntero al diccionario que tiene asociado este Documento.
+ */
+Documento::Documento(std::string _texto, Diccionario* _dicc): inexistentes(){
     nombreFich = _texto;
+    dicc = _dicc;
 }
 
 /**
@@ -31,6 +38,7 @@ Documento::Documento(std::string _texto){
 Documento::Documento(const Documento& orig) {
     nombreFich = orig.nombreFich;
     inexistentes = orig.inexistentes;
+    dicc = orig.dicc;
 }
 
 
@@ -45,7 +53,87 @@ void Documento::addInexistente(Palabra p) {
     inexistentes.insertaOrdenado(p);
 }
 
+
+/**
+ * @brief Operador de igualdad.
+ * @param dato Dato a ser comparado con el destinatario.
+ * @return Booleano falso o verdadero.
+ */
+bool Documento::operator ==(const Documento& dato){
+    return nombreFich == dato.nombreFich ? true : false;
+}
+
+/**
+ * @brief Operador de asignación.
+ * @param dato Dato a ser asignado al destinatario.
+ * @return Documento destinatario, con la posibilidad de realizar una asignación en cascada por el &.
+ */
+Documento& Documento::operator =(const Documento& dato){
+    if(this != &dato){
+        nombreFich = dato.nombreFich;
+        inexistentes = dato.inexistentes;
+    }
+    return *this;
+}
+
+/**
+ * @brief Chequear texto.
+ * @post El propio documento en sí chequea que palabras de su documento son y cuáles no partícipes del diccionario que tiene asociado.
+ * Dependiendo del número del parámetro, se realizará una búsqueda de palabras del diccionario básico (número 2, por la práctica 2)
+ * o en caso de pasar como parámetro el valor 3 (número de la práctica 3) se comprueba también si dicha palabra es un verbo conjugado.
+ * @param num_practica Número que indica que tipo de busqueda de palabras en el diccionario se quiere realizar.
+ */
+void Documento::chequearTexto(unsigned int num_practica){
+    double t_buscDicotomica_MAX = 0, t_buscAVL_MAX = 0,  t_buscDicotomica_MIN = 99, t_buscAVL_MIN = 99;
+    ifstream is(nombreFich);
+    cout<<"NOMBRE DEL FICHERO QUE SE VA A CHEQUEAR: "<<nombreFich<<endl;
+    string palabra;
+    Palabra pal,aux;
+    clock_t t_ini = clock();
+    int no_validadas = 0, total = 0, p;
+    while (is) {
+        is >> palabra;
+        pal.SetPalabra(palabra);
+        ++total;
+        /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
+        pal.limpiar();
+        
+        if(num_practica == 3){
+            if (!getDicc()->buscar(pal.conversionMinus(aux),t_buscDicotomica_MAX,t_buscAVL_MAX, t_buscDicotomica_MIN, t_buscAVL_MIN)) {
+                ++no_validadas;
+                addInexistente(pal);
+            }
+        }
+        if (num_practica == 2){
+            if (!getDicc()->buscarDicotomica(pal.conversionMinus(aux))) {
+                ++no_validadas;
+                addInexistente(pal);
+            }
+        }
+    }
+    is.close();
+    cout << "Total palabras: " << total << " --------- Total de palabras no_validadas: " << no_validadas << endl;
+    cout << "Tiempo para chequear el texto: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
+    cout << "PARA LA EJECUCIÓN DE BÚSQUEDAS EN DIFERENTES ESTRUCTURAS:"<<endl;
+    cout << "Tiempo MÁXIMO de búsqueda en el vector dinámico con búsqueda dicotómica = "<<t_buscDicotomica_MAX<<endl;
+    cout << "Tiempo MÁXIMO de búsqueda en el árbol AVL = "<<t_buscAVL_MAX<<endl;
+    
+    /*Estos siguientes tiempos creo que dan 0 porque van a encontrar el elemento insertado en la mitad del vector desde donde se busque y el elemento que se encuentre en la raíz del árbol.*/
+    cout << "Tiempo MINIMO de búsqueda en el vector dinámico con búsqueda dicotómica = "<<t_buscDicotomica_MIN<<endl;
+    cout << "Tiempo MINIMO de búsqueda en el árbol AVL = "<<t_buscAVL_MIN<<endl;
+}
+
+
+/**
+ * @brief Destructor.
+ */
+Documento::~Documento() {
+}
+
+
+
 /*---- GETTERS Y SETTERS ----*/
+
 ListaEnlazada<Palabra>& Documento::getInexistentes(){
     return inexistentes;
 }
@@ -58,9 +146,13 @@ std::string Documento::getNombreFich(){
     return nombreFich;
 }
 
-/**
- * @brief Destructor.
- */
-Documento::~Documento() {
+Diccionario* Documento::getDicc() const{
+    return dicc;
 }
+
+void Documento::setDicc(Diccionario* dicc) {
+    this->dicc = dicc;
+}
+
+
 

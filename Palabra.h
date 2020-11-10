@@ -23,7 +23,6 @@ using namespace std;
 class Palabra {
 private:
      string palabra;    
-          
      
 public:
     Palabra();
@@ -41,6 +40,7 @@ public:
     bool operator <=(const Palabra& dato);
     bool operator >=(const Palabra& dato);
     
+    
     /*---- MÉTODOS PRÁCTICA 1 ----*/
     bool palindromo(Palabra& pal);
     bool anagrama(Palabra& pal);
@@ -48,9 +48,12 @@ public:
     
     /*---- MÉTODOS PRÁCTICA 2 ----*/
     void limpiar();
-    Palabra conversionMinus();
+    Palabra& conversionMinus(Palabra& aux);
 
 };
+
+/*DUDA: ¿PORQUÉ TIENE QUE SER FUERA DE LA CLASE ?*/
+std::ostream &operator<<(std::ostream &os, const Palabra &f);
 
 #endif /* PALABRA_H */
 
