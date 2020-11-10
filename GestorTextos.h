@@ -35,11 +35,9 @@ public:
     Documento* buscarDocumento(std::string nombreFich);
     
     /*---- GETTERS Y SETTERS ----*/
-    void setTexto(Documento texto);
-    Documento& getTexto();
     void setDiccionario(Diccionario& diccionario);
     Diccionario* getDiccionario();
-    VDinamico<Documento*> getDocumentos();
+    Documento* getDocumento(unsigned int pos);
 };
 
 #endif /* GESTORTEXTOS_H */

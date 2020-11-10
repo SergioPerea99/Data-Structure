@@ -40,18 +40,14 @@ public:
 
     /*---- MÉTODOS NECESARIO PRACTICA 3 ----*/
     Diccionario& operator=(const Diccionario& orig);
-    bool buscar(Palabra& buscar);
+    bool buscar(Palabra& buscar, double& t_buscDicotomica, double& t_buscAVL, double&  t_buscDicotomica_MIN,double& t_buscAVL_MIN);
 
     /*GETTERS Y SETTERS.*/
-    VDinamico<Palabra> GetTerminos() const;
+    Palabra* GetTermino(unsigned int pos); //TODO: Devolver la palabra a 
     void SetNombreFich(std::string nombreFich);
     std::string GetNombreFich() const;
     VerbosConjugados* getVerbos() const;
     
-
-
-
-
 };
 
 #endif /* DICCIONARIO_H */

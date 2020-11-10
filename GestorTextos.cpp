@@ -86,8 +86,8 @@ Diccionario* GestorTextos::getDiccionario(){
 }
 
 
-VDinamico<Documento*> GestorTextos::getDocumentos(){
-    return documentos;
+Documento* GestorTextos::getDocumento(unsigned int pos){
+    return documentos[pos];
 }
 
 

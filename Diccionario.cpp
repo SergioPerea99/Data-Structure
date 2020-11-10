@@ -11,6 +11,8 @@
  * Created on 20 de octubre de 2020, 18:06
  */
 
+#include <time.h>
+
 #include "Diccionario.h"
 
 /**
@@ -29,8 +31,8 @@ Diccionario::Diccionario() {
         terminos.insertar(pal);
     }
     /*Ordenación para poder luego buscar en él con una búsqueda binaria.*/
-    GetTerminos().ordenar();
-    cout << GetTerminos().tam() << " palabras cargadas en los TERMINOS del diccionario." << endl;
+    terminos.ordenar();
+    cout << terminos.tam() << " palabras cargadas en los TERMINOS del diccionario." << endl;
     is.close();
 }
 
@@ -94,20 +96,43 @@ Diccionario& Diccionario::operator =(const Diccionario& orig){
     }
 }
 
-bool Diccionario::buscar(Palabra& buscar){
-    if(buscarDicotomica(buscar))
+bool Diccionario::buscar(Palabra& buscar, double& t_buscDicotomica_MAX, double& t_buscAVL_MAX,double&  t_buscDicotomica_MIN,double& t_buscAVL_MIN){
+    time_t t0, t1;
+    double varMax = 0.0;
+    
+    t0 = clock(); /*Comienzo de tiempo de búsqueda dicotómica, encuentre o no el elemento a buscar quedándose con el mayor de los tiempos.*/
+    if(buscarDicotomica(buscar)){
+        t1 = clock();
+        varMax = (double)(t1-t0)/CLOCKS_PER_SEC;
+        if (t_buscDicotomica_MAX < varMax) t_buscDicotomica_MAX = varMax;
+        if (t_buscDicotomica_MIN > varMax) t_buscDicotomica_MIN = varMax;
         return true;
-    else
-        if (verbos->buscar(buscar))
+    }else{
+        t1 = clock();
+        varMax = (double)(t1-t0)/CLOCKS_PER_SEC;
+        if (t_buscDicotomica_MAX < varMax) t_buscDicotomica_MAX = varMax;
+        if (t_buscDicotomica_MIN > varMax) t_buscDicotomica_MIN = varMax;
+        t0 = clock(); /*Comienzo de tiempo de búsqueda en árbol, encuentre o no el elemento a buscar quedándose con el mayor de los tiempos.*/
+        if (verbos->buscar(buscar)){
+            t1 = clock();
+            varMax = (double)(t1-t0)/CLOCKS_PER_SEC;
+            if (t_buscAVL_MAX < varMax) t_buscAVL_MAX = varMax;
+            if (t_buscAVL_MIN > varMax) t_buscAVL_MIN = varMax;
             return true;
+        }
+        t1 = clock();
+        varMax = (double)(t1-t0)/CLOCKS_PER_SEC;
+        if (t_buscAVL_MAX < varMax) t_buscAVL_MAX = varMax;
+        if (t_buscAVL_MIN > varMax) t_buscAVL_MIN = varMax;
+    }
     return false;
 }
 
 
 /*---- GETTERS Y SETTERS ----*/
 
-VDinamico<Palabra> Diccionario::GetTerminos() const{
-    return terminos;
+Palabra* Diccionario::GetTermino(unsigned int pos){
+    return &terminos[pos];
 }
 
 void Diccionario::SetNombreFich(std::string nombreFich) {

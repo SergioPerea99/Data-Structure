@@ -84,6 +84,7 @@ Documento& Documento::operator =(const Documento& dato){
  * @param num_practica Número que indica que tipo de busqueda de palabras en el diccionario se quiere realizar.
  */
 void Documento::chequearTexto(unsigned int num_practica){
+    double t_buscDicotomica_MAX = 0, t_buscAVL_MAX = 0,  t_buscDicotomica_MIN = 99, t_buscAVL_MIN = 99;
     ifstream is(nombreFich);
     cout<<"NOMBRE DEL FICHERO QUE SE VA A CHEQUEAR: "<<nombreFich<<endl;
     string palabra;
@@ -98,7 +99,7 @@ void Documento::chequearTexto(unsigned int num_practica){
         pal.limpiar();
         
         if(num_practica == 3){
-            if (!getDicc()->buscar(pal.conversionMinus(aux))) {
+            if (!getDicc()->buscar(pal.conversionMinus(aux),t_buscDicotomica_MAX,t_buscAVL_MAX, t_buscDicotomica_MIN, t_buscAVL_MIN)) {
                 ++no_validadas;
                 addInexistente(pal);
             }
@@ -113,6 +114,13 @@ void Documento::chequearTexto(unsigned int num_practica){
     is.close();
     cout << "Total palabras: " << total << " --------- Total de palabras no_validadas: " << no_validadas << endl;
     cout << "Tiempo para chequear el texto: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
+    cout << "PARA LA EJECUCIÓN DE BÚSQUEDAS EN DIFERENTES ESTRUCTURAS:"<<endl;
+    cout << "Tiempo MÁXIMO de búsqueda en el vector dinámico con búsqueda dicotómica = "<<t_buscDicotomica_MAX<<endl;
+    cout << "Tiempo MÁXIMO de búsqueda en el árbol AVL = "<<t_buscAVL_MAX<<endl;
+    
+    /*Estos siguientes tiempos creo que dan 0 porque van a encontrar el elemento insertado en la mitad del vector desde donde se busque y el elemento que se encuentre en la raíz del árbol.*/
+    cout << "Tiempo MINIMO de búsqueda en el vector dinámico con búsqueda dicotómica = "<<t_buscDicotomica_MIN<<endl;
+    cout << "Tiempo MINIMO de búsqueda en el árbol AVL = "<<t_buscAVL_MIN<<endl;
 }
 
 
