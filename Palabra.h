@@ -23,7 +23,7 @@ using namespace std;
 class Palabra {
 private:
      string palabra;    
-     
+     unsigned int ocurrencias;
 public:
     Palabra();
     Palabra(string _palabra);
@@ -48,8 +48,12 @@ public:
     
     /*---- MÉTODOS PRÁCTICA 2 ----*/
     void limpiar();
-    Palabra& conversionMinus(Palabra& aux);
-
+    string conversionMinus();
+    
+    /*---- MÉTODOS PRÁCTICA 4 ----*/
+    void SetOcurrencias(int ocurrencias);
+    int GetOcurrencias() const;
+    
 };
 
 /*DUDA: ¿PORQUÉ TIENE QUE SER FUERA DE LA CLASE ?*/

@@ -16,38 +16,36 @@
 
 #include <iostream>
 #include <fstream>
+#include <map>
 
 #include "VDinamico.h"
 #include "Palabra.h"
 #include "VerbosConjugados.h"
 
-class Diccionario {
+class DiccionarioConVerbos {
 private:
-    std::string nombreFich;
-    VDinamico<Palabra> terminos;
-
-    /*---- ATRIBUTOS PRÁCTICA 3 ----*/
-    VerbosConjugados *verbos;
+    /*---- ATRIBUTOS PRÁCTICA 4 ----*/
+    std::string nombreDicc;
+    std::string nombreDiccVerbos;
+    map<std::string, Palabra*> terminos;
 
 public:
-    Diccionario();
-    Diccionario(std::string _nombreFich);
-    Diccionario(const Diccionario& orig);
-    virtual ~Diccionario();
-
-    /*---- MÉTODOS DEL UML PRACTICA 2 ----*/
-    bool buscarDicotomica(const Palabra& buscar);
+    DiccionarioConVerbos();
+    DiccionarioConVerbos(std::string _nombreDicc, std::string _nombreDiccVerbos);
+    DiccionarioConVerbos(const DiccionarioConVerbos& orig);
+    virtual ~DiccionarioConVerbos();
 
     /*---- MÉTODOS NECESARIO PRACTICA 3 ----*/
-    Diccionario& operator=(const Diccionario& orig);
-    bool buscar(Palabra& buscar, double& t_buscDicotomica, double& t_buscAVL, double&  t_buscDicotomica_MIN,double& t_buscAVL_MIN);
+    DiccionarioConVerbos& operator=(const DiccionarioConVerbos& orig);
+    bool buscar(string termino, Palabra *result);
 
     /*GETTERS Y SETTERS.*/
-    Palabra* GetTermino(unsigned int pos); //TODO: Devolver la palabra a 
     void SetNombreFich(std::string nombreFich);
     std::string GetNombreFich() const;
     VerbosConjugados* getVerbos() const;
-    
+    void setNombreDiccVerbos(std::string nombreDiccVerbos);
+    std::string getNombreDiccVerbos() const;
+
 };
 
 #endif /* DICCIONARIO_H */

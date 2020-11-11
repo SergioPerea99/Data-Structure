@@ -23,7 +23,7 @@
 #include "Palabra.h"
 #include "ParPalabras.h"
 #include "ListaEnlazada.h"
-#include "Diccionario.h"
+#include "DiccionarioConVerbos.h"
 #include "GestorTextos.h"
 
 using namespace std;

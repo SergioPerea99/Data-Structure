@@ -16,7 +16,7 @@
 
 #include "ListaEnlazada.h"
 #include "Palabra.h"
-#include "Diccionario.h"
+#include "DiccionarioConVerbos.h"
 
 
 class Documento {
@@ -25,11 +25,11 @@ private:
     ListaEnlazada<Palabra> inexistentes;
     
     /*Atributos PRÁCTICA 3*/
-    Diccionario *dicc;
+    DiccionarioConVerbos *dicc;
     
 public:
     Documento();
-    Documento(std::string _texto, Diccionario* _dicc);
+    Documento(std::string _texto, DiccionarioConVerbos* _dicc);
     Documento(const Documento& orig);
     virtual ~Documento();
     
@@ -45,8 +45,8 @@ public:
     ListaEnlazada<Palabra>& getInexistentes();
     void setNombreFich(std::string nombreFich);
     std::string getNombreFich();
-    Diccionario* getDicc() const;
-    void setDicc(Diccionario* dicc);
+    DiccionarioConVerbos* getDicc() const;
+    void setDicc(DiccionarioConVerbos* dicc);
     
     
     

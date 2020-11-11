@@ -22,6 +22,7 @@
  */
 Palabra::Palabra() {
     palabra = "";
+    ocurrencias = 0;
 }
 
 /**
@@ -30,6 +31,7 @@ Palabra::Palabra() {
  */
 Palabra::Palabra(string _palabra){
     palabra = _palabra;
+    ocurrencias = 1;
 }
 
 /**
@@ -38,6 +40,7 @@ Palabra::Palabra(string _palabra){
  */
 Palabra::Palabra(const Palabra& orig) {
     palabra = orig.palabra;
+    ocurrencias = orig.ocurrencias;
 }
 
 /**
@@ -118,11 +121,10 @@ void Palabra::limpiar(){
  * @post A partir de la Palabra que llama al método, se genera una copia auxiliar de ella en minúsculas todas sus letras.
  * @return Palabra auxiliar devuelta con todas las letras en minúscula.
  */
-Palabra& Palabra::conversionMinus(Palabra& aux){
+string Palabra::conversionMinus(){
     string minus = GetPalabra();
     std::transform(minus.begin(),minus.end(),minus.begin(), ::tolower);
-    aux.SetPalabra(minus);
-    return aux;
+    return minus;
 }
 
 /**
@@ -230,5 +232,13 @@ string Palabra::GetPalabra() const {
  * @param palabra String a asignar al atributo.
  */
 void Palabra::SetPalabra(string palabra) {
-    this->palabra = palabra;
+    palabra = palabra;
+}
+
+void Palabra::SetOcurrencias(int ocurrencias) {
+    ocurrencias = ocurrencias;
+}
+
+int Palabra::GetOcurrencias() const {
+    return ocurrencias;
 }

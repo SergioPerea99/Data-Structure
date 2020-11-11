@@ -14,14 +14,17 @@
 #ifndef GESTORTEXTOS_H
 #define GESTORTEXTOS_H
 
-#include "Diccionario.h"
+#include "DiccionarioConVerbos.h"
 #include "Documento.h"
 #include <fstream>
+#include <vector>
 
 class GestorTextos {
 private:
-    Diccionario diccionario;
-    VDinamico<Documento*> documentos;
+    vector<Documento*> documentos;
+    vector<DiccionarioConVerbos*> diccionarios;
+    //Diccionario diccionario;
+    //VDinamico<Documento*> documentos;
 public:
     GestorTextos();
     GestorTextos(const GestorTextos& orig);
@@ -34,9 +37,11 @@ public:
     int addDocumento(std::string nombreFich);
     Documento* buscarDocumento(std::string nombreFich);
     
+    /*---- MÉTODOS DEL UML PRACTICA 4 ----*/
+    int addDiccionario(std::string nombreDicc, std::string nombreDiccVerbos);
+    
     /*---- GETTERS Y SETTERS ----*/
-    void setDiccionario(Diccionario& diccionario);
-    Diccionario* getDiccionario();
+    DiccionarioConVerbos* getDiccionario(unsigned int pos);
     Documento* getDocumento(unsigned int pos);
 };
 

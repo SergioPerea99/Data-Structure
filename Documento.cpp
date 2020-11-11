@@ -26,7 +26,7 @@ Documento::Documento() : inexistentes(){
  * @param _texto Nombre del documento.
  * @param _dicc Puntero al diccionario que tiene asociado este Documento.
  */
-Documento::Documento(std::string _texto, Diccionario* _dicc): inexistentes(){
+Documento::Documento(std::string _texto, DiccionarioConVerbos* _dicc): inexistentes(){
     nombreFich = _texto;
     dicc = _dicc;
 }
@@ -88,7 +88,8 @@ void Documento::chequearTexto(unsigned int num_practica){
     ifstream is(nombreFich);
     cout<<"NOMBRE DEL FICHERO QUE SE VA A CHEQUEAR: "<<nombreFich<<endl;
     string palabra;
-    Palabra pal,aux;
+    Palabra pal;
+    Palabra *result = nullptr;
     clock_t t_ini = clock();
     int no_validadas = 0, total = 0, p;
     while (is) {
@@ -99,17 +100,12 @@ void Documento::chequearTexto(unsigned int num_practica){
         pal.limpiar();
         
         if(num_practica == 3){
-            if (!getDicc()->buscar(pal.conversionMinus(aux),t_buscDicotomica_MAX,t_buscAVL_MAX, t_buscDicotomica_MIN, t_buscAVL_MIN)) {
+            if (!getDicc()->buscar(pal.conversionMinus(), result)) {
                 ++no_validadas;
                 addInexistente(pal);
             }
         }
-        if (num_practica == 2){
-            if (!getDicc()->buscarDicotomica(pal.conversionMinus(aux))) {
-                ++no_validadas;
-                addInexistente(pal);
-            }
-        }
+        
     }
     is.close();
     cout << "Total palabras: " << total << " --------- Total de palabras no_validadas: " << no_validadas << endl;
@@ -146,11 +142,11 @@ std::string Documento::getNombreFich(){
     return nombreFich;
 }
 
-Diccionario* Documento::getDicc() const{
+DiccionarioConVerbos* Documento::getDicc() const{
     return dicc;
 }
 
-void Documento::setDicc(Diccionario* dicc) {
+void Documento::setDicc(DiccionarioConVerbos* dicc) {
     this->dicc = dicc;
 }
 
