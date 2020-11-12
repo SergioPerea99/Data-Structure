@@ -12,7 +12,6 @@
       <itemPath>Palabra.h</itemPath>
       <itemPath>ParPalabras.h</itemPath>
       <itemPath>VDinamico.h</itemPath>
-      <itemPath>VerbosConjugados.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -26,7 +25,6 @@
       <itemPath>GestorTextos.cpp</itemPath>
       <itemPath>Palabra.cpp</itemPath>
       <itemPath>ParPalabras.cpp</itemPath>
-      <itemPath>VerbosConjugados.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -88,10 +86,6 @@
       </item>
       <item path="VDinamico.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="VerbosConjugados.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="VerbosConjugados.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
@@ -140,10 +134,6 @@
       <item path="ParPalabras.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="VDinamico.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="VerbosConjugados.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="VerbosConjugados.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -16,11 +16,11 @@
 
 #include <iostream>
 #include <fstream>
+#include <list>
 #include <map>
 
 #include "VDinamico.h"
 #include "Palabra.h"
-#include "VerbosConjugados.h"
 
 class DiccionarioConVerbos {
 private:
@@ -37,14 +37,23 @@ public:
 
     /*---- MÉTODOS NECESARIO PRACTICA 3 ----*/
     DiccionarioConVerbos& operator=(const DiccionarioConVerbos& orig);
-    bool buscar(string termino, Palabra *result);
+   
+    
+    /*---- MÉTODO UML PRÁCTICA 4 ----*/
+    bool buscarTermino(std::string termino, Palabra *result);
+    list<Palabra> buscarFamilias(std::string raiz);
+    Palabra* insertarInexistente(Palabra& dato);
 
     /*GETTERS Y SETTERS.*/
     void SetNombreFich(std::string nombreFich);
     std::string GetNombreFich() const;
-    VerbosConjugados* getVerbos() const;
+   
     void setNombreDiccVerbos(std::string nombreDiccVerbos);
     std::string getNombreDiccVerbos() const;
+    
+    map<std::string,Palabra*>::iterator it_Begin(); 
+    map<std::string,Palabra*>::iterator it_End();
+    
 
 };
 

@@ -14,15 +14,13 @@
 #ifndef DOCUMENTO_H
 #define DOCUMENTO_H
 
-#include "ListaEnlazada.h"
-#include "Palabra.h"
 #include "DiccionarioConVerbos.h"
 
 
 class Documento {
 private:
     std::string nombreFich;
-    ListaEnlazada<Palabra> inexistentes;
+    //ListaEnlazada<Palabra> inexistentes;
     
     /*Atributos PRÁCTICA 3*/
     DiccionarioConVerbos *dicc;
@@ -34,15 +32,14 @@ public:
     virtual ~Documento();
     
     /*---- MÉTODOS DEL UML PRACTICA 2 ----*/
-    void addInexistente(Palabra p);
+    //void addInexistente(Palabra p);
     
     /*---- MÉTODOS NECESARIOS PRACTICA 3  ----*/
     Documento& operator=(const Documento& dato);
     bool operator==(const Documento& dato);
-    void chequearTexto(unsigned int num_practica);
+    void chequearTexto();
     
     /*---- GETTERS Y SETTERS ----*/
-    ListaEnlazada<Palabra>& getInexistentes();
     void setNombreFich(std::string nombreFich);
     std::string getNombreFich();
     DiccionarioConVerbos* getDicc() const;

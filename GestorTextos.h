@@ -22,26 +22,24 @@
 class GestorTextos {
 private:
     vector<Documento*> documentos;
-    vector<DiccionarioConVerbos*> diccionarios;
-    //Diccionario diccionario;
-    //VDinamico<Documento*> documentos;
+    DiccionarioConVerbos *diccionario;
+    //vector<DiccionarioConVerbos*> diccionarios;
 public:
     GestorTextos();
     GestorTextos(const GestorTextos& orig);
     virtual ~GestorTextos();
-    
-    /*---- MÉTODOS DEL UML PRACTICA 2 ----*/
-    //void chequearTexto(int pos);
     
     /*---- MÉTODOS DEL UML PRACTICA 3 ----*/
     int addDocumento(std::string nombreFich);
     Documento* buscarDocumento(std::string nombreFich);
     
     /*---- MÉTODOS DEL UML PRACTICA 4 ----*/
-    int addDiccionario(std::string nombreDicc, std::string nombreDiccVerbos);
+    //int addDiccionario(std::string nombreDicc, std::string nombreDiccVerbos);
+    bool buscarTermino(std::string termino, Palabra* result);
+    list<Palabra> buscarFamilias(std::string raiz);
     
     /*---- GETTERS Y SETTERS ----*/
-    DiccionarioConVerbos* getDiccionario(unsigned int pos);
+    DiccionarioConVerbos* getDiccionario();
     Documento* getDocumento(unsigned int pos);
 };
 

@@ -20,13 +20,18 @@
 #include "VDinamico.h"
 using namespace std;
 
+class DiccionarioConVerbos;
+class Documento;
+
 class Palabra {
 private:
      string palabra;    
      unsigned int ocurrencias;
+     Documento *ultima_aparicion;
+     DiccionarioConVerbos *dicc_perteneciente;
 public:
     Palabra();
-    Palabra(string _palabra);
+    Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente);
     Palabra(const Palabra& orig);
     virtual ~Palabra();
     
@@ -51,8 +56,12 @@ public:
     string conversionMinus();
     
     /*---- MÉTODOS PRÁCTICA 4 ----*/
-    void SetOcurrencias(int ocurrencias);
+    void incrementarOcurrencia();
     int GetOcurrencias() const;
+    DiccionarioConVerbos* GetDicc_perteneciente() const;
+    void SetUltima_aparicion(Documento* ultima_aparicion);
+    Documento* GetUltima_aparicion() const;
+    
     
 };
 

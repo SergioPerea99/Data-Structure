@@ -1,17 +1,10 @@
 build/Debug/GNU_Cygwin-Windows/Documento.o: Documento.cpp Documento.h \
- ListaEnlazada.h Palabra.h VDinamico.h DiccionarioConVerbos.h \
- VerbosConjugados.h Arbol_AVL.h
+ DiccionarioConVerbos.h VDinamico.h Palabra.h
 
 Documento.h:
 
-ListaEnlazada.h:
-
-Palabra.h:
+DiccionarioConVerbos.h:
 
 VDinamico.h:
 
-DiccionarioConVerbos.h:
-
-VerbosConjugados.h:
-
-Arbol_AVL.h:
+Palabra.h:

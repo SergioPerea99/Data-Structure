@@ -17,21 +17,28 @@
 #include "Palabra.h"
 #include "VDinamico.h"
 
+#include "DiccionarioConVerbos.h"
+#include "Documento.h"
+
 /**
  * @brief Constructor por defecto.
  */
-Palabra::Palabra() {
+Palabra::Palabra(){
     palabra = "";
     ocurrencias = 0;
+    dicc_perteneciente = nullptr;
+    ultima_aparicion = nullptr;
 }
 
 /**
  * @brief Constructor parametrizado.
  * @param _palabra String a asignar al atributo.
  */
-Palabra::Palabra(string _palabra){
+Palabra::Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente){
     palabra = _palabra;
     ocurrencias = 1;
+    dicc_perteneciente = _diccPerteneciente;
+    ultima_aparicion = nullptr; //Se ha creado desde el diccionario.
 }
 
 /**
@@ -41,6 +48,8 @@ Palabra::Palabra(string _palabra){
 Palabra::Palabra(const Palabra& orig) {
     palabra = orig.palabra;
     ocurrencias = orig.ocurrencias;
+    dicc_perteneciente = orig.dicc_perteneciente;
+    ultima_aparicion = orig.ultima_aparicion;
 }
 
 /**
@@ -235,10 +244,22 @@ void Palabra::SetPalabra(string palabra) {
     palabra = palabra;
 }
 
-void Palabra::SetOcurrencias(int ocurrencias) {
-    ocurrencias = ocurrencias;
+void Palabra::incrementarOcurrencia() {
+    ++ocurrencias;
 }
 
 int Palabra::GetOcurrencias() const {
     return ocurrencias;
+}
+
+DiccionarioConVerbos* Palabra::GetDicc_perteneciente() const {
+    return dicc_perteneciente;
+}
+
+void Palabra::SetUltima_aparicion(Documento* ultima_aparicion) {
+    this->ultima_aparicion = ultima_aparicion;
+}
+
+Documento* Palabra::GetUltima_aparicion() const {
+    return ultima_aparicion;
 }
