@@ -86,27 +86,24 @@ void Documento::chequearTexto(){
     ifstream is(nombreFich);
     cout<<"NOMBRE DEL FICHERO QUE SE VA A CHEQUEAR: "<<nombreFich<<endl;
     string palabra;
-    Palabra pal, *result = nullptr;
+    Palabra *result = nullptr;
     Palabra aniadir;
     clock_t t_ini = clock();
     int no_validadas = 0, total = 0, p;
     while (is) {
         is >> palabra;
-        pal.SetPalabra(palabra);
+        Palabra pal(palabra,getDicc());
         ++total;
         /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
         pal.limpiar();
-        
-        if (getDicc()->buscarTermino(pal.conversionMinus(), result)) {
+        string aux = pal.conversionMinus();
+        if (!getDicc()->buscarTermino(aux, result)) {
+            //std::cout<<"PALABRA NO ENCONTRADA -> "<<pal.GetPalabra()<<endl;
             /*Al no haberse encontrado, se encarga de añadirla al diccionario asociado.*/
             ++no_validadas;
             aniadir.SetPalabra(palabra);
             Palabra *aniadida = dicc->insertarInexistente(aniadir); 
             aniadida->SetUltima_aparicion(this); /*Hecho así para poder añadir a la palabra de que documento fue añadida esa palabra inexistente*/           
-        }else{
-            /*Tendrá result el valor encontrado, por lo que con ese hago el incremento y en que documento ha sido la ultima vez que ha aparecido.*/
-            cout<<"EL RESULTADO DEVUELVE -> "<<result->GetPalabra()<<endl;
-            result->incrementarOcurrencia();
         }
         
     }

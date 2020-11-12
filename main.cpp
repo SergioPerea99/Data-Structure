@@ -98,6 +98,20 @@ int main(int argc, char** argv) {
 //        }
         gestor1.getDocumento(pos)->chequearTexto();
         
+        Palabra *mancha = nullptr;
+        string manch = "mancha";
+        gestor1.getDiccionario()->buscarTermino(manch,mancha);
+        
+        if(mancha)
+            cout<<mancha->GetOcurrencias()-1<<endl;
+        
+        Palabra *estaban = nullptr;
+        string _estaban = "estaban";
+        gestor1.getDiccionario()->buscarTermino(_estaban,estaban);
+        
+        if(estaban)
+            cout<<estaban->GetOcurrencias()-1<<endl;
+        
 
         
         

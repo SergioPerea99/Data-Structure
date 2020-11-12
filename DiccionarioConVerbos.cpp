@@ -128,10 +128,12 @@ DiccionarioConVerbos& DiccionarioConVerbos::operator =(const DiccionarioConVerbo
  * @param result Palabra encontrada, en caso de encontrarse.
  * @return Booleano que indica si se ha encontrado o no.
  */
-bool DiccionarioConVerbos::buscarTermino(string termino, Palabra* result){
+bool DiccionarioConVerbos::buscarTermino(string& termino, Palabra* result){
     map<std::string, Palabra*>::iterator ite = terminos.find(termino);
     if(ite != terminos.end()){
         result = ite->second;
+        ite->second->incrementarOcurrencia();
+        cout<<"PALABRA ENCONTRADA -> "<<ite->second->GetPalabra()<<" :: "<<ite->second->GetOcurrencias()<<endl;
         return true;
     }else
         return false;
