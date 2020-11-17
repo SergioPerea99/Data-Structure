@@ -12,6 +12,7 @@
  */
 
 #include <cstdlib>
+#include <iostream>
 #include <fstream>
 #include <cstdio>
 #include <algorithm>
@@ -57,26 +58,6 @@ void comprobar() {
 	cout << "Tiempo implementación 1: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
 }
 
-//int eliminarNombresPropios(GestorTextos& gestor1, int pos){
-//
-//    Iterador<Palabra> it = gestor1.getDocumento(pos)->getInexistentes().iterador();
-//    Iterador<Palabra> aux = it;
-//    int borrados = 0;
-//    cout << "[ ";
-//    while (!it.fin()) {
-//        if (it.dato().GetPalabra()[0] >= 65 && it.dato().GetPalabra()[0] <= 90) {
-//            cout << it.dato().GetPalabra() << "___";
-//            aux = it;
-//            it.siguiente();
-//            gestor1.getDocumento(pos)->getInexistentes().borra(aux);
-//            ++borrados;
-//        } else
-//            it.siguiente();
-//
-//    }
-//    return borrados;
-//}
-
 
 int main(int argc, char** argv) {
     
@@ -91,29 +72,43 @@ int main(int argc, char** argv) {
         GestorTextos gestor1;
         int pos = gestor1.addDocumento(nombreFich);
 
-//        map<std::string, Palabra*>::iterator it = gestor1.getDiccionario()->it_Begin();
-//        while (it != gestor1.getDiccionario()->it_End()){
-//            cout<<*it->second<<endl;
-//            it++;
-//        }
         gestor1.getDocumento(pos)->chequearTexto();
+        
+        
+        
+        /*---- NUMERO DE OCURRENCIAS DE MANCHA Y ESTABAN ----*/
         
         Palabra *mancha = nullptr;
         string manch = "mancha";
         gestor1.getDiccionario()->buscarTermino(manch,mancha);
         
         if(mancha)
-            cout<<mancha->GetOcurrencias()-1<<endl;
+            cout<<"Ocurrencias de mancha -> "<<mancha->GetOcurrencias()-1<<endl;
         
         Palabra *estaban = nullptr;
         string _estaban = "estaban";
         gestor1.getDiccionario()->buscarTermino(_estaban,estaban);
         
         if(estaban)
-            cout<<estaban->GetOcurrencias()-1<<endl;
+            cout<<"Ocurrencias de estaban -> "<<estaban->GetOcurrencias()-1<<endl; //RESTO 1 PORQUE CADA VEZ QUE BUSCA EL TERMINO Y LO ENCUENTRA INCREMENTA SU OCURRENCIA.
         
+        
+        /*---- BUSCAR Y MOSTRAR POR CONSOLA LA FAMILIA DE PALABRAS QUE SE QUIERA POR CONSOLA ----*/
+        
+        string _buscar;
+        cout << "FAMILIA DE PALABRAS A QUERER BUSCAR : ";
+        cin>>_buscar;
+        list<Palabra> *familia = new list<Palabra>();
+        gestor1.buscarFamilias(_buscar, familia);
 
+        list<Palabra>::iterator it = familia->begin();
+        while (it != familia->end()) {
+            cout << it->GetPalabra() << "  ";
+            ++it;
+        }
         
+        delete familia;
+        familia = nullptr;
         
     }catch(exception &e){
         cout<<e.what()<<endl;

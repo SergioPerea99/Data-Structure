@@ -128,12 +128,11 @@ DiccionarioConVerbos& DiccionarioConVerbos::operator =(const DiccionarioConVerbo
  * @param result Palabra encontrada, en caso de encontrarse.
  * @return Booleano que indica si se ha encontrado o no.
  */
-bool DiccionarioConVerbos::buscarTermino(string& termino, Palabra* result){
+bool DiccionarioConVerbos::buscarTermino(string& termino, Palabra* &result){
     map<std::string, Palabra*>::iterator ite = terminos.find(termino);
     if(ite != terminos.end()){
         result = ite->second;
         ite->second->incrementarOcurrencia();
-        cout<<"PALABRA ENCONTRADA -> "<<ite->second->GetPalabra()<<" :: "<<ite->second->GetOcurrencias()<<endl;
         return true;
     }else
         return false;
@@ -147,16 +146,14 @@ bool DiccionarioConVerbos::buscarTermino(string& termino, Palabra* result){
  * @param raiz String a buscar como subcadena en el map.
  * @return Lista de palabras que forman la familia.
  */
-list<Palabra> DiccionarioConVerbos::buscarFamilias(std::string raiz){
+void DiccionarioConVerbos::buscarFamilias(std::string raiz,list<Palabra>* familia){
     map<std::string, Palabra*>::iterator it = terminos.find(raiz);
-    list<Palabra> copiar;
     std::string comprobar = it->first; /*Creo una variable para no hacer operaciones con el iterador.*/
-    while(comprobar.substr(0,raiz.length()-1) == raiz){ /*Supongo que al iterar hacia abajo o encuentra el final o sale por donde empezó.*/
-        copiar.push_back(*it->second); /*Copio la palabra en la lista ya que sigue en el bucle que comprueba que es de la familia.*/
-        it = terminos.lower_bound(it->first); /*Paso al siguiente dato.*/
+    while(comprobar.substr(0,raiz.length()) == raiz){ /*Supongo que al iterar hacia abajo o encuentra el final o sale por donde empezó.*/
+        familia->push_back(*it->second); /*Copio la palabra en la lista ya que sigue en el bucle que comprueba que es de la familia.*/
+        it++;
         comprobar = it->first; /*Copio la nueva clave, para ver en el condicional si sigue siendo de la familia.*/
     }
-    return copiar;
 }
 
 

@@ -35,8 +35,8 @@ public:
     
     /*---- MÉTODOS DEL UML PRACTICA 4 ----*/
     //int addDiccionario(std::string nombreDicc, std::string nombreDiccVerbos);
-    bool buscarTermino(std::string termino, Palabra* result);
-    list<Palabra> buscarFamilias(std::string raiz);
+    bool buscarTermino(std::string termino, Palabra* &result);
+    void buscarFamilias(std::string raiz,list<Palabra>* familia);
     
     /*---- GETTERS Y SETTERS ----*/
     DiccionarioConVerbos* getDiccionario();

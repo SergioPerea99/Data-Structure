@@ -40,8 +40,8 @@ public:
    
     
     /*---- MÉTODO UML PRÁCTICA 4 ----*/
-    bool buscarTermino(std::string& termino, Palabra *result);
-    list<Palabra> buscarFamilias(std::string raiz);
+    bool buscarTermino(std::string& termino, Palabra* &result);
+    void buscarFamilias(std::string raiz,list<Palabra>* familia);
     Palabra* insertarInexistente(Palabra& dato);
 
     /*GETTERS Y SETTERS.*/

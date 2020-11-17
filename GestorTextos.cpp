@@ -74,14 +74,14 @@ Documento* GestorTextos::buscarDocumento(std::string nombreFich){
  * @param result Palabra que, al ser buscada con el termino, se asigna a dicho parámetro.
  * @return Booleano que indica si se ha encontrado o no.
  */
-bool GestorTextos::buscarTermino(std::string termino, Palabra* result){
+bool GestorTextos::buscarTermino(std::string termino, Palabra* &result){
     return diccionario->buscarTermino(termino,result);
 }
 
 
 
-list<Palabra> GestorTextos::buscarFamilias(std::string raiz){
-    return diccionario->buscarFamilias(raiz);
+void GestorTextos::buscarFamilias(std::string raiz,list<Palabra>* familia){
+    diccionario->buscarFamilias(raiz,familia);
 }
 
 /**
