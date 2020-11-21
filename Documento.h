@@ -20,9 +20,6 @@
 class Documento {
 private:
     std::string nombreFich;
-    //ListaEnlazada<Palabra> inexistentes;
-    
-    /*Atributos PRÁCTICA 3*/
     DiccionarioConVerbos *dicc;
     
 public:
@@ -30,10 +27,7 @@ public:
     Documento(std::string _texto, DiccionarioConVerbos* _dicc);
     Documento(const Documento& orig);
     virtual ~Documento();
-    
-    /*---- MÉTODOS DEL UML PRACTICA 2 ----*/
-    //void addInexistente(Palabra p);
-    
+
     /*---- MÉTODOS NECESARIOS PRACTICA 3  ----*/
     Documento& operator=(const Documento& dato);
     bool operator==(const Documento& dato);
@@ -44,8 +38,6 @@ public:
     std::string getNombreFich();
     DiccionarioConVerbos* getDicc() const;
     void setDicc(DiccionarioConVerbos* dicc);
-    
-    
     
 };
 

@@ -99,7 +99,6 @@ void Documento::chequearTexto(){
         string aux = pal.conversionMinus();
         if (!getDicc()->buscarTermino(aux, result)) {
             //std::cout<<"PALABRA NO ENCONTRADA -> "<<pal.GetPalabra()<<endl;
-            /*Al no haberse encontrado, se encarga de añadirla al diccionario asociado.*/
             ++no_validadas;
             aniadir.SetPalabra(palabra);
             Palabra *aniadida = dicc->insertarInexistente(aniadir); 
@@ -109,9 +108,7 @@ void Documento::chequearTexto(){
     }
     
     is.close();
-    cout << "Total palabras: " << total << " --------- Total de palabras no_validadas: " << no_validadas << endl;
-    cout << "Tiempo para chequear el texto: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
-    cout << "PARA LA EJECUCIÓN DE BÚSQUEDAS EN DIFERENTES ESTRUCTURAS:"<<endl;
+    
 }
 
 

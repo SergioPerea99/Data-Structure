@@ -46,7 +46,7 @@ DiccionarioConVerbos::DiccionarioConVerbos(): terminos(){
     }
     is.close();
     
-    cout << terminos.size() << " palabras cargadas en los TERMINOS del diccionario." << endl;
+    cout <<"DICCIONARIO: "<< terminos.size() << " palabras cargadas en los TERMINOS del diccionario." << endl;
 }
 
 
@@ -101,6 +101,7 @@ DiccionarioConVerbos::DiccionarioConVerbos(const DiccionarioConVerbos& orig) {
 DiccionarioConVerbos::~DiccionarioConVerbos() {
     map<std::string, Palabra*>::iterator it = terminos.begin();
     while(it != terminos.end()){
+        delete it->second;
         terminos.erase(it); /*DUDA: Si he eliminado con erase pero he creado un new de Palabras en esta clase para almacenarlo en esos nodos del mapa, ¿con el erase no haría falta liberar su memoria?*/
         it = terminos.lower_bound(it->first); 
     }

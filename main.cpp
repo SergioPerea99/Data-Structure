@@ -28,45 +28,14 @@
 
 using namespace std;
 
-void comprobar() {
-	vector<string> dicc;
-        
-	ifstream is("dicc-espanol-sin.txt");
-	string palabra;
-
-	while (is) {
-		is >> palabra;
-		dicc.push_back(palabra);
-	}
-	cout << dicc.size() << " palabras cargadas" << endl;
-
-	is.close();
-	is.open("quijote-sin-simbolos.txt");
-
-	clock_t t_ini = clock();
-
-	int validadas = 0, total = 0, p;
-	while (is) {
-		is >> palabra;
-		++total;
-
-		if (binary_search(dicc.begin(), dicc.end(), palabra)) {
-			++validadas;
-		}
-	}
-	cout <<"Total palabras: " << total << " validadas: " << validadas << endl;
-	cout << "Tiempo implementación 1: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
-}
-
-
 int main(int argc, char** argv) {
     
-    comprobar();
-    
     /*-----------------------------------------------------------------------------------------------------*/
-    /*------------------------------- MENÚ PRINCIPAL: PRÁCTICA  ------------------------------------------*/
+    /*------------------------------- MENÚ PRINCIPAL: PRÁCTICA 4 ------------------------------------------*/
     /*-----------------------------------------------------------------------------------------------------*/
     try{
+        
+        /*---- CHEQUEAR EL QUIJOTE Y UN SEGUNDO TEXTO ----*/
 
         std::string nombreFich = "quijote-sin-simbolos.txt";
         GestorTextos gestor1;
@@ -74,19 +43,21 @@ int main(int argc, char** argv) {
 
         gestor1.getDocumento(pos)->chequearTexto();
         
-        
+        nombreFich = "cañasYbarro.txt";
+        pos = gestor1.addDocumento(nombreFich);
+        gestor1.getDocumento(pos)->chequearTexto();
         
         /*---- NUMERO DE OCURRENCIAS DE MANCHA Y ESTABAN ----*/
         
         Palabra *mancha = nullptr;
-        string manch = "mancha";
-        gestor1.getDiccionario()->buscarTermino(manch,mancha);
+        string _mancha = "mancha"; //SEGÚN HE COMPROBADO UNA A UNA DEL DOCUMENTO, SALEN 175 (TOTAL 183 CON: 2 MANCHAS,1 MANCHASE, 1 MANCHADO, 4 MANCHADA).
+        gestor1.getDiccionario()->buscarTermino(_mancha,mancha);
         
         if(mancha)
             cout<<"Ocurrencias de mancha -> "<<mancha->GetOcurrencias()-1<<endl;
         
         Palabra *estaban = nullptr;
-        string _estaban = "estaban";
+        string _estaban = "estaban"; //COMRPOBADO QUE TIENE QUE SALIR 175 PORQUE AL BUSCAR SALEN 178 (ESTABAN,ESTABANLE,PRESTABAN,RECUESTABAN).
         gestor1.getDiccionario()->buscarTermino(_estaban,estaban);
         
         if(estaban)
@@ -95,21 +66,43 @@ int main(int argc, char** argv) {
         
         /*---- BUSCAR Y MOSTRAR POR CONSOLA LA FAMILIA DE PALABRAS QUE SE QUIERA POR CONSOLA ----*/
         
-        string _buscar;
-        cout << "FAMILIA DE PALABRAS A QUERER BUSCAR : ";
-        cin>>_buscar;
+        
+        cout<<endl<<endl<<"FAMILIA DE PALABRAS DE --> FLOR"<<endl;
+        string _buscar = "flor";
         list<Palabra> *familia = new list<Palabra>();
         gestor1.buscarFamilias(_buscar, familia);
-
         list<Palabra>::iterator it = familia->begin();
         while (it != familia->end()) {
             cout << it->GetPalabra() << "  ";
             ++it;
         }
+        delete familia;
+        familia = new list<Palabra>();
         
+        cout<<endl<<endl<<"FAMILIA DE PALABRAS DE --> SAL"<<endl;
+        _buscar = "sal";
+        gestor1.buscarFamilias(_buscar, familia);
+        it = familia->begin();
+        while (it != familia->end()) {
+            cout << it->GetPalabra() << "  ";
+            ++it;
+        }
+        delete familia;
+        familia = new list<Palabra>();
+        
+        
+        cout<<endl<<endl<<"FAMILIA DE PALABRAS DE --> MAR"<<endl;
+        _buscar = "mar";
+        gestor1.buscarFamilias(_buscar, familia);
+
+        it = familia->begin();
+        while (it != familia->end()) {
+            cout << it->GetPalabra() << "  ";
+            ++it;
+        }
         delete familia;
         familia = nullptr;
-        
+         
     }catch(exception &e){
         cout<<e.what()<<endl;
     }

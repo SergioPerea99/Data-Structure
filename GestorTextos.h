@@ -23,7 +23,6 @@ class GestorTextos {
 private:
     vector<Documento*> documentos;
     DiccionarioConVerbos *diccionario;
-    //vector<DiccionarioConVerbos*> diccionarios;
 public:
     GestorTextos();
     GestorTextos(const GestorTextos& orig);

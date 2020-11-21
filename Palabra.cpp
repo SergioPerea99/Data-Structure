@@ -36,7 +36,7 @@ Palabra::Palabra(){
  */
 Palabra::Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente){
     palabra = _palabra;
-    ocurrencias = 1;
+    ocurrencias = 0;
     dicc_perteneciente = _diccPerteneciente;
     ultima_aparicion = nullptr; //Se ha creado desde el diccionario.
 }
@@ -232,7 +232,7 @@ ostream &operator<<(ostream &os, const Palabra &f)
  * @brief Getter de atributo palabra.
  * @return String.
  */
-string Palabra::GetPalabra() const {
+string Palabra::GetPalabra() const{
     return palabra;
 }
 
