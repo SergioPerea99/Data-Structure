@@ -12,13 +12,15 @@
  */
 
 #include <ctype.h>
+#include <vector>
 
 #include "GestorTextos.h"
 
 /**
  * @brief Constructor por defecto.
  */
-GestorTextos::GestorTextos():diccionario("dicc-espanol-sin.txt"), documentos(){
+GestorTextos::GestorTextos(): documentos(){
+    diccionario = new DiccionarioConVerbos();
 }
 
 /**
@@ -39,9 +41,9 @@ GestorTextos::GestorTextos(const GestorTextos& orig) {
  * @param nombreFich String que se quiere añadir a la estructura como Documento.
  */
 int GestorTextos::addDocumento(std::string nombreFich){
-    Documento *doc = new Documento(nombreFich, getDiccionario()); 
-    documentos.insertar(doc,documentos.tam()); 
-    return documentos.tam()-1;
+    Documento *doc = new Documento(nombreFich, getDiccionario()); /*Ya que solo metemos uno, le corresponde al primer elemento.*/
+    documentos.push_back(doc);
+    return documentos.size()-1;
 }
 
 /**
@@ -53,12 +55,35 @@ int GestorTextos::addDocumento(std::string nombreFich){
  */
 Documento* GestorTextos::buscarDocumento(std::string nombreFich){
     Documento *texto_buscar =  new Documento(nombreFich,getDiccionario());
-    if(documentos.buscar(texto_buscar)){
-        delete texto_buscar;
-        return texto_buscar;
+    list<Documento*>::iterator it = documentos.begin();
+    while (it != documentos.end()){
+        if (*(*it) == *texto_buscar){
+            delete texto_buscar;
+            return *it;
+        }
+        it++;
     }
     delete texto_buscar;
     return nullptr;
+}
+
+
+/**
+ * @brief Buscar término.
+ * @post Buscar a partir de una clave "termino" la cual es el nombre de la Palabra y devolver si es verdadero
+ * o falsa dicha búsqueda. Result contendrá la palabra buscada en caso de haberse encontrado.
+ * @param termino Clave del map.
+ * @param result Palabra que, al ser buscada con el termino, se asigna a dicho parámetro.
+ * @return Booleano que indica si se ha encontrado o no.
+ */
+bool GestorTextos::buscarTermino(std::string termino, Palabra* &result){
+    return diccionario->buscarTermino(termino,result);
+}
+
+
+
+void GestorTextos::buscarFamilias(std::string raiz,list<Palabra>* familia){
+    diccionario->buscarFamilias(raiz,familia);
 }
 
 /**
@@ -66,57 +91,52 @@ Documento* GestorTextos::buscarDocumento(std::string nombreFich){
  * @post Destruye los objetos documento creados que habían sido añadidos al vector dinámico documentos.
  */
 GestorTextos::~GestorTextos() {
-    for (int i = 0; i < documentos.tam(); i++){
-        delete documentos[i];
-        documentos[i] = 0;
+    list<Documento*>::iterator it = documentos.begin();
+    while (it != documentos.end()){
+        if(*it)
+            delete *it;
+        *it = 0;
+        it++;
     }
+    if (diccionario)
+        delete diccionario;
+    diccionario = 0;
 }
+
+
 
 
 /*---- GETTERS Y SETTERS ----*/
 
 
-
-void GestorTextos::setDiccionario(Diccionario& diccionario) {
-    this->diccionario = diccionario;
-}
-
-Diccionario* GestorTextos::getDiccionario(){
-    return &diccionario;
+DiccionarioConVerbos*& GestorTextos::getDiccionario(){
+    return diccionario;
 }
 
 
 Documento* GestorTextos::getDocumento(unsigned int pos){
-    return documentos[pos];
+    list<Documento*>::iterator it = documentos.begin();
+    int i = 0;
+    while (i < pos){
+        it++;
+        i++;
+    }
+    if(*it)
+        return *it;
+    return nullptr;
 }
 
 
+
 /**
- * @brief Chequear texto.
- * @post A partir de 2 nombres de textos pasados como parametros, uno referenciará al diccionario y el otro corresponderá al texto. Una vez
- * se haya insertado todas las palabras en el diccionario se comparará una a una las palabras del texto. Cada vez que se encuentre
- * una palabra del texto la cuál es limpiada (y puesta en minúscula auxiliarmente), se añadirá en una lista de inexistentes palabras en el 
- * objeto referente al Documento; es decir, en el texto.
+ * @brief Insertar documento.
+ * @post Añade un documento al final de los elementos del vector. Es importante saber
+ * que desde la misma acción de añadir el documento, se está añadiendo el diccionario
+ * asociado a ese documento.
+ * @param nombreFich String que se quiere añadir a la estructura como Documento.
  */
-//void GestorTextos::chequearTexto (int pos) {
-//    ifstream is(documentos[pos].getNombreFich());
-//    string palabra;
-//    Palabra pal;
-//    clock_t t_ini = clock();
-//    int no_validadas = 0, total = 0, p;
-//    while (is) {
-//        is >> palabra;
-//        pal.SetPalabra(palabra);
-//        ++total;
-//        /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
-//        pal.limpiar();
-//
-//        if (!getDiccionario().buscarDicotomica(pal.conversionMinus())) {
-//            ++no_validadas;
-//            documentos[pos].addInexistente(pal);
-//        }
-//    }
-//    cout << "Total palabras: " << total << " --------- Total de palabras no_validadas: " << no_validadas << endl;
-//    cout << "Tiempo para chequear el texto: " << ((clock() - t_ini) / CLOCKS_PER_SEC) << " segs." << endl;
-//        
+//int GestorTextos::addDiccionario(std::string nombreDicc, std::string nombreDiccVerbos){
+//    DiccionarioConVerbos *doc = new DiccionarioConVerbos(nombreDicc,nombreDiccVerbos); 
+//    diccionarios.push_back(doc);
+//    return diccionarios.size()-1;
 //}

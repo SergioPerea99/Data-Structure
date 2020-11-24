@@ -17,19 +17,28 @@
 #include "Palabra.h"
 #include "VDinamico.h"
 
+#include "DiccionarioConVerbos.h"
+#include "Documento.h"
+
 /**
  * @brief Constructor por defecto.
  */
-Palabra::Palabra() {
+Palabra::Palabra(){
     palabra = "";
+    ocurrencias = 0;
+    dicc_perteneciente = nullptr;
+    ultima_aparicion = nullptr;
 }
 
 /**
  * @brief Constructor parametrizado.
  * @param _palabra String a asignar al atributo.
  */
-Palabra::Palabra(string _palabra){
+Palabra::Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente){
     palabra = _palabra;
+    ocurrencias = 0;
+    dicc_perteneciente = _diccPerteneciente;
+    ultima_aparicion = nullptr; //Se ha creado desde el diccionario.
 }
 
 /**
@@ -38,6 +47,9 @@ Palabra::Palabra(string _palabra){
  */
 Palabra::Palabra(const Palabra& orig) {
     palabra = orig.palabra;
+    ocurrencias = orig.ocurrencias;
+    dicc_perteneciente = orig.dicc_perteneciente;
+    ultima_aparicion = orig.ultima_aparicion;
 }
 
 /**
@@ -118,11 +130,10 @@ void Palabra::limpiar(){
  * @post A partir de la Palabra que llama al método, se genera una copia auxiliar de ella en minúsculas todas sus letras.
  * @return Palabra auxiliar devuelta con todas las letras en minúscula.
  */
-Palabra& Palabra::conversionMinus(Palabra& aux){
+string Palabra::conversionMinus(){
     string minus = GetPalabra();
     std::transform(minus.begin(),minus.end(),minus.begin(), ::tolower);
-    aux.SetPalabra(minus);
-    return aux;
+    return minus;
 }
 
 /**
@@ -221,7 +232,7 @@ ostream &operator<<(ostream &os, const Palabra &f)
  * @brief Getter de atributo palabra.
  * @return String.
  */
-string Palabra::GetPalabra() const {
+string Palabra::GetPalabra() const{
     return palabra;
 }
 
@@ -230,5 +241,25 @@ string Palabra::GetPalabra() const {
  * @param palabra String a asignar al atributo.
  */
 void Palabra::SetPalabra(string palabra) {
-    this->palabra = palabra;
+    palabra = palabra;
+}
+
+void Palabra::incrementarOcurrencia() {
+    ++ocurrencias;
+}
+
+int Palabra::GetOcurrencias() const {
+    return ocurrencias;
+}
+
+DiccionarioConVerbos* Palabra::GetDicc_perteneciente() const {
+    return dicc_perteneciente;
+}
+
+void Palabra::SetUltima_aparicion(Documento* ultima_aparicion) {
+    this->ultima_aparicion = ultima_aparicion;
+}
+
+Documento* Palabra::GetUltima_aparicion() const {
+    return ultima_aparicion;
 }

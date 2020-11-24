@@ -35,12 +35,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/Diccionario.o \
+	${OBJECTDIR}/DiccionarioConVerbos.o \
 	${OBJECTDIR}/Documento.o \
 	${OBJECTDIR}/GestorTextos.o \
 	${OBJECTDIR}/Palabra.o \
 	${OBJECTDIR}/ParPalabras.o \
-	${OBJECTDIR}/VerbosConjugados.o \
 	${OBJECTDIR}/main.o
 
 
@@ -68,10 +67,10 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/eedd_pr1.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/eedd_pr1 ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/Diccionario.o: Diccionario.cpp
+${OBJECTDIR}/DiccionarioConVerbos.o: DiccionarioConVerbos.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Diccionario.o Diccionario.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DiccionarioConVerbos.o DiccionarioConVerbos.cpp
 
 ${OBJECTDIR}/Documento.o: Documento.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -92,11 +91,6 @@ ${OBJECTDIR}/ParPalabras.o: ParPalabras.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ParPalabras.o ParPalabras.cpp
-
-${OBJECTDIR}/VerbosConjugados.o: VerbosConjugados.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/VerbosConjugados.o VerbosConjugados.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
