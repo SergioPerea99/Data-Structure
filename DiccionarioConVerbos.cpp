@@ -183,11 +183,3 @@ std::string DiccionarioConVerbos::getNombreDiccVerbos() const {
     return nombreDiccVerbos;
 }
 
-
-map<std::string,Palabra*>::iterator DiccionarioConVerbos::it_Begin(){
-    return terminos.begin();
-}
-
-map<std::string,Palabra*>::iterator DiccionarioConVerbos::it_End(){
-    return terminos.end();
-}

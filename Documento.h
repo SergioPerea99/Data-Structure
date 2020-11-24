@@ -27,10 +27,10 @@ public:
     Documento(std::string _texto, DiccionarioConVerbos* _dicc);
     Documento(const Documento& orig);
     virtual ~Documento();
-
-    /*---- MÉTODOS NECESARIOS PRACTICA 3  ----*/
     Documento& operator=(const Documento& dato);
     bool operator==(const Documento& dato);
+
+    /*---- MÉTODOS NECESARIOS PRACTICA 3  ----*/
     void chequearTexto();
     
     /*---- GETTERS Y SETTERS ----*/

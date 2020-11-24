@@ -34,18 +34,13 @@ public:
     Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente);
     Palabra(const Palabra& orig);
     virtual ~Palabra();
-    
-    string GetPalabra() const;
-    void SetPalabra(string palabra);
-
     Palabra& operator=(const Palabra& dato);
     bool operator==(const Palabra& dato);
     bool operator<(const Palabra& dato);
     bool operator>(const Palabra& dato);
     bool operator <=(const Palabra& dato);
     bool operator >=(const Palabra& dato);
-    
-    
+      
     /*---- MÉTODOS PRÁCTICA 1 ----*/
     bool palindromo(Palabra& pal);
     bool anagrama(Palabra& pal);
@@ -57,15 +52,18 @@ public:
     
     /*---- MÉTODOS PRÁCTICA 4 ----*/
     void incrementarOcurrencia();
+    
+    /*---- GETTERS Y SETTERS  ----*/
     int GetOcurrencias() const;
     DiccionarioConVerbos* GetDicc_perteneciente() const;
     void SetUltima_aparicion(Documento* ultima_aparicion);
     Documento* GetUltima_aparicion() const;
-    
+    string GetPalabra() const;
+    void SetPalabra(string palabra);
     
 };
 
-/*DUDA: ¿PORQUÉ TIENE QUE SER FUERA DE LA CLASE ?*/
+
 std::ostream &operator<<(std::ostream &os, const Palabra &f);
 
 #endif /* PALABRA_H */

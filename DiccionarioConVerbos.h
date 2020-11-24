@@ -47,13 +47,8 @@ public:
     /*GETTERS Y SETTERS.*/
     void SetNombreFich(std::string nombreFich);
     std::string GetNombreFich() const;
-   
     void setNombreDiccVerbos(std::string nombreDiccVerbos);
     std::string getNombreDiccVerbos() const;
-    
-    map<std::string,Palabra*>::iterator it_Begin(); 
-    map<std::string,Palabra*>::iterator it_End();
-    
 
 };
 
