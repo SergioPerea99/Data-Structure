@@ -159,8 +159,12 @@ void DiccionarioConVerbos::buscarFamilias(std::string raiz,list<Palabra>* famili
 
 
 Palabra* DiccionarioConVerbos::insertarInexistente(Palabra& dato){
-    Palabra *aniadir = new Palabra(dato); /*DUDA: ¿La palabra inexistente sólo tendrá asignado el documento de donde viene pero no el diccionario al que se está añadiendo?*/
-    terminos.insert(pair<std::string,Palabra*>(aniadir->GetPalabra(),aniadir));
+    Palabra *aniadir = new Palabra(dato.GetPalabra(),nullptr); /*DUDA: ¿La palabra inexistente sólo tendrá asignado el documento de donde viene pero no el diccionario al que se está añadiendo?*/
+    pair<std::string, Palabra*> palab(aniadir->GetPalabra(),aniadir);
+    pair<map<std::string,Palabra*>::iterator,bool> par = terminos.insert(palab);
+    //cout<<"LLEGA PARA INSERTAR "<<aniadir->GetPalabra()<<endl;
+    //if (par.second)
+        //cout<<"INSERTADO"<<endl;
     aniadir->incrementarOcurrencia(); /*Numero de veces que ha aparecido: 1.*/
     return aniadir;
 }
@@ -183,3 +187,17 @@ std::string DiccionarioConVerbos::getNombreDiccVerbos() const {
     return nombreDiccVerbos;
 }
 
+
+int DiccionarioConVerbos::tamTerminos(){
+    return terminos.size();
+}
+
+
+void DiccionarioConVerbos::mostrarDiccionario(){
+    std::map<std::string,Palabra*>::iterator it = terminos.begin();
+    while (it != terminos.end()){
+        if(it->second->GetUltima_aparicion())
+            cout<<"["<<it->second->GetPalabra()<<", "<<it->second->GetUltima_aparicion()->getNombreFich()<<"]  ";
+        it++;
+    }
+}

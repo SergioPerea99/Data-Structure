@@ -40,12 +40,16 @@ int main(int argc, char** argv) {
         std::string nombreFich = "quijote-sin-simbolos.txt";
         GestorTextos gestor1;
         int pos = gestor1.addDocumento(nombreFich);
-
+        
         gestor1.getDocumento(pos)->chequearTexto();
+        
+        cout<<"TAMAÑO DEL DICCIONARIO ACTUAL --> "<<gestor1.getDiccionario()->tamTerminos()<<endl;
         
         nombreFich = "cañasYbarro.txt";
         pos = gestor1.addDocumento(nombreFich);
         gestor1.getDocumento(pos)->chequearTexto();
+        
+        cout<<"TAMAÑO DEL DICCIONARIO ACTUAL --> "<<gestor1.getDiccionario()->tamTerminos()<<endl;
         
         /*---- NUMERO DE OCURRENCIAS DE MANCHA Y ESTABAN ----*/
         
@@ -65,7 +69,6 @@ int main(int argc, char** argv) {
         
         
         /*---- BUSCAR Y MOSTRAR POR CONSOLA LA FAMILIA DE PALABRAS QUE SE QUIERA POR CONSOLA ----*/
-        
         
         cout<<endl<<endl<<"FAMILIA DE PALABRAS DE --> FLOR"<<endl;
         string _buscar = "flor";
@@ -102,6 +105,12 @@ int main(int argc, char** argv) {
         }
         delete familia;
         familia = nullptr;
+        
+        /*---- MOSTRAR POR CONSOLA LAS PALABRAS INEXISTENTES AÑADIDAS AL DICCIONARIO Y DEL DOCUMENTO DEL QUE VIENEN ----*/
+        
+        cout<<endl<<endl<<endl<<endl<<"--------- PALABRAS INEXISTENTES AÑADIDAS AL DICCIONARIO --------"<<endl<<endl;
+        gestor1.getDiccionario()->mostrarDiccionario();
+      
          
     }catch(exception &e){
         cout<<e.what()<<endl;

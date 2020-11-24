@@ -24,7 +24,7 @@ private:
     
 public:
     Documento();
-    Documento(std::string _texto, DiccionarioConVerbos* _dicc);
+    Documento(std::string _texto, DiccionarioConVerbos*& _dicc);
     Documento(const Documento& orig);
     virtual ~Documento();
     Documento& operator=(const Documento& dato);

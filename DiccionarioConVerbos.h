@@ -43,6 +43,8 @@ public:
     bool buscarTermino(std::string& termino, Palabra* &result);
     void buscarFamilias(std::string raiz,list<Palabra>* familia);
     Palabra* insertarInexistente(Palabra& dato);
+    int tamTerminos();
+    void mostrarDiccionario();
 
     /*GETTERS Y SETTERS.*/
     void SetNombreFich(std::string nombreFich);

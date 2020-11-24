@@ -55,11 +55,13 @@ int GestorTextos::addDocumento(std::string nombreFich){
  */
 Documento* GestorTextos::buscarDocumento(std::string nombreFich){
     Documento *texto_buscar =  new Documento(nombreFich,getDiccionario());
-    for(int i = 0; i < documentos.size(); i++){
-        if (*documentos[i] == *texto_buscar){
+    list<Documento*>::iterator it = documentos.begin();
+    while (it != documentos.end()){
+        if (*(*it) == *texto_buscar){
             delete texto_buscar;
-            return documentos[i];
+            return *it;
         }
+        it++;
     }
     delete texto_buscar;
     return nullptr;
@@ -89,10 +91,12 @@ void GestorTextos::buscarFamilias(std::string raiz,list<Palabra>* familia){
  * @post Destruye los objetos documento creados que habían sido añadidos al vector dinámico documentos.
  */
 GestorTextos::~GestorTextos() {
-    for (int i = 0; i < documentos.size(); i++){
-        if(documentos[i])
-            delete documentos[i];
-        documentos[i] = 0;
+    list<Documento*>::iterator it = documentos.begin();
+    while (it != documentos.end()){
+        if(*it)
+            delete *it;
+        *it = 0;
+        it++;
     }
     if (diccionario)
         delete diccionario;
@@ -105,13 +109,21 @@ GestorTextos::~GestorTextos() {
 /*---- GETTERS Y SETTERS ----*/
 
 
-DiccionarioConVerbos* GestorTextos::getDiccionario(){
+DiccionarioConVerbos*& GestorTextos::getDiccionario(){
     return diccionario;
 }
 
 
 Documento* GestorTextos::getDocumento(unsigned int pos){
-    return documentos[pos];
+    list<Documento*>::iterator it = documentos.begin();
+    int i = 0;
+    while (i < pos){
+        it++;
+        i++;
+    }
+    if(*it)
+        return *it;
+    return nullptr;
 }
 
 

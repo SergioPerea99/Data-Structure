@@ -26,7 +26,7 @@ Documento::Documento() {
  * @param _texto Nombre del documento.
  * @param _dicc Puntero al diccionario que tiene asociado este Documento.
  */
-Documento::Documento(std::string _texto, DiccionarioConVerbos* _dicc){
+Documento::Documento(std::string _texto, DiccionarioConVerbos*& _dicc){
     nombreFich = _texto;
     dicc = _dicc;
 }
@@ -88,21 +88,22 @@ void Documento::chequearTexto(){
     string palabra;
     Palabra *result = nullptr;
     Palabra aniadir;
-    clock_t t_ini = clock();
     int no_validadas = 0, total = 0, p;
     while (is) {
         is >> palabra;
-        Palabra pal(palabra,getDicc());
+        Palabra pal(palabra,nullptr);
+        pal.SetUltima_aparicion(this);
         ++total;
         /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
         pal.limpiar();
         string aux = pal.conversionMinus();
+        
         if (!getDicc()->buscarTermino(aux, result)) {
-            //std::cout<<"PALABRA NO ENCONTRADA -> "<<pal.GetPalabra()<<endl;
             ++no_validadas;
-            aniadir.SetPalabra(palabra);
-            Palabra *aniadida = dicc->insertarInexistente(aniadir); 
-            aniadida->SetUltima_aparicion(this); /*Hecho así para poder añadir a la palabra de que documento fue añadida esa palabra inexistente*/           
+            aniadir.SetPalabra(pal.GetPalabra());
+            aniadir.SetUltima_aparicion(this);
+            result = dicc->insertarInexistente(pal); 
+            result->SetUltima_aparicion(this);
         }
         
     }

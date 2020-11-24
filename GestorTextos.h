@@ -21,7 +21,7 @@
 
 class GestorTextos {
 private:
-    vector<Documento*> documentos;
+    list<Documento*> documentos;
     DiccionarioConVerbos *diccionario;
 public:
     GestorTextos();
@@ -38,7 +38,7 @@ public:
     void buscarFamilias(std::string raiz,list<Palabra>* familia);
     
     /*---- GETTERS Y SETTERS ----*/
-    DiccionarioConVerbos* getDiccionario();
+    DiccionarioConVerbos*& getDiccionario();
     Documento* getDocumento(unsigned int pos);
 };
 
