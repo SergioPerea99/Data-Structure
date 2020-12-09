@@ -16,9 +16,8 @@
 /**
  * @brief Construtor por defecto.
  */
-ParPalabras::ParPalabras() {
-    pal1 = "null1";
-    pal2 = "null2";
+ParPalabras::ParPalabras(): pal1 ("null1"), pal2 ("null2"){
+
 }
 
 /**
@@ -26,18 +25,16 @@ ParPalabras::ParPalabras() {
  * @param _pal1 String a asignar en un atributo.
  * @param _pal2 String a asignar en un atributo.
  */
-ParPalabras::ParPalabras(string _pal1, string _pal2){
-    pal1 = _pal1;
-    pal2 = _pal2;
+ParPalabras::ParPalabras(string _pal1, string _pal2): pal1 (_pal1), pal2 (_pal2){
+
 }
 
 /**
  * @brief Constructor de copia.
  * @param orig ParPalabra que se quiere copiar.
  */
-ParPalabras::ParPalabras(const ParPalabras& orig) {
-    pal1 = orig.pal1;
-    pal2 = orig.pal2;
+ParPalabras::ParPalabras(const ParPalabras& orig): pal1 (orig.pal1), pal2 (orig.pal2) {
+
 }
 
 /**

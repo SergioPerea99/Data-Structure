@@ -19,17 +19,16 @@
 /**
  * @brief Constructor por defecto.
  */
-GestorTextos::GestorTextos(): documentos(){
-    diccionario = new DiccionarioConVerbos();
+GestorTextos::GestorTextos(): documentos(), diccionario (new DiccionarioConVerbos()){
+
 }
 
 /**
  * @brief Constructor copia.
  * @param orig GestorTextos a ser copiado por el destinatario.
  */
-GestorTextos::GestorTextos(const GestorTextos& orig) {
-    diccionario = orig.diccionario;
-    documentos = orig.documentos;
+GestorTextos::GestorTextos(const GestorTextos& orig): diccionario (orig.diccionario), documentos (orig.documentos) {
+
 }
 
 

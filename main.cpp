@@ -112,7 +112,16 @@ int main(int argc, char** argv) {
         gestor1.getDiccionario()->mostrarDiccionario();
       
          
-    }catch(exception &e){
+    }catch (invalid_argument &e){
+        cout<<e.what()<<endl;
+    }
+    catch (logic_error &e){
+        cout<<e.what()<<endl;
+    }
+    catch (runtime_error &e){
+        cout<<e.what()<<endl;
+    }
+    catch(exception &e){
         cout<<e.what()<<endl;
     }
     

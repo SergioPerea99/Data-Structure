@@ -23,33 +23,24 @@
 /**
  * @brief Constructor por defecto.
  */
-Palabra::Palabra(){
-    palabra = "";
-    ocurrencias = 0;
-    dicc_perteneciente = nullptr;
-    ultima_aparicion = nullptr;
+Palabra::Palabra(): palabra (""), ocurrencias (0), dicc_perteneciente (nullptr), ultima_aparicion (nullptr){
+
 }
 
 /**
  * @brief Constructor parametrizado.
  * @param _palabra String a asignar al atributo.
  */
-Palabra::Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente){
-    palabra = _palabra;
-    ocurrencias = 0;
-    dicc_perteneciente = _diccPerteneciente;
-    ultima_aparicion = nullptr; //Se ha creado desde el diccionario.
+Palabra::Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente): palabra (_palabra), ocurrencias(0), dicc_perteneciente(_diccPerteneciente), ultima_aparicion (nullptr){
+
 }
 
 /**
  * @brief Constructor de copia.
  * @param orig Palabra que se quiere copiar.
  */
-Palabra::Palabra(const Palabra& orig) {
-    palabra = orig.palabra;
-    ocurrencias = orig.ocurrencias;
-    dicc_perteneciente = orig.dicc_perteneciente;
-    ultima_aparicion = orig.ultima_aparicion;
+Palabra::Palabra(const Palabra& orig): palabra (orig.palabra), ocurrencias (orig.ocurrencias), dicc_perteneciente (orig.dicc_perteneciente), ultima_aparicion (orig.ultima_aparicion){
+
 }
 
 /**

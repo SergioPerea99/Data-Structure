@@ -16,9 +16,8 @@
 /**
  * @brief Constructor por defecto.
  */
-Documento::Documento() {
-    nombreFich = "quijote-sin-simbolos.txt";
-    dicc = nullptr;
+Documento::Documento(): nombreFich ("quijote-sin-simbolos.txt"), dicc (nullptr){
+
 }
 
 /**
@@ -26,18 +25,16 @@ Documento::Documento() {
  * @param _texto Nombre del documento.
  * @param _dicc Puntero al diccionario que tiene asociado este Documento.
  */
-Documento::Documento(std::string _texto, DiccionarioConVerbos*& _dicc){
-    nombreFich = _texto;
-    dicc = _dicc;
+Documento::Documento(std::string _texto, DiccionarioConVerbos*& _dicc) : nombreFich (_texto), dicc (_dicc){
+
 }
 
 /**
  * @brief Constructor copia.
  * @param orig Documento a ser copiado.
  */
-Documento::Documento(const Documento& orig) {
-    nombreFich = orig.nombreFich;
-    dicc = orig.dicc;
+Documento::Documento(const Documento& orig): nombreFich (orig.nombreFich), dicc (orig.dicc){
+
 }
 
 

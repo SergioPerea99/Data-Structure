@@ -20,9 +20,7 @@
 /**
  * @brief Constructor por defecto.
  */
-DiccionarioConVerbos::DiccionarioConVerbos(): terminos(){
-    nombreDicc = "dicc-espanol-sin.txt";
-    nombreDiccVerbos = "verbos_conjugados_sin_tildes_desordenados.txt";
+DiccionarioConVerbos::DiccionarioConVerbos(): terminos(),nombreDicc("dicc-espanol-sin.txt"), nombreDiccVerbos("verbos_conjugados_sin_tildes_desordenados.txt"){
     
     /*Primera parte: Cargar las palabras del diccionario en el map.*/
     ifstream is(nombreDicc);
@@ -54,9 +52,7 @@ DiccionarioConVerbos::DiccionarioConVerbos(): terminos(){
  * @brief Constructor parametrizado.
  * @param _nombreFich String que indica el nombre del diccionario.
  */
-DiccionarioConVerbos::DiccionarioConVerbos(std::string _nombreDicc, std::string _nombreDiccVerbos): terminos(){
-    nombreDicc = _nombreDicc;
-    nombreDiccVerbos = _nombreDiccVerbos;
+DiccionarioConVerbos::DiccionarioConVerbos(std::string _nombreDicc, std::string _nombreDiccVerbos): terminos(), nombreDicc (_nombreDicc), nombreDiccVerbos(_nombreDiccVerbos) {
     
     /*Primera parte: Cargar palabras del diccionario en el map.*/
     ifstream is(nombreDicc);
@@ -87,10 +83,10 @@ DiccionarioConVerbos::DiccionarioConVerbos(std::string _nombreDicc, std::string 
  * @brief Constructor copia.
  * @param orig Diccionario a copiar.
  */
-DiccionarioConVerbos::DiccionarioConVerbos(const DiccionarioConVerbos& orig) {
-    nombreDicc = orig.nombreDicc;
-    nombreDiccVerbos = orig.nombreDiccVerbos;    
-    terminos = orig.terminos;
+DiccionarioConVerbos::DiccionarioConVerbos(const DiccionarioConVerbos& orig) : nombreDicc(orig.nombreDicc) , 
+        nombreDiccVerbos(orig.nombreDiccVerbos), 
+        terminos (orig.terminos){
+    
 }
 
 /**
