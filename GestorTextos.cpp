@@ -54,14 +54,18 @@ int GestorTextos::addDocumento(std::string nombreFich){
  */
 Documento* GestorTextos::buscarDocumento(std::string nombreFich){
     Documento *texto_buscar =  new Documento(nombreFich,getDiccionario());
-    list<Documento*>::iterator it = documentos.begin();
-    while (it != documentos.end()){
-        if (*(*it) == *texto_buscar){
-            delete texto_buscar;
-            return *it;
-        }
-        it++;
-    }
+    for (Documento* i : documentos)
+        if (*i == *texto_buscar)
+            return i;
+    
+//    list<Documento*>::iterator it = documentos.begin();
+//    while (it != documentos.end()){
+//        if (*(*it) == *texto_buscar){
+//            delete texto_buscar;
+//            return *it;
+//        }
+//        it++;
+//    }
     delete texto_buscar;
     return nullptr;
 }
@@ -81,22 +85,28 @@ bool GestorTextos::buscarTermino(std::string termino, Palabra* &result){
 
 
 
-void GestorTextos::buscarFamilias(std::string raiz,list<Palabra>* familia){
-    diccionario->buscarFamilias(raiz,familia);
-}
+//void GestorTextos::buscarFamilias(std::string raiz,list<Palabra>* familia){
+//    diccionario->buscarFamilias(raiz,familia);
+//}
 
 /**
  * @brief Destructor.
  * @post Destruye los objetos documento creados que habían sido añadidos al vector dinámico documentos.
  */
 GestorTextos::~GestorTextos() {
-    list<Documento*>::iterator it = documentos.begin();
-    while (it != documentos.end()){
-        if(*it)
-            delete *it;
-        *it = 0;
-        it++;
+    for (Documento* i : documentos){
+        if (i){
+            delete i;
+            i = nullptr;
+        }
     }
+//    list<Documento*>::iterator it = documentos.begin();
+//    while (it != documentos.end()){
+//        if(*it)
+//            delete *it;
+//        *it = 0;
+//        it++;
+//    }
     if (diccionario)
         delete diccionario;
     diccionario = 0;
@@ -114,15 +124,20 @@ DiccionarioConVerbos*& GestorTextos::getDiccionario(){
 
 
 Documento* GestorTextos::getDocumento(unsigned int pos){
-    list<Documento*>::iterator it = documentos.begin();
-    int i = 0;
-    while (i < pos){
-        it++;
-        i++;
-    }
-    if(*it)
-        return *it;
+    if (pos < documentos.size())
+        if (documentos[pos])
+            return documentos[pos];
     return nullptr;
+    
+//    list<Documento*>::iterator it = documentos.begin();
+//    int i = 0;
+//    while (i < pos){
+//        it++;
+//        i++;
+//    }
+//    if(*it)
+//        return *it;
+//    return nullptr;
 }
 
 

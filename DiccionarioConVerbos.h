@@ -16,19 +16,19 @@
 
 #include <iostream>
 #include <fstream>
-#include <list>
-#include <map>
 
 #include "VDinamico.h"
 #include "Palabra.h"
+#include "THashPalabra.h"
 
 class DiccionarioConVerbos {
 private:
     /*---- ATRIBUTOS PRÁCTICA 4 ----*/
     std::string nombreDicc;
     std::string nombreDiccVerbos;
-    map<std::string, Palabra*> terminos;
-
+    THashPalabra terminos;
+    
+    unsigned long djb2 (unsigned char *str);
 public:
     DiccionarioConVerbos();
     DiccionarioConVerbos(std::string _nombreDicc, std::string _nombreDiccVerbos);
@@ -41,10 +41,10 @@ public:
     
     /*---- MÉTODO UML PRÁCTICA 4 ----*/
     bool buscarTermino(std::string& termino, Palabra* &result);
-    void buscarFamilias(std::string raiz,list<Palabra>* familia);
+    //void buscarFamilias(std::string raiz,list<Palabra>* familia);
     Palabra* insertarInexistente(Palabra& dato);
     int tamTerminos();
-    void mostrarDiccionario();
+    //void mostrarDiccionario();
 
     /*GETTERS Y SETTERS.*/
     void SetNombreFich(std::string nombreFich);

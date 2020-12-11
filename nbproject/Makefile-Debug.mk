@@ -40,6 +40,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/GestorTextos.o \
 	${OBJECTDIR}/Palabra.o \
 	${OBJECTDIR}/ParPalabras.o \
+	${OBJECTDIR}/THashPalabra.o \
 	${OBJECTDIR}/main.o
 
 
@@ -91,6 +92,11 @@ ${OBJECTDIR}/ParPalabras.o: ParPalabras.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ParPalabras.o ParPalabras.cpp
+
+${OBJECTDIR}/THashPalabra.o: THashPalabra.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/THashPalabra.o THashPalabra.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
