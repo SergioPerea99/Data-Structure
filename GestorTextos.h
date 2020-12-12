@@ -33,9 +33,8 @@ public:
     Documento* buscarDocumento(std::string nombreFich);
     
     /*---- MÉTODOS DEL UML PRACTICA 4 ----*/
-    //int addDiccionario(std::string nombreDicc, std::string nombreDiccVerbos);
-    bool buscarTermino(std::string termino, Palabra* &result);
-    //void buscarFamilias(std::string raiz,list<Palabra>* familia);
+    unsigned long djb2(unsigned char* str);
+    bool buscarTermino(unsigned long clave, std::string termino, Palabra* &result);
     
     /*---- GETTERS Y SETTERS ----*/
     DiccionarioConVerbos*& getDiccionario();

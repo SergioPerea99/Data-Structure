@@ -23,7 +23,7 @@
 /**
  * @brief Constructor por defecto.
  */
-Palabra::Palabra(): palabra (""), ocurrencias (0), dicc_perteneciente (nullptr), ultima_aparicion (nullptr){
+Palabra::Palabra(): termino (""), ocurrencias (0), dicc_perteneciente (nullptr){
 
 }
 
@@ -31,7 +31,7 @@ Palabra::Palabra(): palabra (""), ocurrencias (0), dicc_perteneciente (nullptr),
  * @brief Constructor parametrizado.
  * @param _palabra String a asignar al atributo.
  */
-Palabra::Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente): palabra (_palabra), ocurrencias(0), dicc_perteneciente(_diccPerteneciente), ultima_aparicion (nullptr){
+Palabra::Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente): termino (_palabra), ocurrencias(0), dicc_perteneciente(_diccPerteneciente){
 
 }
 
@@ -39,7 +39,7 @@ Palabra::Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente): pal
  * @brief Constructor de copia.
  * @param orig Palabra que se quiere copiar.
  */
-Palabra::Palabra(const Palabra& orig): palabra (orig.palabra), ocurrencias (orig.ocurrencias), dicc_perteneciente (orig.dicc_perteneciente), ultima_aparicion (orig.ultima_aparicion){
+Palabra::Palabra(const Palabra& orig): termino (orig.termino), ocurrencias (orig.ocurrencias), dicc_perteneciente (orig.dicc_perteneciente){
 
 }
 
@@ -52,7 +52,7 @@ Palabra::Palabra(const Palabra& orig): palabra (orig.palabra), ocurrencias (orig
 bool Palabra::palindromo(Palabra& pal){
     Palabra aux(pal);
     Palabra aux2 = aux.reves();
-    if(aux2.GetPalabra() == palabra)
+    if(aux2.GetPalabra() == termino)
         return true;
     return false;
 }
@@ -64,11 +64,11 @@ bool Palabra::palindromo(Palabra& pal){
  */
 Palabra Palabra::reves(){
     char aux;
-    int i = 0, j = palabra.length()-1;
+    int i = 0, j = termino.length()-1;
     while(i <= j){
-        aux = palabra[i];
-        palabra[i++] = palabra[j];
-        palabra[j--] = aux;
+        aux = termino[i];
+        termino[i++] = termino[j];
+        termino[j--] = aux;
         
     }
     return *this;
@@ -82,7 +82,7 @@ Palabra Palabra::reves(){
  */
 bool Palabra::anagrama(Palabra& pal){
     string palabra2 = pal.GetPalabra();
-    string palabra1 = palabra;
+    string palabra1 = termino;
     std::sort(palabra2.begin(),palabra2.end());
     std::sort(palabra1.begin(),palabra1.end());
     if (palabra1 == palabra2)
@@ -97,22 +97,22 @@ bool Palabra::anagrama(Palabra& pal){
 void Palabra::limpiar(){
     
     int incorrectos = 0;
-    for (int i = 0 ; i < palabra.length(); i++){
-        if(!isalpha(palabra[i])){
+    for (int i = 0 ; i < termino.length(); i++){
+        if(!isalpha(termino[i])){
             incorrectos++;
         }else
             break;
         
     }
-    palabra.erase(palabra.begin(),palabra.begin()+incorrectos);
+    termino.erase(termino.begin(),termino.begin()+incorrectos);
     incorrectos = 0;
-    for (int i = palabra.length()-1 ; i >= 0; i--){
-        if (!isalpha(palabra[i]) ){
+    for (int i = termino.length()-1 ; i >= 0; i--){
+        if (!isalpha(termino[i]) ){
             incorrectos++;
         }else
             break;
     }
-    palabra.erase(palabra.end()-incorrectos,palabra.end());
+    termino.erase(termino.end()-incorrectos,termino.end());
    
 }
 
@@ -142,7 +142,7 @@ Palabra::~Palabra() {
  * @return Booleano.
  */
 bool Palabra::operator ==(const Palabra& dato){
-    if (palabra == dato.GetPalabra())
+    if (termino == dato.GetPalabra())
         return true;
     return false;
 }
@@ -153,7 +153,7 @@ bool Palabra::operator ==(const Palabra& dato){
  * @return Booleano.
  */
 bool Palabra::operator <(const Palabra& dato){
-    if (palabra < dato.GetPalabra())
+    if (termino < dato.GetPalabra())
         return true;
     return false;
 }
@@ -164,7 +164,7 @@ bool Palabra::operator <(const Palabra& dato){
  * @return Booleano.
  */
 bool Palabra::operator >(const Palabra& dato){
-    if (palabra > dato.GetPalabra())
+    if (termino > dato.GetPalabra())
         return true;
     return false;
 }
@@ -175,7 +175,7 @@ bool Palabra::operator >(const Palabra& dato){
  * @return El contenido del objeto de la clase que ha llamado al método.
  */
 Palabra& Palabra::operator =(const Palabra& dato){
-    palabra = dato.palabra;
+    termino = dato.termino;
     return *this;
 }
 
@@ -185,7 +185,7 @@ Palabra& Palabra::operator =(const Palabra& dato){
  * @return Booleano.
  */
 bool Palabra::operator <=(const Palabra& dato){
-    if (palabra <= dato.GetPalabra())
+    if (termino <= dato.GetPalabra())
         return true;
     return false;
 }
@@ -196,7 +196,7 @@ bool Palabra::operator <=(const Palabra& dato){
  * @return Booleano.
  */
 bool Palabra::operator >=(const Palabra& dato){
-    if(palabra >= dato.GetPalabra())
+    if(termino >= dato.GetPalabra())
         return true;
     return false;
 }
@@ -224,7 +224,7 @@ ostream &operator<<(ostream &os, const Palabra &f)
  * @return String.
  */
 string Palabra::GetPalabra() const{
-    return palabra;
+    return termino;
 }
 
 /**
@@ -247,10 +247,10 @@ DiccionarioConVerbos* Palabra::GetDicc_perteneciente() const {
     return dicc_perteneciente;
 }
 
-void Palabra::SetUltima_aparicion(Documento* ultima_aparicion) {
-    this->ultima_aparicion = ultima_aparicion;
-}
-
-Documento* Palabra::GetUltima_aparicion() const {
-    return ultima_aparicion;
-}
+//void Palabra::SetUltima_aparicion(Documento* ultima_aparicion) {
+//    this->ultima_aparicion = ultima_aparicion;
+//}
+//
+//Documento* Palabra::GetUltima_aparicion() const {
+//    return ultima_aparicion;
+//}

@@ -40,11 +40,12 @@ public:
    
     
     /*---- MÉTODO UML PRÁCTICA 4 ----*/
-    bool buscarTermino(std::string& termino, Palabra* &result);
-    //void buscarFamilias(std::string raiz,list<Palabra>* familia);
-    Palabra* insertarInexistente(Palabra& dato);
+    bool buscarTermino(unsigned long clave, std::string& termino, Palabra* &result);
     int tamTerminos();
-    //void mostrarDiccionario();
+    
+    /*---- MÉTODOS PRÁCTICA 5 NECESARIOS ----*/
+    int maxColisiones_THASH() const;
+    float promColisiones_THASH() const;
 
     /*GETTERS Y SETTERS.*/
     void SetNombreFich(std::string nombreFich);

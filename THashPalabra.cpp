@@ -13,15 +13,24 @@
 
 #include <stdexcept>
 #include <complex>
+#include <vector>
 
 #include "THashPalabra.h"
 
-THashPalabra::THashPalabra(int tamTabla): tamF(0), tamL(0),primoMenor(0), tabla(){
-    tamF = sigPrimo(tamTabla, primoMenor); //APARENTEMENTE FUNCIONANDO.
+THashPalabra::THashPalabra(int tamTabla, float _factorCarga): tamF(0), tamL(0),primoMenor(0), tabla(), colisiones(0), maxColisiones(0),factorCarga(0.6) {
+    if(_factorCarga < 0.6 || _factorCarga > 1) 
+        throw std::invalid_argument ("[THashPalabra::THashPalabra] Tienes que introducir bien el factor de carga de la tabla de palabras. Debe ser mayor de 0.6");
+    factorCarga = _factorCarga;
+    int num = floor(tamTabla/factorCarga); //Necesito redondeo a la baja, para a las malas hacer el factor de carga algo mayor y no algo menor al pasado.
+    tamF = sigPrimo(num, primoMenor); //APARENTEMENTE FUNCIONANDO.
+    Palabra pal;
+    tabla = std::vector<Entrada>(tamF,Entrada(0,pal));
     cout<<"TAM_F = "<<tamF<<" :: primo_anterior = "<<primoMenor<<endl;
 }
 
-THashPalabra::THashPalabra(const THashPalabra& orig) : tamF (orig.tamF), tamL (orig.tamL), primoMenor (orig.primoMenor), tabla (orig.tabla){
+THashPalabra::THashPalabra(const THashPalabra& orig):
+    tamF (orig.tamF), tamL (orig.tamL), primoMenor (orig.primoMenor),
+    tabla (orig.tabla), colisiones (orig.colisiones), maxColisiones (orig.maxColisiones), factorCarga (orig.factorCarga){
 }
 
 
@@ -31,6 +40,7 @@ THashPalabra& THashPalabra::operator =(const THashPalabra& orig){
         tamL = orig.tamL;
         primoMenor = orig.primoMenor;
         tabla = orig.tabla;
+        
     }
 }
 
@@ -52,13 +62,21 @@ bool THashPalabra::insertar(unsigned long clave, Palabra& pal){
             long h = hashDoble1(clave,intento); //TODO: IR CAMBIANDO PARA HACER LAS TABLAS
             if (tabla[h]._estado != ocupada){
                 tabla[h].dato = pal;
+                //cout<<"PALABRA INSERTADA : "<<tabla[h].dato.GetPalabra()<<endl;
                 tabla[h].dato.incrementarOcurrencia();
                 tabla[h]._estado = ocupada;
                 ++tamL;
-                //TODO: COMPROBAR SI ES EL MAXIMO DE COLISIONES RESPECTO AL GUARDADO
+                
+                //COMPROBAR SI ES EL MAXIMO DE COLISIONES RESPECTO AL GUARDADO
+                if (intento > maxColisiones) 
+                    maxColisiones = intento;
+                insertado = true;
             }
+            ++colisiones;
             ++intento;
         }
+    }else{
+        return true; //PARA EVITAR QUE LO AÑADA COMO PALABRA INEXISTENTE.
     }
     return insertado;
 }
@@ -87,11 +105,11 @@ bool THashPalabra::buscar(unsigned long clave, string& termino, Palabra*& pal){
         long h = hashDoble1(clave,intento); //TODO: IR CAMBIANDO PARA HACER LAS TABLAS
         if (tabla[h]._estado == ocupada){ //Entonces, posiblemente que esté en esa posición.
             if (tabla[h].dato.GetPalabra() == termino){ //Entonces, sí que es la palabra a buscar.
-                pal = &tabla[h].dato;
+                pal = &tabla[h].dato; 
                 tabla[h].dato.incrementarOcurrencia();
                 return true;
             }
-        }else if (tabla[h]._estado == disponible){ //Entonces, termina de buscar
+        }else if (tabla[h]._estado == vacia){ //Entonces, termina de buscar
             pal = nullptr;
             return false;
         }
@@ -101,28 +119,28 @@ bool THashPalabra::buscar(unsigned long clave, string& termino, Palabra*& pal){
 }
 
 
+/*---- MÉTODOS DE ENTRENAMIENTO ----*/
+unsigned int THashPalabra::MaxColisiones() const{
+    return maxColisiones;
+}
+
+float THashPalabra::promedioColisiones() const{
+    return (float)colisiones/tamL;
+}
+
+float THashPalabra::FactorCarga() const{
+    return factorCarga;
+}
+
+unsigned int THashPalabra::tamTabla() const{
+    return tamF;
+}
+
+
 /*---- MÉTODOS PRIVADOS ----*/
 
 
 unsigned int THashPalabra::sigPrimo(unsigned int num, unsigned int& primoAnterior){
-    
-    //int main(){
-//   int a=0,i,n;
-//         cout<<"Ingrese numero"<<endl;
-//         cin>>n;
-//         for(i=1;i<(n+1);i++){
-//         if(n%i==0){
-//             a++;
-//            }
-//         }
-//         if(a!=2){
-//              cout<<"No es Primo";
-//            }else{
-//                cout<<"Si es Primo";
-//         }
-//    return 0;
-//}
-    
     unsigned int primoMayor = num, a = 0;
     primoAnterior = num;
     bool primoMayorEncontrado = false, primoMenorEncontrado = false;

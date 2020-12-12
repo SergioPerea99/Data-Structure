@@ -57,15 +57,6 @@ Documento* GestorTextos::buscarDocumento(std::string nombreFich){
     for (Documento* i : documentos)
         if (*i == *texto_buscar)
             return i;
-    
-//    list<Documento*>::iterator it = documentos.begin();
-//    while (it != documentos.end()){
-//        if (*(*it) == *texto_buscar){
-//            delete texto_buscar;
-//            return *it;
-//        }
-//        it++;
-//    }
     delete texto_buscar;
     return nullptr;
 }
@@ -79,15 +70,11 @@ Documento* GestorTextos::buscarDocumento(std::string nombreFich){
  * @param result Palabra que, al ser buscada con el termino, se asigna a dicho parámetro.
  * @return Booleano que indica si se ha encontrado o no.
  */
-bool GestorTextos::buscarTermino(std::string termino, Palabra* &result){
-    return diccionario->buscarTermino(termino,result);
+bool GestorTextos::buscarTermino(unsigned long clave,std::string termino, Palabra* &result){
+    //unsigned long clave = djb2((unsigned char*)termino.c_str());
+    return diccionario->buscarTermino(clave,termino,result);
 }
 
-
-
-//void GestorTextos::buscarFamilias(std::string raiz,list<Palabra>* familia){
-//    diccionario->buscarFamilias(raiz,familia);
-//}
 
 /**
  * @brief Destructor.
@@ -100,19 +87,19 @@ GestorTextos::~GestorTextos() {
             i = nullptr;
         }
     }
-//    list<Documento*>::iterator it = documentos.begin();
-//    while (it != documentos.end()){
-//        if(*it)
-//            delete *it;
-//        *it = 0;
-//        it++;
-//    }
     if (diccionario)
         delete diccionario;
     diccionario = 0;
 }
 
 
+unsigned long GestorTextos::djb2(unsigned char* str){
+    unsigned long hash = 5381;
+    int c;
+    
+    while (c = *str++) hash = ((hash << 5) + hash) + c;
+    return hash;
+}
 
 
 /*---- GETTERS Y SETTERS ----*/
@@ -128,29 +115,5 @@ Documento* GestorTextos::getDocumento(unsigned int pos){
         if (documentos[pos])
             return documentos[pos];
     return nullptr;
-    
-//    list<Documento*>::iterator it = documentos.begin();
-//    int i = 0;
-//    while (i < pos){
-//        it++;
-//        i++;
-//    }
-//    if(*it)
-//        return *it;
-//    return nullptr;
 }
 
-
-
-/**
- * @brief Insertar documento.
- * @post Añade un documento al final de los elementos del vector. Es importante saber
- * que desde la misma acción de añadir el documento, se está añadiendo el diccionario
- * asociado a ese documento.
- * @param nombreFich String que se quiere añadir a la estructura como Documento.
- */
-//int GestorTextos::addDiccionario(std::string nombreDicc, std::string nombreDiccVerbos){
-//    DiccionarioConVerbos *doc = new DiccionarioConVerbos(nombreDicc,nombreDiccVerbos); 
-//    diccionarios.push_back(doc);
-//    return diccionarios.size()-1;
-//}
