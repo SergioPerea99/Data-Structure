@@ -20,7 +20,7 @@
 /**
  * @brief Constructor por defecto.
  */
-DiccionarioConVerbos::DiccionarioConVerbos(): terminos(520513,0.7),nombreDicc("dicc-espanol-sin.txt"), nombreDiccVerbos("verbos_conjugados_sin_tildes_desordenados.txt"){
+DiccionarioConVerbos::DiccionarioConVerbos(): terminos(520513,0.601),nombreDicc("dicc-espanol-sin.txt"), nombreDiccVerbos("verbos_conjugados_sin_tildes_desordenados.txt"){
     
     /*Primera parte: Cargar las palabras del diccionario en el map.*/
     ifstream is(nombreDicc);
@@ -52,7 +52,7 @@ DiccionarioConVerbos::DiccionarioConVerbos(): terminos(520513,0.7),nombreDicc("d
  * @brief Constructor parametrizado.
  * @param _nombreFich String que indica el nombre del diccionario.
  */
-DiccionarioConVerbos::DiccionarioConVerbos(std::string _nombreDicc, std::string _nombreDiccVerbos): terminos(60000,0.6),/*TODO: NO PONER ESE VALOR ASÍ*/ nombreDicc (_nombreDicc), nombreDiccVerbos(_nombreDiccVerbos) {
+DiccionarioConVerbos::DiccionarioConVerbos(std::string _nombreDicc, std::string _nombreDiccVerbos, unsigned long tam_dicc, unsigned long tam_diccVerbos): terminos(tam_dicc+tam_diccVerbos,0.601), nombreDicc (_nombreDicc), nombreDiccVerbos(_nombreDiccVerbos) {
     
     /*Primera parte: Cargar palabras del diccionario en el map.*/
     ifstream is(nombreDicc);
@@ -99,12 +99,6 @@ DiccionarioConVerbos::DiccionarioConVerbos(const DiccionarioConVerbos& orig) : n
  * los cuales formaban parte del diccionario.
  */
 DiccionarioConVerbos::~DiccionarioConVerbos() {
-//    map<std::string, Palabra*>::iterator it = terminos.begin();
-//    while(it != terminos.end()){
-//        delete it->second;
-//        terminos.erase(it); /*DUDA: Si he eliminado con erase pero he creado un new de Palabras en esta clase para almacenarlo en esos nodos del mapa, ¿con el erase no haría falta liberar su memoria?*/
-//        it = terminos.lower_bound(it->first); 
-//    }
 }
 
 
@@ -131,16 +125,21 @@ DiccionarioConVerbos& DiccionarioConVerbos::operator =(const DiccionarioConVerbo
  */
 bool DiccionarioConVerbos::buscarTermino(unsigned long clave, string& termino, Palabra* &result){
     return terminos.buscar(clave,termino,result);
-//    map<std::string, Palabra*>::iterator ite = terminos.find(termino);
-//    if(ite != terminos.end()){
-//        result = ite->second;
-//        ite->second->incrementarOcurrencia();
-//        return true;
-//    }else
-//        return false;
 }
 
-
+/**
+ * @brief Método privado djb2.
+ * @post Método encargado de la conversión de una clave de cadena de caracteres a una clave numérica.
+ * @param str Cadena de caracteres.
+ * @return Clave numérica.
+ */
+unsigned long DiccionarioConVerbos::djb2(unsigned char* str){
+    unsigned long hash = 5381;
+    int c;
+    
+    while (c = *str++) hash = ((hash << 5) + hash) + c;
+    return hash;
+}
 
 
 /*---- GETTERS Y SETTERS ----*/
@@ -162,17 +161,12 @@ std::string DiccionarioConVerbos::getNombreDiccVerbos() const {
 }
 
 
-int DiccionarioConVerbos::tamTerminos(){
+int DiccionarioConVerbos::tamTerminos() const{
     return terminos.numPalabras();
 }
 
-
-unsigned long DiccionarioConVerbos::djb2(unsigned char* str){
-    unsigned long hash = 5381;
-    int c;
-    
-    while (c = *str++) hash = ((hash << 5) + hash) + c;
-    return hash;
+long DiccionarioConVerbos::tamTablaHASH() const{
+    return terminos.tamTabla();
 }
 
 int DiccionarioConVerbos::maxColisiones_THASH() const{

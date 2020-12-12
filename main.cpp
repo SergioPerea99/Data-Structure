@@ -46,12 +46,12 @@ int main(int argc, char** argv) {
         
         cout<<"MAXIMO DE COLISIONES : "<<gestor1.getDiccionario()->maxColisiones_THASH()<<endl;
         cout<<"PROMEDIO DE COLISIONES : "<<gestor1.getDiccionario()->promColisiones_THASH()<<endl;
+        cout<<"FACTOR DE CARGA (REAL): "<<(float)gestor1.getDiccionario()->tamTerminos()/gestor1.getDiccionario()->tamTablaHASH()<<endl;
         
         int pos = gestor1.addDocumento(nombreFich);
         
         gestor1.getDocumento(pos)->chequearTexto();
         
-        cout<<"TAMAÑO DEL DICCIONARIO ACTUAL --> "<<gestor1.getDiccionario()->tamTerminos()<<endl;
         
         
     }catch (invalid_argument &e){

@@ -246,11 +246,3 @@ int Palabra::GetOcurrencias() const {
 DiccionarioConVerbos* Palabra::GetDicc_perteneciente() const {
     return dicc_perteneciente;
 }
-
-//void Palabra::SetUltima_aparicion(Documento* ultima_aparicion) {
-//    this->ultima_aparicion = ultima_aparicion;
-//}
-//
-//Documento* Palabra::GetUltima_aparicion() const {
-//    return ultima_aparicion;
-//}

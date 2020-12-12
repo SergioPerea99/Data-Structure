@@ -40,10 +40,10 @@ public:
 
 class THashPalabra {
 private:
-    unsigned int tamF, tamL, primoMenor, maxColisiones, colisiones;
+    unsigned long tamF, tamL, primoMenor, maxColisiones, colisiones;
     float factorCarga;
     vector<Entrada> tabla;
-    unsigned int sigPrimo(unsigned int num, unsigned int& primoAnterior);
+    unsigned long sigPrimo(unsigned long num, unsigned long& primoAnterior);
     
     long hashDoble1(unsigned long clave, int intento);
     long hashDoble2(unsigned long clave, int intento);

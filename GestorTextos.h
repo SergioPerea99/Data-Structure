@@ -23,6 +23,7 @@ class GestorTextos {
 private:
     vector<Documento*> documentos;
     DiccionarioConVerbos *diccionario;
+
 public:
     GestorTextos();
     GestorTextos(const GestorTextos& orig);
@@ -33,7 +34,6 @@ public:
     Documento* buscarDocumento(std::string nombreFich);
     
     /*---- MÉTODOS DEL UML PRACTICA 4 ----*/
-    unsigned long djb2(unsigned char* str);
     bool buscarTermino(unsigned long clave, std::string termino, Palabra* &result);
     
     /*---- GETTERS Y SETTERS ----*/

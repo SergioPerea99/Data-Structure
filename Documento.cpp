@@ -39,18 +39,6 @@ Documento::Documento(const Documento& orig): nombreFich (orig.nombreFich), dicc 
 
 
 /**
- * @brief Añadir palabra inexistente.
- * @post Añade en la estructura de la lista enlazada simple las palabras que no han sido encontradas en el vector de palabras del diccionario.
- * @pre Debe de corresponder a una lista ordenada, por lo que se insertará de forma ordenada.
- * @param p Palabra a añadir.
- */
-//void Documento::addInexistente(Palabra p) {
-//    /*La lista debe de mantenerse ordenada.*/
-//    inexistentes.insertaOrdenado(p);
-//}
-
-
-/**
  * @brief Operador de igualdad.
  * @param dato Dato a ser comparado con el destinatario.
  * @return Booleano falso o verdadero.
@@ -94,7 +82,7 @@ void Documento::chequearTexto(){
         /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
         pal.limpiar();
         string aux = pal.conversionMinus();
-        unsigned long clave = djb2((unsigned char*)aux.c_str());
+        unsigned long clave = getDicc()->djb2((unsigned char*)aux.c_str());
         if (!getDicc()->buscarTermino(clave,aux, result)) {
             ++no_validadas;
             insertarInexistente(pal); 
@@ -146,12 +134,4 @@ bool Documento::insertarInexistente(Palabra& pal){
     //No ha sido encontrada la palabra, entonces se inserta al final.
     palabras.push_back(pal);
     return true;
-}
-
-unsigned long Documento::djb2(unsigned char* str){
-    unsigned long hash = 5381;
-    int c;
-    
-    while (c = *str++) hash = ((hash << 5) + hash) + c;
-    return hash;
 }

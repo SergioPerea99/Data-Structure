@@ -22,6 +22,7 @@ private:
     std::string nombreFich;
     DiccionarioConVerbos *dicc;
     list<Palabra> palabras;
+
 public:
     Documento();
     Documento(std::string _texto, DiccionarioConVerbos*& _dicc);
@@ -35,7 +36,7 @@ public:
     
     /*---- MÉTODOS NECESARIOS PRACTICA 5  ----*/
     bool insertarInexistente(Palabra& pal);
-    unsigned long djb2(unsigned char* str);
+    
     
     /*---- GETTERS Y SETTERS ----*/
     void setNombreFich(std::string nombreFich);

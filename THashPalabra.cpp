@@ -14,26 +14,38 @@
 #include <stdexcept>
 #include <complex>
 #include <vector>
-
 #include "THashPalabra.h"
 
+/**
+ * @brief Constructor parametrizado
+ * @param tamTabla
+ * @param _factorCarga
+ */
 THashPalabra::THashPalabra(int tamTabla, float _factorCarga): tamF(0), tamL(0),primoMenor(0), tabla(), colisiones(0), maxColisiones(0),factorCarga(0.6) {
     if(_factorCarga < 0.6 || _factorCarga > 1) 
         throw std::invalid_argument ("[THashPalabra::THashPalabra] Tienes que introducir bien el factor de carga de la tabla de palabras. Debe ser mayor de 0.6");
     factorCarga = _factorCarga;
-    int num = floor(tamTabla/factorCarga); //Necesito redondeo a la baja, para a las malas hacer el factor de carga algo mayor y no algo menor al pasado.
+    unsigned long num = floor(tamTabla/factorCarga); //Necesito redondeo a la baja, para a las malas hacer el factor de carga algo mayor y no algo menor al pasado.
     tamF = sigPrimo(num, primoMenor); //APARENTEMENTE FUNCIONANDO.
     Palabra pal;
     tabla = std::vector<Entrada>(tamF,Entrada(0,pal));
     cout<<"TAM_F = "<<tamF<<" :: primo_anterior = "<<primoMenor<<endl;
 }
 
+/**
+ * @brief Constructor copia
+ * @param orig
+ */
 THashPalabra::THashPalabra(const THashPalabra& orig):
     tamF (orig.tamF), tamL (orig.tamL), primoMenor (orig.primoMenor),
     tabla (orig.tabla), colisiones (orig.colisiones), maxColisiones (orig.maxColisiones), factorCarga (orig.factorCarga){
 }
 
-
+/**
+ * @brief Operador de asignación
+ * @param orig
+ * @return 
+ */
 THashPalabra& THashPalabra::operator =(const THashPalabra& orig){
     if (this != &orig){
         tamF = orig.tamF;
@@ -44,13 +56,21 @@ THashPalabra& THashPalabra::operator =(const THashPalabra& orig){
     }
 }
 
+/**
+ * @brief Destructor
+ */
 THashPalabra::~THashPalabra() {
 }
 
-unsigned int THashPalabra::numPalabras() const{
-    return tamL;
-}
 
+/**
+ * @brief Insertar en la tabla Hash de palabras
+ * @post Antes de nada, comprueba si está ya dicho elemento a insertar y, en caso de no estar insertado,
+ * inserta el elemento en la casilla correspondiente vacia o disponible mediante una clave y una función hash.
+ * @param clave
+ * @param pal
+ * @return 
+ */
 bool THashPalabra::insertar(unsigned long clave, Palabra& pal){
     bool insertado = false;
     Palabra* pPal = nullptr;
@@ -59,7 +79,7 @@ bool THashPalabra::insertar(unsigned long clave, Palabra& pal){
         //DUDA: SI BUSCO PREVIAMENTE NO ESTOY HACIENDO UN MISMO PROCESO (MÁS O MENOS) 2 VECES ??
         int intento = 0;
         while (intento < tamF && !insertado){
-            long h = hashDoble1(clave,intento); //TODO: IR CAMBIANDO PARA HACER LAS TABLAS
+            long h = hashDoble2(clave,intento); 
             if (tabla[h]._estado != ocupada){
                 tabla[h].dato = pal;
                 //cout<<"PALABRA INSERTADA : "<<tabla[h].dato.GetPalabra()<<endl;
@@ -81,11 +101,17 @@ bool THashPalabra::insertar(unsigned long clave, Palabra& pal){
     return insertado;
 }
 
+/**
+ * @brief Borrar de la tabla Hash de palabras
+ * @param clave
+ * @param termino
+ * @return 
+ */
 bool THashPalabra::borrar(unsigned long clave, string& termino){
     bool borrar = false;
     int intento = 0;
     while ( intento < tamF && !borrar) {
-        unsigned h = hashDoble1(clave,intento);
+        unsigned h = hashDoble2(clave,intento);
         if (tabla[h]._estado == ocupada){
             if (tabla[h].dato.GetPalabra() == termino){
                 tabla[h]._estado = disponible;
@@ -99,10 +125,19 @@ bool THashPalabra::borrar(unsigned long clave, string& termino){
     return borrar;
 }
 
+/**
+ * @brief Buscar en la tabla Hash de palabras
+ * @post Busca a partir de una clave pasada como parámetro y una función de dispersión si un elemento (pasado por parametro)
+ * está o no en la tabla.
+ * @param clave
+ * @param termino
+ * @param pal
+ * @return TRUE or FALSE.
+ */
 bool THashPalabra::buscar(unsigned long clave, string& termino, Palabra*& pal){
     int intento = 0;
     while(intento < tamF){
-        long h = hashDoble1(clave,intento); //TODO: IR CAMBIANDO PARA HACER LAS TABLAS
+        long h = hashDoble2(clave,intento); 
         if (tabla[h]._estado == ocupada){ //Entonces, posiblemente que esté en esa posición.
             if (tabla[h].dato.GetPalabra() == termino){ //Entonces, sí que es la palabra a buscar.
                 pal = &tabla[h].dato; 
@@ -136,15 +171,25 @@ unsigned int THashPalabra::tamTabla() const{
     return tamF;
 }
 
+unsigned int THashPalabra::numPalabras() const{
+    return tamL;
+}
 
 /*---- MÉTODOS PRIVADOS ----*/
 
-
-unsigned int THashPalabra::sigPrimo(unsigned int num, unsigned int& primoAnterior){
-    unsigned int primoMayor = num, a = 0;
+/**
+ * @brief Siguiente y anterior primo.
+ * @post A partir de un número pasado como parámetro, se obtiene el siguiente número primo (devolviendo mediante return)
+ * y también se obtiene el anterior primo a ese número pasado como parámetro (útil para las funciones hash dobles).
+ * @param num
+ * @param primoAnterior
+ * @return 
+ */
+unsigned long THashPalabra::sigPrimo(unsigned long num, unsigned long& primoAnterior){
+    unsigned long primoMayor = num, a = 0;
     primoAnterior = num;
     bool primoMayorEncontrado = false, primoMenorEncontrado = false;
-    while (!primoMayorEncontrado && primoMayor < 100000){ //TODO: AÑADIR UN LIMITE.
+    while (!primoMayorEncontrado){ 
         for (int i = 1; i < (primoMayor + 1); i++)
             if (primoMayor % i == 0)
                 a++;
@@ -156,7 +201,7 @@ unsigned int THashPalabra::sigPrimo(unsigned int num, unsigned int& primoAnterio
         a = 0;
     }
     
-    while (!primoMenorEncontrado && primoAnterior > 0){ //TODO: AÑADIR UN LIMITE.
+    while (!primoMenorEncontrado && primoAnterior > 0){
         for (int i = 1; i < (primoAnterior + 1); i++)
             if (primoAnterior % i == 0)
                 a++; 

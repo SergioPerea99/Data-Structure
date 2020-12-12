@@ -71,7 +71,6 @@ Documento* GestorTextos::buscarDocumento(std::string nombreFich){
  * @return Booleano que indica si se ha encontrado o no.
  */
 bool GestorTextos::buscarTermino(unsigned long clave,std::string termino, Palabra* &result){
-    //unsigned long clave = djb2((unsigned char*)termino.c_str());
     return diccionario->buscarTermino(clave,termino,result);
 }
 
@@ -90,15 +89,6 @@ GestorTextos::~GestorTextos() {
     if (diccionario)
         delete diccionario;
     diccionario = 0;
-}
-
-
-unsigned long GestorTextos::djb2(unsigned char* str){
-    unsigned long hash = 5381;
-    int c;
-    
-    while (c = *str++) hash = ((hash << 5) + hash) + c;
-    return hash;
 }
 
 

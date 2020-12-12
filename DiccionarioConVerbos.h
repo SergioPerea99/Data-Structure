@@ -28,10 +28,9 @@ private:
     std::string nombreDiccVerbos;
     THashPalabra terminos;
     
-    unsigned long djb2 (unsigned char *str);
 public:
     DiccionarioConVerbos();
-    DiccionarioConVerbos(std::string _nombreDicc, std::string _nombreDiccVerbos);
+    DiccionarioConVerbos(std::string _nombreDicc, std::string _nombreDiccVerbos, unsigned long tam_dicc, unsigned long tam_diccVerbos);
     DiccionarioConVerbos(const DiccionarioConVerbos& orig);
     virtual ~DiccionarioConVerbos();
 
@@ -41,12 +40,16 @@ public:
     
     /*---- MÉTODO UML PRÁCTICA 4 ----*/
     bool buscarTermino(unsigned long clave, std::string& termino, Palabra* &result);
-    int tamTerminos();
     
-    /*---- MÉTODOS PRÁCTICA 5 NECESARIOS ----*/
+    
+    /*---- MÉTODOS PRÁCTICA 5 ----*/
+    unsigned long djb2 (unsigned char *str);
     int maxColisiones_THASH() const;
     float promColisiones_THASH() const;
-
+    int tamTerminos() const;
+    long tamTablaHASH() const;
+    
+    
     /*GETTERS Y SETTERS.*/
     void SetNombreFich(std::string nombreFich);
     std::string GetNombreFich() const;
