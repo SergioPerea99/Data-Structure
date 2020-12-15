@@ -73,6 +73,8 @@ int main(int argc, char** argv) {
         if(gestor1.getDiccionario()->insertarPalabra(windsurf))
             cout<<"PALABRA "<<windsurf.GetPalabra()<<" INSERTADA CORRECTAMENTE."<<endl;
         
+        delete borradas; //Liberar la memoria reservada para el vector<Palabra>
+        
     }catch (invalid_argument &e){
         cout<<e.what()<<endl;
     }
