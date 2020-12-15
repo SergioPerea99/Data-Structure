@@ -48,7 +48,11 @@ public:
     float promColisiones_THASH() const;
     int tamTerminos() const;
     long tamTablaHASH() const;
+    bool insertarPalabra(Palabra& dato);
     
+    bool getPalabra(unsigned int pos, Palabra& result);
+    bool borrarPalabra(Palabra& dato);
+    vector<Palabra>* borrarPalabras_substr(string& cadena_contenida);
     
     /*GETTERS Y SETTERS.*/
     void SetNombreFich(std::string nombreFich);

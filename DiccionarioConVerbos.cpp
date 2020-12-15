@@ -13,6 +13,7 @@
 
 #include <time.h>
 #include <list>
+#include <vector>
 
 #include "DiccionarioConVerbos.h"
 #include "Documento.h"
@@ -141,7 +142,37 @@ unsigned long DiccionarioConVerbos::djb2(unsigned char* str){
     return hash;
 }
 
+bool DiccionarioConVerbos::insertarPalabra(Palabra& dato){
+    unsigned long clave = djb2((unsigned char*)dato.GetPalabra().c_str());
+    return terminos.insertar(clave,dato);
+}
 
+bool DiccionarioConVerbos::getPalabra(unsigned int pos, Palabra& result){
+    return terminos.getPalabra(pos, result);
+}
+
+bool DiccionarioConVerbos::borrarPalabra(Palabra& dato){
+    unsigned long clave = djb2((unsigned char*)dato.GetPalabra().c_str());
+    string termino = dato.GetPalabra();
+    return terminos.borrar(clave,termino);
+}
+
+
+vector<Palabra>* DiccionarioConVerbos::borrarPalabras_substr(string& cadena_contenida){
+    vector<Palabra> *borradas = new vector<Palabra>();
+    int i = 0;
+    Palabra dato;
+    while (i < tamTablaHASH()){
+        if (getPalabra(i,dato)){ //Si entra aquí es porque encuentra un dato;
+            if (dato.GetPalabra().substr(0,1) == cadena_contenida){
+                borrarPalabra(dato);
+                borradas->push_back(dato);
+            }
+        }
+        ++i;
+    }
+    return borradas;
+}
 /*---- GETTERS Y SETTERS ----*/
 
 void DiccionarioConVerbos::SetNombreFich(std::string nombreFich) {

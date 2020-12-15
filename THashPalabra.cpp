@@ -90,7 +90,12 @@ bool THashPalabra::insertar(unsigned long clave, Palabra& pal){
                 //COMPROBAR SI ES EL MAXIMO DE COLISIONES RESPECTO AL GUARDADO
                 if (intento > maxColisiones) 
                     maxColisiones = intento;
+                
+                //COMPROBAR SI LA PALABRA INSERTADA ES "WIFI"
+                if (pal.GetPalabra() == "wifi")
+                    cout<<"NÚMERO DE COLISIONES CON LA PALABRA WIFI: "<<intento<<endl;
                 insertado = true;
+                
             }
             ++colisiones;
             ++intento;
@@ -173,6 +178,17 @@ unsigned int THashPalabra::tamTabla() const{
 
 unsigned int THashPalabra::numPalabras() const{
     return tamL;
+}
+
+bool THashPalabra::getPalabra(unsigned long pos, Palabra& result){
+    if (pos < 0 || pos >= tamF)
+        throw std::out_of_range("[THashPalabra::getPalabra] Has dado una posición fuera del rango permitido de la tabla");
+    if (tabla[pos]._estado == vacia || tabla[pos]._estado == disponible)
+        return false;
+    else{
+        result = tabla[pos].dato;
+        return true;
+    }
 }
 
 /*---- MÉTODOS PRIVADOS ----*/

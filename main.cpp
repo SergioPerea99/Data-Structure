@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <exception>
 #include <map>
+#include <vector>
 
 #include "VDinamico.h"
 #include "Palabra.h"
@@ -50,9 +51,27 @@ int main(int argc, char** argv) {
         
         int pos = gestor1.addDocumento(nombreFich);
         
-        gestor1.getDocumento(pos)->chequearTexto();
+        /*--- INSERTAR LA PALABRA WIFI Y MOSTRAR EL NÚMERO DE COLISIONES ---*/
+        Palabra wifi("wifi",gestor1.getDiccionario());
+        gestor1.getDiccionario()->insertarPalabra(wifi);
         
         
+        /*--- ELIMINAR TODAS LAS PALABRAS QUE COMIENCEN POR W ---*/
+        string cadena_buscar = "w";
+        vector<Palabra> *borradas = gestor1.getDiccionario()->borrarPalabras_substr(cadena_buscar);
+       
+        cout<<endl<<"Palabras borradas : "<<borradas->size()<<endl;
+        for (Palabra i : *borradas)
+            cout<<"Palabra borrada --> "<<i.GetPalabra()<<endl;
+        
+        Palabra waterpolo("waterpolo",gestor1.getDiccionario());
+        Palabra windsurf("windsurf",gestor1.getDiccionario());
+        
+        if(gestor1.getDiccionario()->insertarPalabra(waterpolo))
+            cout<<endl<<"PALABRA "<<waterpolo.GetPalabra()<<" INSERTADA CORRECTAMENTE."<<endl;
+        
+        if(gestor1.getDiccionario()->insertarPalabra(windsurf))
+            cout<<"PALABRA "<<windsurf.GetPalabra()<<" INSERTADA CORRECTAMENTE."<<endl;
         
     }catch (invalid_argument &e){
         cout<<e.what()<<endl;

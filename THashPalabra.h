@@ -66,6 +66,8 @@ public:
     float promedioColisiones() const; //DUDA: esta mal en el guión ?? pone que devuelva un unsigned int
     float FactorCarga() const;
     unsigned int tamTabla() const;
+    
+    bool getPalabra(unsigned long pos, Palabra& result);
 
 };
 
