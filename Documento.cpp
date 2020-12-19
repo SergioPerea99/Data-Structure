@@ -16,9 +16,8 @@
 /**
  * @brief Constructor por defecto.
  */
-Documento::Documento() {
-    nombreFich = "quijote-sin-simbolos.txt";
-    dicc = nullptr;
+Documento::Documento(): nombreFich ("quijote-sin-simbolos.txt"), dicc (nullptr){
+
 }
 
 /**
@@ -26,31 +25,17 @@ Documento::Documento() {
  * @param _texto Nombre del documento.
  * @param _dicc Puntero al diccionario que tiene asociado este Documento.
  */
-Documento::Documento(std::string _texto, DiccionarioConVerbos*& _dicc){
-    nombreFich = _texto;
-    dicc = _dicc;
+Documento::Documento(std::string _texto, DiccionarioConVerbos*& _dicc) : nombreFich (_texto), dicc (_dicc), palabras(){
+
 }
 
 /**
  * @brief Constructor copia.
  * @param orig Documento a ser copiado.
  */
-Documento::Documento(const Documento& orig) {
-    nombreFich = orig.nombreFich;
-    dicc = orig.dicc;
+Documento::Documento(const Documento& orig): nombreFich (orig.nombreFich), dicc (orig.dicc), palabras (orig.palabras){
+
 }
-
-
-/**
- * @brief Añadir palabra inexistente.
- * @post Añade en la estructura de la lista enlazada simple las palabras que no han sido encontradas en el vector de palabras del diccionario.
- * @pre Debe de corresponder a una lista ordenada, por lo que se insertará de forma ordenada.
- * @param p Palabra a añadir.
- */
-//void Documento::addInexistente(Palabra p) {
-//    /*La lista debe de mantenerse ordenada.*/
-//    inexistentes.insertaOrdenado(p);
-//}
 
 
 /**
@@ -92,18 +77,15 @@ void Documento::chequearTexto(){
     while (is) {
         is >> palabra;
         Palabra pal(palabra,nullptr);
-        pal.SetUltima_aparicion(this);
+        //pal.SetUltima_aparicion(this);
         ++total;
         /*Ahora limpio la palabra para comprobar si existe en el diccionario.*/
         pal.limpiar();
         string aux = pal.conversionMinus();
-        
-        if (!getDicc()->buscarTermino(aux, result)) {
+        unsigned long clave = getDicc()->djb2((unsigned char*)aux.c_str());
+        if (!getDicc()->buscarTermino(clave,aux, result)) {
             ++no_validadas;
-            aniadir.SetPalabra(pal.GetPalabra());
-            aniadir.SetUltima_aparicion(this);
-            result = dicc->insertarInexistente(pal); 
-            result->SetUltima_aparicion(this);
+            insertarInexistente(pal); 
         }
         
     }
@@ -142,3 +124,14 @@ void Documento::setDicc(DiccionarioConVerbos* dicc) {
 
 
 
+bool Documento::insertarInexistente(Palabra& pal){
+    list<Palabra>::iterator it = palabras.begin();
+    while (it != palabras.end()){
+        if ((*it).GetPalabra() == pal.GetPalabra())
+            return false; //Encontrado, entonces no se inserta otra vez.
+        it++;
+    }
+    //No ha sido encontrada la palabra, entonces se inserta al final.
+    palabras.push_back(pal);
+    return true;
+}

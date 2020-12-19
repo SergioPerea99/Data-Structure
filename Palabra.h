@@ -25,9 +25,8 @@ class Documento;
 
 class Palabra {
 private:
-     string palabra;    
+     string termino;    
      unsigned int ocurrencias;
-     Documento *ultima_aparicion;
      DiccionarioConVerbos *dicc_perteneciente;
 public:
     Palabra();
@@ -56,8 +55,6 @@ public:
     /*---- GETTERS Y SETTERS  ----*/
     int GetOcurrencias() const;
     DiccionarioConVerbos* GetDicc_perteneciente() const;
-    void SetUltima_aparicion(Documento* ultima_aparicion);
-    Documento* GetUltima_aparicion() const;
     string GetPalabra() const;
     void SetPalabra(string palabra);
     

@@ -21,8 +21,9 @@
 
 class GestorTextos {
 private:
-    list<Documento*> documentos;
+    vector<Documento*> documentos;
     DiccionarioConVerbos *diccionario;
+
 public:
     GestorTextos();
     GestorTextos(const GestorTextos& orig);
@@ -33,9 +34,7 @@ public:
     Documento* buscarDocumento(std::string nombreFich);
     
     /*---- MÉTODOS DEL UML PRACTICA 4 ----*/
-    //int addDiccionario(std::string nombreDicc, std::string nombreDiccVerbos);
-    bool buscarTermino(std::string termino, Palabra* &result);
-    void buscarFamilias(std::string raiz,list<Palabra>* familia);
+    bool buscarTermino(unsigned long clave, std::string termino, Palabra* &result);
     
     /*---- GETTERS Y SETTERS ----*/
     DiccionarioConVerbos*& getDiccionario();

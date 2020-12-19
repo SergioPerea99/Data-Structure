@@ -1,17 +1,12 @@
 build/Release/GNU_Cygwin-Windows/Documento.o: Documento.cpp Documento.h \
- ListaEnlazada.h Palabra.h VDinamico.h Diccionario.h VerbosConjugados.h \
- Arbol_AVL.h
+ DiccionarioConVerbos.h VDinamico.h Palabra.h THashPalabra.h
 
 Documento.h:
 
-ListaEnlazada.h:
-
-Palabra.h:
+DiccionarioConVerbos.h:
 
 VDinamico.h:
 
-Diccionario.h:
+Palabra.h:
 
-VerbosConjugados.h:
-
-Arbol_AVL.h:
+THashPalabra.h:

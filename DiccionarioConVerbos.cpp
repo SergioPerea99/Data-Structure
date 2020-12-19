@@ -13,6 +13,7 @@
 
 #include <time.h>
 #include <list>
+#include <vector>
 
 #include "DiccionarioConVerbos.h"
 #include "Documento.h"
@@ -20,9 +21,7 @@
 /**
  * @brief Constructor por defecto.
  */
-DiccionarioConVerbos::DiccionarioConVerbos(): terminos(){
-    nombreDicc = "dicc-espanol-sin.txt";
-    nombreDiccVerbos = "verbos_conjugados_sin_tildes_desordenados.txt";
+DiccionarioConVerbos::DiccionarioConVerbos(): terminos(520513,0.601),nombreDicc("dicc-espanol-sin.txt"), nombreDiccVerbos("verbos_conjugados_sin_tildes_desordenados.txt"){
     
     /*Primera parte: Cargar las palabras del diccionario en el map.*/
     ifstream is(nombreDicc);
@@ -30,9 +29,9 @@ DiccionarioConVerbos::DiccionarioConVerbos(): terminos(){
     Palabra *pal = nullptr;
     while (is) {
         is >> palabra;
-        pal = new Palabra(palabra,this);
-        pair<std::string, Palabra*> palab(palabra,pal);
-        terminos.insert(palab);
+        Palabra pal (palabra,this);
+        unsigned long clave = djb2((unsigned char*)pal.GetPalabra().c_str());
+        terminos.insertar(clave,pal);
     }
     is.close();
     
@@ -40,13 +39,13 @@ DiccionarioConVerbos::DiccionarioConVerbos(): terminos(){
     is.open(nombreDiccVerbos);
     while (is) {
         is >> palabra;
-        pal = new Palabra(palabra,this);
-        pair<std::string, Palabra*> palab(palabra,pal);
-        terminos.insert(palab);
+        Palabra pal (palabra,this);
+        unsigned long clave = djb2((unsigned char*)pal.GetPalabra().c_str());
+        terminos.insertar(clave,pal);
     }
     is.close();
     
-    cout <<"DICCIONARIO: "<< terminos.size() << " palabras cargadas en los TERMINOS del diccionario." << endl;
+    cout <<"DICCIONARIO: "<< terminos.numPalabras() << " palabras cargadas en los TERMINOS del diccionario." << endl;
 }
 
 
@@ -54,9 +53,7 @@ DiccionarioConVerbos::DiccionarioConVerbos(): terminos(){
  * @brief Constructor parametrizado.
  * @param _nombreFich String que indica el nombre del diccionario.
  */
-DiccionarioConVerbos::DiccionarioConVerbos(std::string _nombreDicc, std::string _nombreDiccVerbos): terminos(){
-    nombreDicc = _nombreDicc;
-    nombreDiccVerbos = _nombreDiccVerbos;
+DiccionarioConVerbos::DiccionarioConVerbos(std::string _nombreDicc, std::string _nombreDiccVerbos, unsigned long tam_dicc, unsigned long tam_diccVerbos): terminos(tam_dicc+tam_diccVerbos,0.601), nombreDicc (_nombreDicc), nombreDiccVerbos(_nombreDiccVerbos) {
     
     /*Primera parte: Cargar palabras del diccionario en el map.*/
     ifstream is(nombreDicc);
@@ -64,9 +61,11 @@ DiccionarioConVerbos::DiccionarioConVerbos(std::string _nombreDicc, std::string 
     Palabra *pal = nullptr;
     while (is) {
         is >> palabra;
-        pal = new Palabra(palabra,this);
-        pair<std::string, Palabra*> palab(palabra,pal);
-        terminos.insert(palab);
+        //pal = new Palabra(palabra,this);
+        Palabra pal (palabra,this);
+        //pair<std::string, Palabra*> palab(palabra,pal);
+        unsigned long clave = djb2((unsigned char*)pal.GetPalabra().c_str());
+        terminos.insertar(clave,pal);
     }
     is.close();
     
@@ -74,23 +73,25 @@ DiccionarioConVerbos::DiccionarioConVerbos(std::string _nombreDicc, std::string 
     is.open(nombreDiccVerbos);
     while (is) {
         is >> palabra;
-        pal = new Palabra(palabra,this);
-        pair<std::string, Palabra*> palab(palabra,pal);
-        terminos.insert(palab);
+        //pal = new Palabra(palabra,this);
+        Palabra pal (palabra,this);
+        //pair<std::string, Palabra*> palab(palabra,pal);
+        unsigned long clave = djb2((unsigned char*)pal.GetPalabra().c_str());
+        terminos.insertar(clave,pal);
     }
     is.close();
     
-    cout << terminos.size() << " palabras cargadas en los TERMINOS del diccionario." << endl;
+    cout << terminos.numPalabras() << " palabras cargadas en los TERMINOS del diccionario." << endl;
 }
 
 /**
  * @brief Constructor copia.
  * @param orig Diccionario a copiar.
  */
-DiccionarioConVerbos::DiccionarioConVerbos(const DiccionarioConVerbos& orig) {
-    nombreDicc = orig.nombreDicc;
-    nombreDiccVerbos = orig.nombreDiccVerbos;    
-    terminos = orig.terminos;
+DiccionarioConVerbos::DiccionarioConVerbos(const DiccionarioConVerbos& orig) : nombreDicc(orig.nombreDicc) , 
+        nombreDiccVerbos(orig.nombreDiccVerbos), 
+        terminos (orig.terminos){
+    
 }
 
 /**
@@ -99,12 +100,6 @@ DiccionarioConVerbos::DiccionarioConVerbos(const DiccionarioConVerbos& orig) {
  * los cuales formaban parte del diccionario.
  */
 DiccionarioConVerbos::~DiccionarioConVerbos() {
-    map<std::string, Palabra*>::iterator it = terminos.begin();
-    while(it != terminos.end()){
-        delete it->second;
-        terminos.erase(it); /*DUDA: Si he eliminado con erase pero he creado un new de Palabras en esta clase para almacenarlo en esos nodos del mapa, ¿con el erase no haría falta liberar su memoria?*/
-        it = terminos.lower_bound(it->first); 
-    }
 }
 
 
@@ -129,46 +124,55 @@ DiccionarioConVerbos& DiccionarioConVerbos::operator =(const DiccionarioConVerbo
  * @param result Palabra encontrada, en caso de encontrarse.
  * @return Booleano que indica si se ha encontrado o no.
  */
-bool DiccionarioConVerbos::buscarTermino(string& termino, Palabra* &result){
-    map<std::string, Palabra*>::iterator ite = terminos.find(termino);
-    if(ite != terminos.end()){
-        result = ite->second;
-        ite->second->incrementarOcurrencia();
-        return true;
-    }else
-        return false;
+bool DiccionarioConVerbos::buscarTermino(unsigned long clave, string& termino, Palabra* &result){
+    return terminos.buscar(clave,termino,result);
 }
-
 
 /**
- * @brief Buscar familia de una palabra.
- * @post A partir de una subcadena raiz, devolver una lista de todas las palabras
- * que contienen como subcadena raiz la misma que la pasada como parámetro.
- * @param raiz String a buscar como subcadena en el map.
- * @return Lista de palabras que forman la familia.
+ * @brief Método privado djb2.
+ * @post Método encargado de la conversión de una clave de cadena de caracteres a una clave numérica.
+ * @param str Cadena de caracteres.
+ * @return Clave numérica.
  */
-void DiccionarioConVerbos::buscarFamilias(std::string raiz,list<Palabra>* familia){
-    map<std::string, Palabra*>::iterator it = terminos.find(raiz);
-    std::string comprobar = it->first; /*Creo una variable para no hacer operaciones con el iterador.*/
-    while(comprobar.substr(0,raiz.length()) == raiz){ /*Supongo que al iterar hacia abajo o encuentra el final o sale por donde empezó.*/
-        familia->push_back(*it->second); /*Copio la palabra en la lista ya que sigue en el bucle que comprueba que es de la familia.*/
-        it++;
-        comprobar = it->first; /*Copio la nueva clave, para ver en el condicional si sigue siendo de la familia.*/
+unsigned long DiccionarioConVerbos::djb2(unsigned char* str){
+    unsigned long hash = 5381;
+    int c;
+    
+    while (c = *str++) hash = ((hash << 5) + hash) + c;
+    return hash;
+}
+
+bool DiccionarioConVerbos::insertarPalabra(Palabra& dato){
+    unsigned long clave = djb2((unsigned char*)dato.GetPalabra().c_str());
+    return terminos.insertar(clave,dato);
+}
+
+bool DiccionarioConVerbos::getPalabra(unsigned int pos, Palabra& result){
+    return terminos.getPalabra(pos, result);
+}
+
+bool DiccionarioConVerbos::borrarPalabra(Palabra& dato){
+    unsigned long clave = djb2((unsigned char*)dato.GetPalabra().c_str());
+    string termino = dato.GetPalabra();
+    return terminos.borrar(clave,termino);
+}
+
+
+vector<Palabra>* DiccionarioConVerbos::borrarPalabras_substr(string& cadena_contenida){
+    vector<Palabra> *borradas = new vector<Palabra>();
+    int i = 0;
+    Palabra dato;
+    while (i < tamTablaHASH()){
+        if (getPalabra(i,dato)){ //Si entra aquí es porque encuentra un dato;
+            if (dato.GetPalabra().substr(0,1) == cadena_contenida){
+                borrarPalabra(dato);
+                borradas->push_back(dato);
+            }
+        }
+        ++i;
     }
+    return borradas;
 }
-
-
-Palabra* DiccionarioConVerbos::insertarInexistente(Palabra& dato){
-    Palabra *aniadir = new Palabra(dato.GetPalabra(),nullptr); /*DUDA: ¿La palabra inexistente sólo tendrá asignado el documento de donde viene pero no el diccionario al que se está añadiendo?*/
-    pair<std::string, Palabra*> palab(aniadir->GetPalabra(),aniadir);
-    pair<map<std::string,Palabra*>::iterator,bool> par = terminos.insert(palab);
-    //cout<<"LLEGA PARA INSERTAR "<<aniadir->GetPalabra()<<endl;
-    //if (par.second)
-        //cout<<"INSERTADO"<<endl;
-    aniadir->incrementarOcurrencia(); /*Numero de veces que ha aparecido: 1.*/
-    return aniadir;
-}
-
 /*---- GETTERS Y SETTERS ----*/
 
 void DiccionarioConVerbos::SetNombreFich(std::string nombreFich) {
@@ -188,16 +192,18 @@ std::string DiccionarioConVerbos::getNombreDiccVerbos() const {
 }
 
 
-int DiccionarioConVerbos::tamTerminos(){
-    return terminos.size();
+int DiccionarioConVerbos::tamTerminos() const{
+    return terminos.numPalabras();
 }
 
+long DiccionarioConVerbos::tamTablaHASH() const{
+    return terminos.tamTabla();
+}
 
-void DiccionarioConVerbos::mostrarDiccionario(){
-    std::map<std::string,Palabra*>::iterator it = terminos.begin();
-    while (it != terminos.end()){
-        if(it->second->GetUltima_aparicion())
-            cout<<"["<<it->second->GetPalabra()<<", "<<it->second->GetUltima_aparicion()->getNombreFich()<<"]  ";
-        it++;
-    }
+int DiccionarioConVerbos::maxColisiones_THASH() const{
+    return terminos.MaxColisiones();
+}
+
+float DiccionarioConVerbos::promColisiones_THASH() const{
+    return terminos.promedioColisiones();
 }

@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <exception>
 #include <map>
+#include <vector>
 
 #include "VDinamico.h"
 #include "Palabra.h"
@@ -25,6 +26,7 @@
 #include "ListaEnlazada.h"
 #include "DiccionarioConVerbos.h"
 #include "GestorTextos.h"
+#include "THashPalabra.h"
 
 using namespace std;
 
@@ -33,86 +35,56 @@ int main(int argc, char** argv) {
     /*-----------------------------------------------------------------------------------------------------*/
     /*------------------------------- MENÚ PRINCIPAL: PRÁCTICA 4 ------------------------------------------*/
     /*-----------------------------------------------------------------------------------------------------*/
+    
+    
+    
     try{
         
         /*---- CHEQUEAR EL QUIJOTE Y UN SEGUNDO TEXTO ----*/
 
         std::string nombreFich = "quijote-sin-simbolos.txt";
         GestorTextos gestor1;
+        
+        cout<<"MAXIMO DE COLISIONES : "<<gestor1.getDiccionario()->maxColisiones_THASH()<<endl;
+        cout<<"PROMEDIO DE COLISIONES : "<<gestor1.getDiccionario()->promColisiones_THASH()<<endl;
+        cout<<"FACTOR DE CARGA (REAL): "<<(float)gestor1.getDiccionario()->tamTerminos()/gestor1.getDiccionario()->tamTablaHASH()<<endl;
+        
         int pos = gestor1.addDocumento(nombreFich);
         
-        gestor1.getDocumento(pos)->chequearTexto();
-        
-        cout<<"TAMAÑO DEL DICCIONARIO ACTUAL --> "<<gestor1.getDiccionario()->tamTerminos()<<endl;
-        
-        nombreFich = "cañasYbarro.txt";
-        pos = gestor1.addDocumento(nombreFich);
-        gestor1.getDocumento(pos)->chequearTexto();
-        
-        cout<<"TAMAÑO DEL DICCIONARIO ACTUAL --> "<<gestor1.getDiccionario()->tamTerminos()<<endl;
-        
-        /*---- NUMERO DE OCURRENCIAS DE MANCHA Y ESTABAN ----*/
-        
-        Palabra *mancha = nullptr;
-        string _mancha = "mancha"; //SEGÚN HE COMPROBADO UNA A UNA DEL DOCUMENTO, SALEN 175 (TOTAL 183 CON: 2 MANCHAS,1 MANCHASE, 1 MANCHADO, 4 MANCHADA).
-        gestor1.getDiccionario()->buscarTermino(_mancha,mancha);
-        
-        if(mancha)
-            cout<<"Ocurrencias de mancha -> "<<mancha->GetOcurrencias()-1<<endl;
-        
-        Palabra *estaban = nullptr;
-        string _estaban = "estaban"; //COMRPOBADO QUE TIENE QUE SALIR 175 PORQUE AL BUSCAR SALEN 178 (ESTABAN,ESTABANLE,PRESTABAN,RECUESTABAN).
-        gestor1.getDiccionario()->buscarTermino(_estaban,estaban);
-        
-        if(estaban)
-            cout<<"Ocurrencias de estaban -> "<<estaban->GetOcurrencias()-1<<endl; //RESTO 1 PORQUE CADA VEZ QUE BUSCA EL TERMINO Y LO ENCUENTRA INCREMENTA SU OCURRENCIA.
+        /*--- INSERTAR LA PALABRA WIFI Y MOSTRAR EL NÚMERO DE COLISIONES ---*/
+        Palabra wifi("wifi",gestor1.getDiccionario());
+        gestor1.getDiccionario()->insertarPalabra(wifi);
         
         
-        /*---- BUSCAR Y MOSTRAR POR CONSOLA LA FAMILIA DE PALABRAS QUE SE QUIERA POR CONSOLA ----*/
+        /*--- ELIMINAR TODAS LAS PALABRAS QUE COMIENCEN POR W ---*/
+        string cadena_buscar = "w";
+        vector<Palabra> *borradas = gestor1.getDiccionario()->borrarPalabras_substr(cadena_buscar);
+       
+        cout<<endl<<"Palabras borradas : "<<borradas->size()<<endl;
+        for (Palabra i : *borradas)
+            cout<<"Palabra borrada --> "<<i.GetPalabra()<<endl;
         
-        cout<<endl<<endl<<"FAMILIA DE PALABRAS DE --> FLOR"<<endl;
-        string _buscar = "flor";
-        list<Palabra> *familia = new list<Palabra>();
-        gestor1.buscarFamilias(_buscar, familia);
-        list<Palabra>::iterator it = familia->begin();
-        while (it != familia->end()) {
-            cout << it->GetPalabra() << "  ";
-            ++it;
-        }
-        delete familia;
-        familia = new list<Palabra>();
+        Palabra waterpolo("waterpolo",gestor1.getDiccionario());
+        Palabra windsurf("windsurf",gestor1.getDiccionario());
         
-        cout<<endl<<endl<<"FAMILIA DE PALABRAS DE --> SAL"<<endl;
-        _buscar = "sal";
-        gestor1.buscarFamilias(_buscar, familia);
-        it = familia->begin();
-        while (it != familia->end()) {
-            cout << it->GetPalabra() << "  ";
-            ++it;
-        }
-        delete familia;
-        familia = new list<Palabra>();
+        if(gestor1.getDiccionario()->insertarPalabra(waterpolo))
+            cout<<endl<<"PALABRA "<<waterpolo.GetPalabra()<<" INSERTADA CORRECTAMENTE."<<endl;
         
+        if(gestor1.getDiccionario()->insertarPalabra(windsurf))
+            cout<<"PALABRA "<<windsurf.GetPalabra()<<" INSERTADA CORRECTAMENTE."<<endl;
         
-        cout<<endl<<endl<<"FAMILIA DE PALABRAS DE --> MAR"<<endl;
-        _buscar = "mar";
-        gestor1.buscarFamilias(_buscar, familia);
-
-        it = familia->begin();
-        while (it != familia->end()) {
-            cout << it->GetPalabra() << "  ";
-            ++it;
-        }
-        delete familia;
-        familia = nullptr;
+        delete borradas; //Liberar la memoria reservada para el vector<Palabra>
         
-        /*---- MOSTRAR POR CONSOLA LAS PALABRAS INEXISTENTES AÑADIDAS AL DICCIONARIO Y DEL DOCUMENTO DEL QUE VIENEN ----*/
-        
-        cout<<endl<<endl<<endl<<endl<<"--------- PALABRAS INEXISTENTES AÑADIDAS AL DICCIONARIO --------"<<endl<<endl;
-        gestor1.getDiccionario()->mostrarDiccionario();
-      
-         
-    }catch(exception &e){
+    }catch (invalid_argument &e){
+        cout<<e.what()<<endl;
+    }
+    catch (logic_error &e){
+        cout<<e.what()<<endl;
+    }
+    catch (runtime_error &e){
+        cout<<e.what()<<endl;
+    }
+    catch(exception &e){
         cout<<e.what()<<endl;
     }
     

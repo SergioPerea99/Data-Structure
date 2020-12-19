@@ -19,17 +19,16 @@
 /**
  * @brief Constructor por defecto.
  */
-GestorTextos::GestorTextos(): documentos(){
-    diccionario = new DiccionarioConVerbos();
+GestorTextos::GestorTextos(): documentos(), diccionario (new DiccionarioConVerbos()){
+
 }
 
 /**
  * @brief Constructor copia.
  * @param orig GestorTextos a ser copiado por el destinatario.
  */
-GestorTextos::GestorTextos(const GestorTextos& orig) {
-    diccionario = orig.diccionario;
-    documentos = orig.documentos;
+GestorTextos::GestorTextos(const GestorTextos& orig): diccionario (orig.diccionario), documentos (orig.documentos) {
+
 }
 
 
@@ -55,14 +54,9 @@ int GestorTextos::addDocumento(std::string nombreFich){
  */
 Documento* GestorTextos::buscarDocumento(std::string nombreFich){
     Documento *texto_buscar =  new Documento(nombreFich,getDiccionario());
-    list<Documento*>::iterator it = documentos.begin();
-    while (it != documentos.end()){
-        if (*(*it) == *texto_buscar){
-            delete texto_buscar;
-            return *it;
-        }
-        it++;
-    }
+    for (Documento* i : documentos)
+        if (*i == *texto_buscar)
+            return i;
     delete texto_buscar;
     return nullptr;
 }
@@ -76,34 +70,26 @@ Documento* GestorTextos::buscarDocumento(std::string nombreFich){
  * @param result Palabra que, al ser buscada con el termino, se asigna a dicho parámetro.
  * @return Booleano que indica si se ha encontrado o no.
  */
-bool GestorTextos::buscarTermino(std::string termino, Palabra* &result){
-    return diccionario->buscarTermino(termino,result);
+bool GestorTextos::buscarTermino(unsigned long clave,std::string termino, Palabra* &result){
+    return diccionario->buscarTermino(clave,termino,result);
 }
 
-
-
-void GestorTextos::buscarFamilias(std::string raiz,list<Palabra>* familia){
-    diccionario->buscarFamilias(raiz,familia);
-}
 
 /**
  * @brief Destructor.
  * @post Destruye los objetos documento creados que habían sido añadidos al vector dinámico documentos.
  */
 GestorTextos::~GestorTextos() {
-    list<Documento*>::iterator it = documentos.begin();
-    while (it != documentos.end()){
-        if(*it)
-            delete *it;
-        *it = 0;
-        it++;
+    for (Documento* i : documentos){
+        if (i){
+            delete i;
+            i = nullptr;
+        }
     }
     if (diccionario)
         delete diccionario;
     diccionario = 0;
 }
-
-
 
 
 /*---- GETTERS Y SETTERS ----*/
@@ -115,28 +101,9 @@ DiccionarioConVerbos*& GestorTextos::getDiccionario(){
 
 
 Documento* GestorTextos::getDocumento(unsigned int pos){
-    list<Documento*>::iterator it = documentos.begin();
-    int i = 0;
-    while (i < pos){
-        it++;
-        i++;
-    }
-    if(*it)
-        return *it;
+    if (pos < documentos.size())
+        if (documentos[pos])
+            return documentos[pos];
     return nullptr;
 }
 
-
-
-/**
- * @brief Insertar documento.
- * @post Añade un documento al final de los elementos del vector. Es importante saber
- * que desde la misma acción de añadir el documento, se está añadiendo el diccionario
- * asociado a ese documento.
- * @param nombreFich String que se quiere añadir a la estructura como Documento.
- */
-//int GestorTextos::addDiccionario(std::string nombreDicc, std::string nombreDiccVerbos){
-//    DiccionarioConVerbos *doc = new DiccionarioConVerbos(nombreDicc,nombreDiccVerbos); 
-//    diccionarios.push_back(doc);
-//    return diccionarios.size()-1;
-//}

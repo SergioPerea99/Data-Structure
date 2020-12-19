@@ -15,13 +15,14 @@
 #define DOCUMENTO_H
 
 #include "DiccionarioConVerbos.h"
-
+#include <list>
 
 class Documento {
 private:
     std::string nombreFich;
     DiccionarioConVerbos *dicc;
-    
+    list<Palabra> palabras;
+
 public:
     Documento();
     Documento(std::string _texto, DiccionarioConVerbos*& _dicc);
@@ -32,6 +33,10 @@ public:
 
     /*---- MÉTODOS NECESARIOS PRACTICA 3  ----*/
     void chequearTexto();
+    
+    /*---- MÉTODOS NECESARIOS PRACTICA 5  ----*/
+    bool insertarInexistente(Palabra& pal);
+    
     
     /*---- GETTERS Y SETTERS ----*/
     void setNombreFich(std::string nombreFich);
