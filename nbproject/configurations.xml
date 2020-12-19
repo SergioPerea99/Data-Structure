@@ -9,6 +9,7 @@
       <itemPath>Documento.h</itemPath>
       <itemPath>GestorTextos.h</itemPath>
       <itemPath>ListaEnlazada.h</itemPath>
+      <itemPath>MallaRegular.h</itemPath>
       <itemPath>Palabra.h</itemPath>
       <itemPath>ParPalabras.h</itemPath>
       <itemPath>THashPalabra.h</itemPath>
@@ -78,6 +79,8 @@
       </item>
       <item path="ListaEnlazada.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="MallaRegular.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Palabra.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Palabra.h" ex="false" tool="3" flavor2="0">
@@ -130,6 +133,8 @@
       <item path="GestorTextos.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ListaEnlazada.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MallaRegular.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Palabra.cpp" ex="false" tool="1" flavor2="0">
       </item>

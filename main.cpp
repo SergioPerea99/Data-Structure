@@ -27,6 +27,7 @@
 #include "DiccionarioConVerbos.h"
 #include "GestorTextos.h"
 #include "THashPalabra.h"
+#include "MallaRegular.h"
 
 using namespace std;
 
@@ -41,7 +42,9 @@ int main(int argc, char** argv) {
     try{
         
         /*---- CHEQUEAR EL QUIJOTE Y UN SEGUNDO TEXTO ----*/
-
+        
+        MallaRegular<Casilla<Palabra>> malla(0,0,5,5,2,2);
+        
         std::string nombreFich = "quijote-sin-simbolos.txt";
         GestorTextos gestor1;
         
