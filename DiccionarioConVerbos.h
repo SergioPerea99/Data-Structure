@@ -16,44 +16,36 @@
 
 #include <iostream>
 #include <fstream>
-
-#include "VDinamico.h"
+#include <list>
+#include <map>
 #include "Palabra.h"
-#include "THashPalabra.h"
+#include "Usuario.h"
+
+class Palabra;
+class Usuario;
 
 class DiccionarioConVerbos {
 private:
-    /*---- ATRIBUTOS PRÁCTICA 4 ----*/
     std::string nombreDicc;
     std::string nombreDiccVerbos;
-    THashPalabra terminos;
-    
+    std::map<std::string, Palabra*> terminos;
+
 public:
     DiccionarioConVerbos();
-    DiccionarioConVerbos(std::string _nombreDicc, std::string _nombreDiccVerbos, unsigned long tam_dicc, unsigned long tam_diccVerbos);
+    DiccionarioConVerbos(std::string _nombreDicc, std::string _nombreDiccVerbos);
     DiccionarioConVerbos(const DiccionarioConVerbos& orig);
     virtual ~DiccionarioConVerbos();
-
-    /*---- MÉTODOS NECESARIO PRACTICA 3 ----*/
     DiccionarioConVerbos& operator=(const DiccionarioConVerbos& orig);
    
     
-    /*---- MÉTODO UML PRÁCTICA 4 ----*/
-    bool buscarTermino(unsigned long clave, std::string& termino, Palabra* &result);
+    /*---- MÉTODO UML PRÁCTICA 5 ----*/
+    Palabra* buscarTermino(std::string& termino, Usuario& u);
+    Palabra* insertarInexistente(std::string& termino, Usuario& u);
+    int tamTerminos();
+    void mostrarDiccionario();
     
-    
-    /*---- MÉTODOS PRÁCTICA 5 ----*/
-    unsigned long djb2 (unsigned char *str);
-    int maxColisiones_THASH() const;
-    float promColisiones_THASH() const;
-    int tamTerminos() const;
-    long tamTablaHASH() const;
-    bool insertarPalabra(Palabra& dato);
-    
-    bool getPalabra(unsigned int pos, Palabra& result);
-    bool borrarPalabra(Palabra& dato);
-    vector<Palabra>* borrarPalabras_substr(string& cadena_contenida);
-    
+    Palabra* buscarPalabra(std::string& termino);
+
     /*GETTERS Y SETTERS.*/
     void SetNombreFich(std::string nombreFich);
     std::string GetNombreFich() const;

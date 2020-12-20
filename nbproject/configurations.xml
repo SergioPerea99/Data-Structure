@@ -13,7 +13,9 @@
       <itemPath>Palabra.h</itemPath>
       <itemPath>ParPalabras.h</itemPath>
       <itemPath>THashPalabra.h</itemPath>
+      <itemPath>Usuario.h</itemPath>
       <itemPath>VDinamico.h</itemPath>
+      <itemPath>Ziri.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -28,6 +30,8 @@
       <itemPath>Palabra.cpp</itemPath>
       <itemPath>ParPalabras.cpp</itemPath>
       <itemPath>THashPalabra.cpp</itemPath>
+      <itemPath>Usuario.cpp</itemPath>
+      <itemPath>Ziri.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -93,7 +97,15 @@
       </item>
       <item path="THashPalabra.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Usuario.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Usuario.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="VDinamico.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Ziri.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Ziri.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -148,7 +160,15 @@
       </item>
       <item path="THashPalabra.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Usuario.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Usuario.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="VDinamico.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Ziri.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Ziri.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

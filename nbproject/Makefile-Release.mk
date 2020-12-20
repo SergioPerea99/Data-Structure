@@ -41,6 +41,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/Palabra.o \
 	${OBJECTDIR}/ParPalabras.o \
 	${OBJECTDIR}/THashPalabra.o \
+	${OBJECTDIR}/Usuario.o \
+	${OBJECTDIR}/Ziri.o \
 	${OBJECTDIR}/main.o
 
 
@@ -97,6 +99,16 @@ ${OBJECTDIR}/THashPalabra.o: THashPalabra.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/THashPalabra.o THashPalabra.cpp
+
+${OBJECTDIR}/Usuario.o: Usuario.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Usuario.o Usuario.cpp
+
+${OBJECTDIR}/Ziri.o: Ziri.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Ziri.o Ziri.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}

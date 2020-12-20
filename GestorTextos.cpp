@@ -19,7 +19,7 @@
 /**
  * @brief Constructor por defecto.
  */
-GestorTextos::GestorTextos(): documentos(), diccionario (new DiccionarioConVerbos()){
+GestorTextos::GestorTextos(): /*documentos(),*/ diccionario (new DiccionarioConVerbos()){
 
 }
 
@@ -27,38 +27,18 @@ GestorTextos::GestorTextos(): documentos(), diccionario (new DiccionarioConVerbo
  * @brief Constructor copia.
  * @param orig GestorTextos a ser copiado por el destinatario.
  */
-GestorTextos::GestorTextos(const GestorTextos& orig): diccionario (orig.diccionario), documentos (orig.documentos) {
+GestorTextos::GestorTextos(const GestorTextos& orig): diccionario (orig.diccionario)/*,documentos (orig.documentos)*/{
 
 }
 
-
 /**
- * @brief Insertar documento.
- * @post Añade un documento al final de los elementos del vector. Es importante saber
- * que desde la misma acción de añadir el documento, se está añadiendo el diccionario
- * asociado a ese documento.
- * @param nombreFich String que se quiere añadir a la estructura como Documento.
+ * @brief Destructor.
+ * @post Destruye los objetos documento creados que habían sido añadidos al vector dinámico documentos.
  */
-int GestorTextos::addDocumento(std::string nombreFich){
-    Documento *doc = new Documento(nombreFich, getDiccionario()); /*Ya que solo metemos uno, le corresponde al primer elemento.*/
-    documentos.push_back(doc);
-    return documentos.size()-1;
-}
-
-/**
- * @brief Buscar documento.
- * @post Busca un documento de forma secuencial en el vector dinámico que almacena los 
- * documentos del gestor de textos.
- * @param nombreFich Nombre del documento que se quiere buscar.
- * @return Documento que se ha buscado, en caso de no encontrarlo se lanza una excepción.
- */
-Documento* GestorTextos::buscarDocumento(std::string nombreFich){
-    Documento *texto_buscar =  new Documento(nombreFich,getDiccionario());
-    for (Documento* i : documentos)
-        if (*i == *texto_buscar)
-            return i;
-    delete texto_buscar;
-    return nullptr;
+GestorTextos::~GestorTextos() {
+    if (diccionario)
+        delete diccionario;
+    diccionario = 0;
 }
 
 
@@ -70,26 +50,15 @@ Documento* GestorTextos::buscarDocumento(std::string nombreFich){
  * @param result Palabra que, al ser buscada con el termino, se asigna a dicho parámetro.
  * @return Booleano que indica si se ha encontrado o no.
  */
-bool GestorTextos::buscarTermino(unsigned long clave,std::string termino, Palabra* &result){
-    return diccionario->buscarTermino(clave,termino,result);
+Palabra* GestorTextos::buscarTermino(std::string& termino, Usuario& u){
+    return diccionario->buscarTermino(termino,u);
+}
+
+Palabra* GestorTextos::insertarInexistente(std::string& termino, Usuario& u){
+    return diccionario->insertarInexistente(termino,u);
 }
 
 
-/**
- * @brief Destructor.
- * @post Destruye los objetos documento creados que habían sido añadidos al vector dinámico documentos.
- */
-GestorTextos::~GestorTextos() {
-    for (Documento* i : documentos){
-        if (i){
-            delete i;
-            i = nullptr;
-        }
-    }
-    if (diccionario)
-        delete diccionario;
-    diccionario = 0;
-}
 
 
 /*---- GETTERS Y SETTERS ----*/
@@ -100,10 +69,10 @@ DiccionarioConVerbos*& GestorTextos::getDiccionario(){
 }
 
 
-Documento* GestorTextos::getDocumento(unsigned int pos){
-    if (pos < documentos.size())
-        if (documentos[pos])
-            return documentos[pos];
-    return nullptr;
-}
+//Documento* GestorTextos::getDocumento(unsigned int pos){
+//    if (pos < documentos.size())
+//        if (documentos[pos])
+//            return documentos[pos];
+//    return nullptr;
+//}
 

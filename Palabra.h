@@ -17,20 +17,20 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include "VDinamico.h"
+#include <list>
+#include "Usuario.h"
 using namespace std;
 
-class DiccionarioConVerbos;
-class Documento;
+class Usuario;
 
 class Palabra {
 private:
      string termino;    
      unsigned int ocurrencias;
-     DiccionarioConVerbos *dicc_perteneciente;
+     list<Usuario> dichaPor;
 public:
     Palabra();
-    Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente);
+    Palabra(string _palabra);
     Palabra(const Palabra& orig);
     virtual ~Palabra();
     Palabra& operator=(const Palabra& dato);
@@ -52,9 +52,14 @@ public:
     /*---- MÉTODOS PRÁCTICA 4 ----*/
     void incrementarOcurrencia();
     
+    /*---- MÉTODOS PRÁCTICA 5 ----*/
+    bool buscarUsuario(Usuario& u);
+    bool insertarUsuario(Usuario& u);
+    list<Usuario>& usadoPorUsers();
+    
     /*---- GETTERS Y SETTERS  ----*/
     int GetOcurrencias() const;
-    DiccionarioConVerbos* GetDicc_perteneciente() const;
+    list<Usuario>::iterator listUserInicio();
     string GetPalabra() const;
     void SetPalabra(string palabra);
     

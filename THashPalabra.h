@@ -42,7 +42,7 @@ class THashPalabra {
 private:
     unsigned long tamF, tamL, primoMenor, maxColisiones, colisiones;
     float factorCarga;
-    vector<Entrada> tabla;
+    std::vector<Entrada> tabla;
     unsigned long sigPrimo(unsigned long num, unsigned long& primoAnterior);
     
     long hashDoble1(unsigned long clave, int intento);

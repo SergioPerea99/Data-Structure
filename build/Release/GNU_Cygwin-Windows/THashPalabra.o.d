@@ -1,8 +1,17 @@
 build/Release/GNU_Cygwin-Windows/THashPalabra.o: THashPalabra.cpp \
- THashPalabra.h Palabra.h VDinamico.h
+ THashPalabra.h Palabra.h Usuario.h Ziri.h MallaRegular.h GestorTextos.h \
+ DiccionarioConVerbos.h
 
 THashPalabra.h:
 
 Palabra.h:
 
-VDinamico.h:
+Usuario.h:
+
+Ziri.h:
+
+MallaRegular.h:
+
+GestorTextos.h:
+
+DiccionarioConVerbos.h:

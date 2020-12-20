@@ -1,12 +1,19 @@
 build/Release/GNU_Cygwin-Windows/Palabra.o: Palabra.cpp Palabra.h \
- VDinamico.h DiccionarioConVerbos.h THashPalabra.h Documento.h
+ Usuario.h Ziri.h MallaRegular.h GestorTextos.h DiccionarioConVerbos.h \
+ VDinamico.h Documento.h
 
 Palabra.h:
 
-VDinamico.h:
+Usuario.h:
+
+Ziri.h:
+
+MallaRegular.h:
+
+GestorTextos.h:
 
 DiccionarioConVerbos.h:
 
-THashPalabra.h:
+VDinamico.h:
 
 Documento.h:

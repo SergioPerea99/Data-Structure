@@ -23,7 +23,7 @@
 /**
  * @brief Constructor por defecto.
  */
-Palabra::Palabra(): termino (""), ocurrencias (0), dicc_perteneciente (nullptr){
+Palabra::Palabra(): termino (""), ocurrencias (0), dichaPor(){
 
 }
 
@@ -31,7 +31,7 @@ Palabra::Palabra(): termino (""), ocurrencias (0), dicc_perteneciente (nullptr){
  * @brief Constructor parametrizado.
  * @param _palabra String a asignar al atributo.
  */
-Palabra::Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente): termino (_palabra), ocurrencias(0), dicc_perteneciente(_diccPerteneciente){
+Palabra::Palabra(string _palabra): termino (_palabra), ocurrencias(0), dichaPor(){
 
 }
 
@@ -39,7 +39,7 @@ Palabra::Palabra(string _palabra, DiccionarioConVerbos *_diccPerteneciente): ter
  * @brief Constructor de copia.
  * @param orig Palabra que se quiere copiar.
  */
-Palabra::Palabra(const Palabra& orig): termino (orig.termino), ocurrencias (orig.ocurrencias), dicc_perteneciente (orig.dicc_perteneciente){
+Palabra::Palabra(const Palabra& orig): termino (orig.termino), ocurrencias (orig.ocurrencias), dichaPor (orig.dichaPor){
 
 }
 
@@ -217,6 +217,29 @@ ostream &operator<<(ostream &os, const Palabra &f)
 }
 
 
+bool Palabra::buscarUsuario(Usuario& u){
+    std::list<Usuario>::iterator it = dichaPor.begin();
+    while (it != dichaPor.end()){
+        if ((*it).getClave() == u.getClave())
+            return true; //Encontrado
+        it++;
+    }
+    return false; //No encontrado
+}
+
+bool Palabra::insertarUsuario(Usuario& u){
+    if (!buscarUsuario(u)){
+        dichaPor.push_back(u); //Se mete al usuario tras no encontrarlo en la lista.
+        return true;
+    }else
+        return false;
+}
+
+
+list<Usuario>& Palabra::usadoPorUsers(){
+    return dichaPor; //DUDA: Si quisiera devolver una copia de la EEDD, tendría que crear si o si un puntero y reservar memoria dinamica para no perderlo en el proceso?
+}
+
 /*---- GETTERS Y SETTERS ----*/
 
 /**
@@ -236,13 +259,13 @@ void Palabra::SetPalabra(string palabra) {
 }
 
 void Palabra::incrementarOcurrencia() {
-    ++ocurrencias;
+    ++ocurrencias; //DUDA: REALMENTE AQUÍ NO HARÍA FALTA HACER NADA
 }
 
 int Palabra::GetOcurrencias() const {
-    return ocurrencias;
+    return ocurrencias; //DUDA: REALMENTE AQUÍ SERÍA DEVOLVER EL TAMAÑO DE LA LIST<USUARIO> NO?
 }
 
-DiccionarioConVerbos* Palabra::GetDicc_perteneciente() const {
-    return dicc_perteneciente;
+list<Usuario>::iterator Palabra::listUserInicio(){
+    return dichaPor.begin();
 }

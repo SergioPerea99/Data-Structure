@@ -45,39 +45,6 @@ int main(int argc, char** argv) {
         
         MallaRegular<Casilla<Palabra>> malla(0,0,5,5,2,2);
         
-        std::string nombreFich = "quijote-sin-simbolos.txt";
-        GestorTextos gestor1;
-        
-        cout<<"MAXIMO DE COLISIONES : "<<gestor1.getDiccionario()->maxColisiones_THASH()<<endl;
-        cout<<"PROMEDIO DE COLISIONES : "<<gestor1.getDiccionario()->promColisiones_THASH()<<endl;
-        cout<<"FACTOR DE CARGA (REAL): "<<(float)gestor1.getDiccionario()->tamTerminos()/gestor1.getDiccionario()->tamTablaHASH()<<endl;
-        
-        int pos = gestor1.addDocumento(nombreFich);
-        
-        /*--- INSERTAR LA PALABRA WIFI Y MOSTRAR EL NÚMERO DE COLISIONES ---*/
-        Palabra wifi("wifi",gestor1.getDiccionario());
-        gestor1.getDiccionario()->insertarPalabra(wifi);
-        
-        
-        /*--- ELIMINAR TODAS LAS PALABRAS QUE COMIENCEN POR W ---*/
-        string cadena_buscar = "w";
-        vector<Palabra> *borradas = gestor1.getDiccionario()->borrarPalabras_substr(cadena_buscar);
-       
-        cout<<endl<<"Palabras borradas : "<<borradas->size()<<endl;
-        for (Palabra i : *borradas)
-            cout<<"Palabra borrada --> "<<i.GetPalabra()<<endl;
-        
-        Palabra waterpolo("waterpolo",gestor1.getDiccionario());
-        Palabra windsurf("windsurf",gestor1.getDiccionario());
-        
-        if(gestor1.getDiccionario()->insertarPalabra(waterpolo))
-            cout<<endl<<"PALABRA "<<waterpolo.GetPalabra()<<" INSERTADA CORRECTAMENTE."<<endl;
-        
-        if(gestor1.getDiccionario()->insertarPalabra(windsurf))
-            cout<<"PALABRA "<<windsurf.GetPalabra()<<" INSERTADA CORRECTAMENTE."<<endl;
-        
-        delete borradas; //Liberar la memoria reservada para el vector<Palabra>
-        
     }catch (invalid_argument &e){
         cout<<e.what()<<endl;
     }
