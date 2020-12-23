@@ -63,7 +63,7 @@ public:
     
     /*---- MÉTODOS DE ENTRENAMIENTO DE LA TABLA ----*/
     unsigned int MaxColisiones() const;
-    float promedioColisiones() const; //DUDA: esta mal en el guión ?? pone que devuelva un unsigned int
+    float promedioColisiones() const;
     float FactorCarga() const;
     unsigned int tamTabla() const;
     

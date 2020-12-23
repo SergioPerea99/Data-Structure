@@ -98,7 +98,7 @@ DiccionarioConVerbos::~DiccionarioConVerbos() {
     map<std::string, Palabra*>::iterator it = terminos.begin();
     while(it != terminos.end()){
         delete it->second;
-        terminos.erase(it); /*DUDA: Si he eliminado con erase pero he creado un new de Palabras en esta clase para almacenarlo en esos nodos del mapa, ¿con el erase no haría falta liberar su memoria?*/
+        terminos.erase(it); 
         it = terminos.lower_bound(it->first); 
     }
 }
@@ -139,9 +139,8 @@ Palabra* DiccionarioConVerbos::buscarTermino(string& termino, Usuario& u){
 Palabra* DiccionarioConVerbos::insertarInexistente(std::string& termino, Usuario& u){
     Palabra *aniadir = new Palabra(termino);
     pair<std::string, Palabra*> palab(aniadir->GetPalabra(),aniadir);
-    pair<map<std::string,Palabra*>::iterator,bool> par = terminos.insert(palab);
-    aniadir->incrementarOcurrencia(); /*Numero de veces que ha aparecido: 1.*/
     aniadir->insertarUsuario(u); //Inserta el usuario que ha usado la palabra en la lista de usuarios que han usado esa palabra.
+    aniadir->incrementarOcurrencia(); /*Numero de veces que ha aparecido: 1.*/
     return aniadir;
 }
 

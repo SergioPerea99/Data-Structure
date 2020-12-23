@@ -14,6 +14,7 @@
 #include <math.h>
 #include <complex>
 
+
 #include "Ziri.h"
 
 
@@ -58,18 +59,13 @@ gestor(new GestorTextos()), usuariosNIF(), conectados(),usuarioUTM(){
     is.close();
     
     //RECORRER EL MAPA ENTERO PARA INSERTAR LOS USUARIOS EN SUS PUNTOS UTM CORRESPONDIENTES.
-    //DUDA: PREGUNTAR SI ESTÁ ASÍ BIEN PENSADO
     int cantidadUserCelda = 2;
     int nDivX = pow((contUsuarios/cantidadUserCelda),0.5); //Si hago la raiz cuadrada del numero total de celdas saco el número de filas para el eje X y el número de columnas para el eje Y de forma equitativa.
     int nDivY = nDivX; //Como no saldrá exacto -> Aumentará la cantidad de usuarios por celda, por eso he puesto 2.
     usuarioUTM = MallaRegular<Usuario*>(xMin,xMax,yMin,yMax,nDivX,nDivY);
     
-    //DUDA: PREGUNTAR SI ESTÁ ASÍ BIEN PENSADO
-    for(std::map<std::string,Usuario>::iterator it = usuariosNIF.begin(); it != usuariosNIF.end(); it++){
-        Usuario* new_user = new Usuario((*it).second); //Lo hago new copiando al del MAPA o pongo en el puntero la direccion de memoria del cliente en el mapa?
-        usuarioUTM.insertar((*it).second.getLatitud(), (*it).second.getLongitud(), new_user);
-        //usuarioUTM.insertar((*it).second.getLatitud(), (*it).second.getLongitud(), &(*it).second);
-    }
+    for(std::map<std::string,Usuario>::iterator it = usuariosNIF.begin(); it != usuariosNIF.end(); it++)
+        usuarioUTM.insertar((*it).second.getLatitud(), (*it).second.getLongitud(), &(*it).second);
     
 }
 
@@ -103,31 +99,24 @@ Ziri::~Ziri() {
  * objeto GestorTextos.
  */
 void Ziri::chequearTexto(std::string frase, Usuario& u){
-    std::ifstream is(frase);
-    std::stringstream ss;
+    std::stringstream ss(frase);
     std::cout<<"FRASE A CHEQUEAR: "<<frase<<std::endl;
     std::string palabra;
-    Usuario *user = nullptr;
     Palabra* result = nullptr;
-    std::string linea;
-    getline(is,linea); //TODO: SEPARAR POR ESPACIOS !! //DUDA: SERIA ASI???
-    while (is) {
-        ss << linea;
+    while (ss) {
         getline(ss,palabra,' ');
         Palabra pal(palabra);
         pal.limpiar();
         std::string aux = pal.conversionMinus();
         result = gestor->getDiccionario()->buscarTermino(aux, u);
-        
         if (result == nullptr)
             gestor->insertarInexistente(aux,u); 
 
     }
-    is.close(); //DUDA: NO CREO QUE ESTÉ ASI BIEN IMPLEMENTADO
 }
 
 
-bool Ziri::nuevoUsuarioConectado(std::string& nif){
+bool Ziri::nuevoUsuarioConectado(std::string& nif,std::string& pass){
     for (std::list<Usuario>::iterator it = conectados.begin(); it != conectados.end(); it++)
         if ((*it).getNif() == nif)
             return false; //Ya estaba conectado
@@ -154,28 +143,41 @@ bool Ziri::desconectarUsuario(std::string& nif){
 void Ziri::recibeMensajeUsuario(std::string& frase, Usuario& u){
     for (std::list<Usuario>::iterator it = conectados.begin(); it != conectados.end(); it++){
         if ((*it).getNif() == u.getNif())
-            chequearTexto(frase,u); //DUDA: HACER ALGO MAS O SIMPLEMENTE EL METODO PUBLICO PARA LLAMAR AL PRIVADO DE CHEQUEAR?
+            chequearTexto(frase,u);
     }
 }
 
-std::list<Usuario>& Ziri::analizarTermino(std::string& palabra){
+std::list<Usuario>* Ziri::analizarTermino(std::string& palabra){
     return gestor->getDiccionario()->buscarPalabra(palabra)->usadoPorUsers();
 }
 
-//std::list<Usuario>& Ziri::buscarTerminoRango(std::string& palabra, float rxmin, float rymin, float rxmax, float rymax){
-//    std::list<Usuario> palabUsersRango;
-//    std::list<Usuario> todos = analizarTermino(palabra); //Me devuelve todos los usuarios que han usado la palabra.
-//    std::vector<Usuario*> rangoUser = usuarioUTM.buscarRango(rxmin,rymin,rxmax,rymax); //DUDA: POR QUE NO ME FUNCIONA DE ESTA FORMA ?
-//    
-//    bool aniadido;
-//    for(int i = 0; i < rangoUser.size(); i++){
-//        aniadido = false;
-//        for (std::list<Usuario>::iterator it = todos.begin(); it != todos.end() && !aniadido; it++){
-//            if ((*it).getNif() == rangoUser[i]->getNif()){
-//                palabUsersRango.push_back(*(rangoUser[i])); 
-//                aniadido = true;
-//            }
-//        }
-//    }
-//    return palabUsersRango;
-//}
+
+/**
+ * @brief Buscar Termino en un rango de usuarios
+ * @post IMPORTANTE: SE RESERVA MEMORIA A LA ESTRUCTURA PASADA COMO RETURN -> ELIMINAR DICHA MEMORIA CUANDO EL USUARIO NO LO NECESITE MÁS
+ * Método encargado de, a partir de una palabra usada por unos usuarios, comprobar que usuarios se encuentran en el rango indicado.
+ * @param palabra
+ * @param rxmin
+ * @param rymin
+ * @param rxmax
+ * @param rymax
+ * @return 
+ */
+std::list<Usuario>* Ziri::buscarTerminoRango(std::string& palabra, float rxmin, float rymin, float rxmax, float rymax){
+    std::list<Usuario>* palabUsersRango = new std::list<Usuario>();
+    std::list<Usuario>* todos = analizarTermino(palabra); //Me devuelve todos los usuarios que han usado la palabra.
+    std::vector<Usuario*>* rangoUser = usuarioUTM.buscarRango(rxmin,rymin,rxmax,rymax);
+    
+    bool aniadido;
+    for(int i = 0; i < rangoUser->size(); i++){
+        aniadido = false;
+        for (std::list<Usuario>::iterator it = todos->begin(); it != todos->end() && !aniadido; it++){
+            if ((*it) == (*(*rangoUser)[i])){
+                palabUsersRango->push_back((*(*rangoUser)[i])); 
+                aniadido = true;
+            }
+        }
+    }
+    return palabUsersRango;
+}
+

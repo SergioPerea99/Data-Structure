@@ -43,8 +43,11 @@ int main(int argc, char** argv) {
         
         /*---- CHEQUEAR EL QUIJOTE Y UN SEGUNDO TEXTO ----*/
         
-        MallaRegular<Casilla<Palabra>> malla(0,0,5,5,2,2);
+        MallaRegular<Casilla<Usuario>> malla(0,0,5,5,2,2);
         
+        Usuario u("77433569","","","",0,0,nullptr);
+        Usuario u2("77433569","","","",0,0,nullptr);
+       
     }catch (invalid_argument &e){
         cout<<e.what()<<endl;
     }

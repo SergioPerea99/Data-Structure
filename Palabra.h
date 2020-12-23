@@ -55,7 +55,7 @@ public:
     /*---- MÉTODOS PRÁCTICA 5 ----*/
     bool buscarUsuario(Usuario& u);
     bool insertarUsuario(Usuario& u);
-    list<Usuario>& usadoPorUsers();
+    list<Usuario>* usadoPorUsers();
     
     /*---- GETTERS Y SETTERS  ----*/
     int GetOcurrencias() const;

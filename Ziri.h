@@ -17,6 +17,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <vector>
 #include <list>
 #include "Usuario.h"
 #include "MallaRegular.h"
@@ -38,14 +39,14 @@ public:
     Ziri(const Ziri& orig);
     virtual ~Ziri();
     
-    bool nuevoUsuarioConectado(std::string& nif);
+    bool nuevoUsuarioConectado(std::string& nif,std::string& pass);
     bool desconectarUsuario(std::string& nif);
     
     void recibeMensajeUsuario(std::string& frase, Usuario& u);
-    std::list<Usuario>& analizarTermino(std::string& palabra); //DUDA: SE HACE ASI?
+    std::list<Usuario>* analizarTermino(std::string& palabra);
     
     //TODO: NO ME FUNCIONA ESTE METODO DE ABAJO
-    //std::list<Usuario>& buscarTerminoRango(std::string& palabra, float rxmin, float rymin, float rxmax, float rymax);
+    std::list<Usuario>* buscarTerminoRango(std::string& palabra, float rxmin, float rymin, float rxmax, float rymax);
     
 };
 

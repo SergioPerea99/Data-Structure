@@ -236,8 +236,8 @@ bool Palabra::insertarUsuario(Usuario& u){
 }
 
 
-list<Usuario>& Palabra::usadoPorUsers(){
-    return dichaPor; //DUDA: Si quisiera devolver una copia de la EEDD, tendría que crear si o si un puntero y reservar memoria dinamica para no perderlo en el proceso?
+list<Usuario>* Palabra::usadoPorUsers(){
+    return &dichaPor; 
 }
 
 /*---- GETTERS Y SETTERS ----*/
@@ -259,11 +259,11 @@ void Palabra::SetPalabra(string palabra) {
 }
 
 void Palabra::incrementarOcurrencia() {
-    ++ocurrencias; //DUDA: REALMENTE AQUÍ NO HARÍA FALTA HACER NADA
+    ++ocurrencias;
 }
 
 int Palabra::GetOcurrencias() const {
-    return ocurrencias; //DUDA: REALMENTE AQUÍ SERÍA DEVOLVER EL TAMAÑO DE LA LIST<USUARIO> NO?
+    return ocurrencias;
 }
 
 list<Usuario>::iterator Palabra::listUserInicio(){

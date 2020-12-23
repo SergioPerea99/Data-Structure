@@ -28,7 +28,8 @@ public:
     Usuario();
     Usuario(std::string _nif, std::string _clave, std::string _nombre, std::string _frase, float _latitud, float _longitud, Ziri* enlZiri);
     Usuario(const Usuario& orig);
-    //TODO: HACER OPERADOR DE ASIGNACION
+    Usuario& operator=(const Usuario& u); //TODO: HACER OPERADOR DE ASIGNACION
+    bool operator==(const Usuario& u); //TODO: CREAR OPERADOR ==
     virtual ~Usuario();
     
     //TODO: POR HACER ESTOS MÉTODOS.
