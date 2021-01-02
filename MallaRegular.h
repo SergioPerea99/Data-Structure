@@ -128,7 +128,7 @@ T* MallaRegular<T>::buscar(float x, float y, const T& dato){
 
 template <typename T>
 std::vector<T>* MallaRegular<T>::buscarRango(float rxmin, float rymin, float rxmax, float rymax){
-    std::vector<T>* devolver;
+    std::vector<T>* devolver = new std::vector<T>();
     if (rxmin < xMin || rxmax > xMax || rymin < yMin || rymax > yMax)
         throw std::out_of_range("[MallaRegular<T>::borrar] Se ha introducido mal los valores de los rangos respecto al eje x y el eje y. Revisar que no se salgan del rango de la M.R.");
     

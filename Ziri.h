@@ -39,15 +39,20 @@ public:
     Ziri(const Ziri& orig);
     virtual ~Ziri();
     
-    bool nuevoUsuarioConectado(std::string& nif,std::string& pass);
+    Usuario* nuevoUsuarioConectado(std::string& nif,std::string& pass);
     bool desconectarUsuario(std::string& nif);
     
     void recibeMensajeUsuario(std::string& frase, Usuario& u);
     std::list<Usuario>* analizarTermino(std::string& palabra);
     
-    //TODO: NO ME FUNCIONA ESTE METODO DE ABAJO
+    //TODO
     std::list<Usuario>* buscarTerminoRango(std::string& palabra, float rxmin, float rymin, float rxmax, float rymax);
     
+    
+    /*---- MÉTODOS NECESARIOS PARA EL PROGRAMA DE PRUEBA ----*/
+    int tamUserConectados();
+    Usuario& userConectado(unsigned int pos);
+    GestorTextos* getGestor();
 };
 
 #endif /* ZIRI_H */

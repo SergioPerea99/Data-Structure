@@ -13,14 +13,15 @@
 
 #include <math.h>
 #include <complex>
+#include <list>
 
 
 #include "Ziri.h"
 
 
 Ziri::Ziri():
-gestor(new GestorTextos()), usuariosNIF(), conectados(),usuarioUTM(){
-    std::ifstream is("usuarios_frases_win.csv"); //OJO: LA PRIMERA LINEA NO VALE
+gestor(new GestorTextos()), usuariosNIF(), conectados(){
+    std::ifstream is("usuarios_frases_win_LIMPIO.csv"); //OJO: LA PRIMERA LINEA NO VALE
     stringstream ss;
     std::string linea; //Cada linea es un usuario para el csv. TODO: Separados por ";"
     std::string nif, nombre, nomape, direccion, latitud, longitud, frase; //Variables de recogida de datos del dataset
@@ -32,7 +33,6 @@ gestor(new GestorTextos()), usuariosNIF(), conectados(),usuarioUTM(){
     while(is){
         getline(is,linea);
         ss << linea;
-        
         getline(ss,nif,';');
         getline(ss,nombre,';');
         getline(ss,nomape,';');
@@ -40,7 +40,7 @@ gestor(new GestorTextos()), usuariosNIF(), conectados(),usuarioUTM(){
         getline(ss,latitud,';');
         getline(ss,longitud,';');
         getline(ss,frase,';');
-        
+        getline(ss,linea,';');
         //CREAR UN USUARIO CON LOS DATOS OBTENIDOS
         Usuario user(nif,nomape,nombre,frase,stof(latitud),stof(longitud),this);
         
@@ -51,22 +51,32 @@ gestor(new GestorTextos()), usuariosNIF(), conectados(),usuarioUTM(){
         if(user.getLongitud() < yMin) yMin = user.getLongitud();
         if(user.getLongitud() > yMax) yMax = user.getLongitud();
         
+        
         //AÑADIRLO EN LAS EEDD DEL MAP QUE RECOGE A TODOS LOS USUARIOS DEL ARCHIVO CSV
         usuariosNIF.insert(pair<std::string,Usuario>(user.getClave(),user));
         
         contUsuarios++; //Para estimar sobre cuanto dividir la malla regular
+        ss.clear();
     }
     is.close();
-    
     //RECORRER EL MAPA ENTERO PARA INSERTAR LOS USUARIOS EN SUS PUNTOS UTM CORRESPONDIENTES.
-    int cantidadUserCelda = 2;
-    int nDivX = pow((contUsuarios/cantidadUserCelda),0.5); //Si hago la raiz cuadrada del numero total de celdas saco el número de filas para el eje X y el número de columnas para el eje Y de forma equitativa.
+    float cantidadUserCelda = 2.5;
+    int nDivX = ceil(pow((contUsuarios/cantidadUserCelda),0.5)); //Si hago la raiz cuadrada del numero total de celdas saco el número de filas para el eje X y el número de columnas para el eje Y de forma equitativa.
     int nDivY = nDivX; //Como no saldrá exacto -> Aumentará la cantidad de usuarios por celda, por eso he puesto 2.
-    usuarioUTM = MallaRegular<Usuario*>(xMin,xMax,yMin,yMax,nDivX,nDivY);
-    
-    for(std::map<std::string,Usuario>::iterator it = usuariosNIF.begin(); it != usuariosNIF.end(); it++)
+    usuarioUTM = MallaRegular<Usuario*>(floor(xMin),floor(yMin),ceil(xMax),ceil(yMax),nDivX,nDivY); //Necesito redondear porque sino me da problemas la inserción en la MALLA REGULAR.
+    int insertadosUTM = 0;
+    for(std::map<std::string,Usuario>::iterator it = usuariosNIF.begin(); it != usuariosNIF.end(); it++){
         usuarioUTM.insertar((*it).second.getLatitud(), (*it).second.getLongitud(), &(*it).second);
+    }
+    cout<<"NUMERO TOTAL DE USUARIOS EN LA APLICACIÓN = "<<usuariosNIF.size()<<endl;
+    cout<<"PROMEDIO DE USUARIOS POR CELDA = "<<usuarioUTM.promedioElementosPorCelda()<<endl;
     
+    /*LOGUEAR A TODOS MENOS LOS 50 ÚLTIMOS USUARIOS DEL MAPA*/
+    for (std::map<std::string,Usuario>::iterator it = usuariosNIF.begin() ; it != usuariosNIF.end(); it++)
+        if (conectados.size() < usuariosNIF.size() - 50)
+            conectados.push_back((*it).second);
+    
+    cout<<"USUARIOS CONECTADOS = "<<conectados.size()<<" de "<<usuariosNIF.size()<<endl;
 }
 
 Ziri::Ziri(const Ziri& orig):
@@ -76,17 +86,6 @@ usuariosNIF(orig.usuariosNIF), conectados(orig.conectados),usuarioUTM(){
 }
 
 Ziri::~Ziri() {
-    Casilla<Usuario*>* eliminar;
-    for (float x = usuarioUTM.getXMin(); x < usuarioUTM.getXMax(); x += usuarioUTM.getTamaCasillaX()){
-        for (float y = usuarioUTM.getYMin(); y < usuarioUTM.getYMax(); y += usuarioUTM.getTamaCasillaY()){
-            eliminar = usuarioUTM.obtenerCasilla(x,y);
-            for (std::list<Usuario*>::iterator it = eliminar->inicio(); it != eliminar->fin(); it++){
-                delete (*it);
-                *it = nullptr;
-            }
-        }
-    }
-    
     if (gestor)
         delete gestor;
     gestor = nullptr;
@@ -100,7 +99,7 @@ Ziri::~Ziri() {
  */
 void Ziri::chequearTexto(std::string frase, Usuario& u){
     std::stringstream ss(frase);
-    std::cout<<"FRASE A CHEQUEAR: "<<frase<<std::endl;
+    //std::cout<<"FRASE A CHEQUEAR: "<<frase<<std::endl;
     std::string palabra;
     Palabra* result = nullptr;
     while (ss) {
@@ -116,17 +115,25 @@ void Ziri::chequearTexto(std::string frase, Usuario& u){
 }
 
 
-bool Ziri::nuevoUsuarioConectado(std::string& nif,std::string& pass){
-    for (std::list<Usuario>::iterator it = conectados.begin(); it != conectados.end(); it++)
-        if ((*it).getNif() == nif)
-            return false; //Ya estaba conectado
+Usuario* Ziri::nuevoUsuarioConectado(std::string& nif,std::string& pass){
+    for (std::list<Usuario>::iterator it = conectados.begin(); it != conectados.end(); it++){
+        if ((*it).getNif() == nif){
+            std::cout<<"EL USUARIO YA ESTABA CONECTADO"<<endl;
+            return nullptr; //Ya estaba conectado
+        }
+    }
     
     std::map<std::string, Usuario>::iterator ite = usuariosNIF.find(nif);
     if(ite != usuariosNIF.end()){
-        conectados.push_back((*ite).second);
-        return true; 
+        if ((*ite).second.getClave() == pass){
+            conectados.push_back((*ite).second);
+            std::cout<<"CONECTADO AL USUARIO..."<<endl;
+            return &(*ite).second; 
+        }
+        std::cout<<"NO SE HA ENCONTRADO UN USUARIO EN EL MAPA CON ESA CLAVE"<<endl;
     }
-    return false; //NO EXISTE ESE USUARIO EN EL MAPA
+    std::cout<<"NO SE HA ENCONTRADO UN USUARIO EN EL MAPA CON ESE NIF"<<endl;
+    return nullptr; //NO EXISTE ESE USUARIO EN EL MAPA
 }
 
 bool Ziri::desconectarUsuario(std::string& nif){
@@ -142,8 +149,9 @@ bool Ziri::desconectarUsuario(std::string& nif){
 
 void Ziri::recibeMensajeUsuario(std::string& frase, Usuario& u){
     for (std::list<Usuario>::iterator it = conectados.begin(); it != conectados.end(); it++){
-        if ((*it).getNif() == u.getNif())
+        if ((*it).getNif() == u.getNif()){
             chequearTexto(frase,u);
+        }
     }
 }
 
@@ -181,3 +189,22 @@ std::list<Usuario>* Ziri::buscarTerminoRango(std::string& palabra, float rxmin, 
     return palabUsersRango;
 }
 
+
+int Ziri::tamUserConectados(){
+    return conectados.size();
+}
+
+Usuario& Ziri::userConectado(unsigned int pos){
+    if (pos >= conectados.size())
+        throw std::out_of_range("[Ziri::userConectado] La posición dada está fuera de rango");
+    
+    std::list<Usuario>::iterator it = conectados.begin();
+    for (int i = 0; i < pos; i++)
+        it++;
+    
+    return (*it);
+}
+
+GestorTextos* Ziri::getGestor(){
+    return gestor;
+}

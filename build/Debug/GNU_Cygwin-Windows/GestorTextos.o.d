@@ -1,15 +1,15 @@
 build/Debug/GNU_Cygwin-Windows/GestorTextos.o: GestorTextos.cpp \
- GestorTextos.h DiccionarioConVerbos.h VDinamico.h Palabra.h \
- THashPalabra.h Documento.h
+ GestorTextos.h DiccionarioConVerbos.h Palabra.h Usuario.h Ziri.h \
+ MallaRegular.h
 
 GestorTextos.h:
 
 DiccionarioConVerbos.h:
 
-VDinamico.h:
-
 Palabra.h:
 
-THashPalabra.h:
+Usuario.h:
 
-Documento.h:
+Ziri.h:
+
+MallaRegular.h:

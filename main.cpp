@@ -19,6 +19,7 @@
 #include <exception>
 #include <map>
 #include <vector>
+#include <list>
 
 #include "VDinamico.h"
 #include "Palabra.h"
@@ -41,13 +42,66 @@ int main(int argc, char** argv) {
     
     try{
         
-        /*---- CHEQUEAR EL QUIJOTE Y UN SEGUNDO TEXTO ----*/
+        /*1. Carga los datos de todos los usuarios del fichero adjunto en Ziri*/
+        /*2. Conectar a todos los usuarios excepto los 50 últimos*/
+        Ziri ziri; //Conectando previamente a todos menos los 50 últimos.
         
-        MallaRegular<Casilla<Usuario>> malla(0,0,5,5,2,2);
+        /*3. Intenta conectar al usuario que si existe con NIF = 34923452L y  clave pU7Pqq.*/
+        std::string nif = "34923452L";
+        std::string pass = "pU7Pqq";
+        ziri.nuevoUsuarioConectado(nif,pass);
         
-        Usuario u("77433569","","","",0,0,nullptr);
-        Usuario u2("77433569","","","",0,0,nullptr);
-       
+        /*4. Hacer que los usuarios conectados escriban un mensaje*/
+        for (int i = 0; i < ziri.tamUserConectados(); i++) {
+            ziri.userConectado(i).escribeMensaje();
+        }
+        
+        /*5. Muestra por pantalla los usuarios conectados que han escrito la palabra "casa"*/
+        std::string analizar = "casa";
+        std::list<Usuario>* list_users = ziri.analizarTermino(analizar);
+        if (list_users){
+            for (std::list<Usuario>::iterator it = list_users->begin(); it != list_users->end(); it++){
+                cout<<(*it).getNif()<<" :: "<<(*it).getFrase()<<endl;
+            }
+           cout<<"NÚMERO DE USUARIOS QUE HAN DICHO LA PALABRA -> "<<list_users->size()<<endl;
+           cout<<endl;
+        }
+        
+        
+        /*6. Muestra por consola los datos de todos los usuarios que han escrito un mensaje en el rango de Jaén*/
+        std::string buscar = "ganas";
+        list_users = ziri.buscarTerminoRango(buscar,37,3,38,4);
+        if (list_users){
+            for (std::list<Usuario>::iterator it = list_users->begin(); it != list_users->end(); it++){
+                cout<<(*it).getNif()<<" :: "<<(*it).getFrase()<<endl;
+            }
+           cout<<"NÚMERO DE USUARIOS EN EL RANGO DE JAÉN QUE HAN DICHO LA PALABRA "<<buscar<<" -> "<<list_users->size();
+           cout<<" ( respecto al numero total de ocurrencias = "<<ziri.getGestor()->getDiccionario()->buscarPalabra(buscar)->GetOcurrencias()<<" )"<<endl;
+           cout<<endl;
+        }
+        
+        buscar = "extranjero";
+        list_users = ziri.buscarTerminoRango(buscar,37,3,38,4);
+        if (list_users){
+            for (std::list<Usuario>::iterator it = list_users->begin(); it != list_users->end(); it++){
+                cout<<(*it).getNif()<<" :: "<<(*it).getFrase()<<endl;
+            }
+           cout<<"NÚMERO DE USUARIOS EN EL RANGO DE JAÉN QUE HAN DICHO LA PALABRA "<<buscar<<" -> "<<list_users->size();
+           cout<<" ( respecto al numero total de ocurrencias = "<<ziri.getGestor()->getDiccionario()->buscarPalabra(buscar)->GetOcurrencias()<<" )"<<endl;
+           cout<<endl;
+        }
+        
+        buscar = "es";
+        list_users = ziri.buscarTerminoRango(buscar,37,3,38,4);
+        if (list_users){
+            for (std::list<Usuario>::iterator it = list_users->begin(); it != list_users->end(); it++){
+                cout<<(*it).getNif()<<" :: "<<(*it).getFrase()<<endl;
+            }
+           cout<<"NÚMERO DE USUARIOS EN EL RANGO DE JAÉN QUE HAN DICHO LA PALABRA "<<buscar<<" -> "<<list_users->size();
+           cout<<" ( respecto al numero total de ocurrencias = "<<ziri.getGestor()->getDiccionario()->buscarPalabra(buscar)->GetOcurrencias()<<" )"<<endl;
+           cout<<endl;
+        }
+        
     }catch (invalid_argument &e){
         cout<<e.what()<<endl;
     }

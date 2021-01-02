@@ -29,10 +29,6 @@ nif(orig.nif), clave(orig.clave), nombre(orig.nombre), frase(orig.frase),latitud
 {
 }
 
-Usuario::~Usuario() {
-}
-
-
 Usuario& Usuario::operator=(const Usuario& u) {
     if (this != &u){
         nif = u.nif;
@@ -61,8 +57,7 @@ bool Usuario::logoff(){
 }
 
 void Usuario::escribeMensaje(){
-    std::string _frase;
-    enlaceZiri->recibeMensajeUsuario(_frase,(*this));
+    enlaceZiri->recibeMensajeUsuario(frase,(*this));
 }
 
 
