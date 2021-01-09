@@ -45,12 +45,15 @@ int main(int argc, char** argv) {
         /*1. Carga los datos de todos los usuarios del fichero adjunto en Ziri*/
         /*2. Conectar a todos los usuarios excepto los 50 últimos*/
         Ziri ziri; //Conectando previamente a todos menos los 50 últimos.
-        
+        ziri.login();
         /*3. Intenta conectar al usuario que si existe con NIF = 34923452L y  clave pU7Pqq.*/
         std::string nif = "34923452L";
         std::string pass = "pU7Pqq";
-        ziri.nuevoUsuarioConectado(nif,pass);
-        
+        try{
+            ziri.nuevoUsuarioConectado(nif,pass);
+        }catch (invalid_argument& e){
+            cout<<e.what()<<endl;
+        }
         /*4. Hacer que los usuarios conectados escriban un mensaje*/
         for (int i = 0; i < ziri.tamUserConectados(); i++) {
             ziri.userConectado(i).escribeMensaje();
@@ -63,7 +66,7 @@ int main(int argc, char** argv) {
             for (std::list<Usuario>::iterator it = list_users->begin(); it != list_users->end(); it++){
                 cout<<(*it).getNif()<<" :: "<<(*it).getFrase()<<endl;
             }
-           cout<<"NÚMERO DE USUARIOS QUE HAN DICHO LA PALABRA -> "<<list_users->size()<<endl;
+           cout<<"NÚMERO DE USUARIOS QUE HAN DICHO LA PALABRA "<<analizar<<" -> "<<list_users->size()<<endl;
            cout<<endl;
         }
         

@@ -50,6 +50,7 @@ public:
     
     
     /*---- MÉTODOS NECESARIOS PARA EL PROGRAMA DE PRUEBA ----*/
+    void login();
     int tamUserConectados();
     Usuario& userConectado(unsigned int pos);
     GestorTextos* getGestor();
